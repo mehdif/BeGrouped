@@ -13,6 +13,8 @@ import com.sinch.android.rtc.messaging.WritableMessage;
 import java.util.ArrayList;
 import java.util.List;
 
+import smartcity.begrouped.R;
+
 public class MessageAdapter extends BaseAdapter {
 
     public static final int DIRECTION_INCOMING = 0;
