@@ -9,6 +9,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import smartcity.begrouped.model.Appointment;
 import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.Location;
 import smartcity.begrouped.model.User;
@@ -28,11 +29,10 @@ public class MarkerManager {
     }
     public void updateLocations(){
         GroupManager.callTaskUpdateGroupMemberLocations(group);
-        requestForApt();
+      //  requestForApt();
     }
 
-    private void requestForApt() {
-    }
+
 
     public void updateMarkerPositions(){
         try {
@@ -65,6 +65,8 @@ public class MarkerManager {
     }
 
 
+
+
     public class AsTaskUpdatePositions extends AsyncTask<String, Void, String> {
 
         @Override
@@ -79,4 +81,31 @@ public class MarkerManager {
             updateMarkerPositions();
         }
     }
+
+
+/*
+    private void requestForApt() {
+        new AsTaskRequestForApt().execute();
+    }
+
+    public Appointment getAptOfMyGroup() {
+        return aptOfMyGroup;
+    }
+    public class AsTaskRequestForApt extends AsyncTask<String, Void, String> {
+
+        Appointment appoint;
+        @Override
+        protected String doInBackground(String... params) {
+            appoint=getAptOfMyGroup();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (appoint!=null){
+
+            }
+        }
+    }*/
 }

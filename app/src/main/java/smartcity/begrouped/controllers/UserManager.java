@@ -154,7 +154,7 @@ public class UserManager {
         protected Object doInBackground(Object[] params) {
 
             Log.i("send Apt", "send appointment to server" );
-            //String jsonFileUrl = getFromUrl("URL pour envoyer l'APT");
+            String jsonFileUrl = getFromUrl("URL pour envoyer l'APT");
             return null;
         }
     }
