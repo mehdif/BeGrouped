@@ -10,16 +10,16 @@ public class Constants {
     public final static String LATITUDE = "latitude";
 
     public final static String MEMBERS = "membres";
-    public final static String LAST_NAME = "lastName";
-    public final static String FIRST_NAME = "firstName";
+    public final static String LAST_NAME = "lastname";
+    public final static String FIRST_NAME = "firstname";
     public final static String USERNAME = "username";
-    public final static String PASSWORD = "hashPwd";
+    public final static String PASSWORD = "hashpwd";
     public final static String PHONE_NUMBER = "phone";
 
-    public final static String GROUP_NAME = "groupeName";
-    public final static String SUPERVISOR_NAME = "supervisorName";
-    public final static String REGION_NAME = "regionName";
-    public final static String EXPIRATION_DATE = "expirationDate";
+    public final static String GROUP_NAME = "groupename";
+    public final static String SUPERVISOR_NAME = "supervisorname";
+    public final static String REGION_NAME = "regionname";
+    public final static String EXPIRATION_DATE = "expirationdate";
 
 
 }
