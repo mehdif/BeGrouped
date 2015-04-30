@@ -12,5 +12,5 @@ public final class AllUrls {
     public static final String GET_GROUP_INFORMATIONS = BASE + "group_controller/getgroup/";
     public static final String GET_GROUP_MEMBERS = BASE + "group_controller/getgroupmember/";
     public static final String GET_MY_GROUPS_URL=BASE+"group_controller/getGroup/";
-    public static final String CREATE_RDV="createRDV/";
+    public static final String CREATE_RDV="rdv_controller/createRDV/";
 }
