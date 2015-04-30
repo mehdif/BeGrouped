@@ -1,0 +1,135 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="example.com.begrouped.CreateGroupFragment"
+    android:id="@+id/create">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/container_toolbar"
+        android:weightSum="100">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.07" >
+
+            <TextView
+                android:id="@+id/label"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="30dp"
+                android:layout_width="fill_parent"
+
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="45dp"
+                android:text="New Group"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:gravity="center">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextGroupName"
+                android:hint="Group Name"
+                android:textColor="@color/navigationBarColor"
+                android:layout_gravity="center"
+                android:minWidth="200dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:gravity="center"
+            android:minWidth="200dp">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextRegionName"
+                android:hint="Region Name"
+                android:layout_gravity="center"
+                android:textColor="@color/navigationBarColor"
+                android:minWidth="200dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:gravity="center">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/editTextExpirationDate"
+                android:hint="22-05-2015"
+                android:textColor="@color/navigationBarColor"
+                android:layout_weight="20"
+                android:layout_gravity="center" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="30"
+            android:weightSum="100">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="50"
+                android:gravity="center">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add"
+                    style="@style/Button"
+                    android:id="@+id/buttonAddGroup" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:id="@+id/layout_add_group">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel"
+                    style="@style/Button"
+                    android:id="@+id/buttonCancel" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"></RelativeLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
