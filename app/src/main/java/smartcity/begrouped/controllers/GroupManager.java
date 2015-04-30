@@ -278,9 +278,9 @@ public class GroupManager {
                 for (int i = 0; i < groups.length(); i++) {
                     JSONObject jsonObject = groups.getJSONObject(i);
 
-                    String groupName = (String) jsonObject.get("groupeName");
-                    String regionName = (String) jsonObject.get("regionName");
-                    String supervisorName = (String) jsonObject.get("supervisorName");
+                    String groupName = (String) jsonObject.get("groupename");
+                    String regionName = (String) jsonObject.get("regionname");
+                    String supervisorName = (String) jsonObject.get("supervisorname");
 
                     User user=new User("","",supervisorName,"","");
                     Group group=new Group(user,groupName,regionName);
