@@ -56,12 +56,13 @@ public class ChatActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
         bindService(new Intent(this, MessageService.class), serviceConnection, BIND_AUTO_CREATE);
 
 
         currentUserId = ParseUser.getCurrentUser().getObjectId();
 
+        Log.v("currentuserid",currentUserId);
         messagesList = (ListView) findViewById(R.id.listMessages);
         messageAdapter = new MessageAdapter(this);
         messagesList.setAdapter(messageAdapter);
@@ -76,6 +77,8 @@ public class ChatActivity extends ActionBarActivity {
                // sendMessage();
             }
         });
+        setContentView(R.layout.activity_chat);
+
     }
 
     private final void getUsersOfChoosenGroup()
