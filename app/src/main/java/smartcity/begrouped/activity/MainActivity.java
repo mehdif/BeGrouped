@@ -2,6 +2,7 @@ package smartcity.begrouped.activity;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -149,7 +150,11 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
                 fragment = new HelpFragment();
                 title = getString(R.string.title_help);
                 Toast.makeText(getApplicationContext(), "Need some help?", Toast.LENGTH_LONG).show();
-
+                break;
+            case 6:
+                Intent i = new Intent(getApplicationContext(), AuthentificationActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 break;
             default:
                 break;
