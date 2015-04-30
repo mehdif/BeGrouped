@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -29,16 +30,20 @@ import com.sinch.android.rtc.messaging.MessageDeliveryInfo;
 import com.sinch.android.rtc.messaging.MessageFailureInfo;
 import com.sinch.android.rtc.messaging.WritableMessage;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.GroupManager;
+import smartcity.begrouped.model.User;
 import smartcity.begrouped.utils.MessageAdapter;
 import smartcity.begrouped.utils.MessageService;
+import smartcity.begrouped.utils.MyApplication;
 
 public class ChatActivity extends ActionBarActivity {
-    private List<String> recipientId;
+    private List<String> recipientsIds=new ArrayList<String>();
     private EditText messageBodyField;
     private String messageBody;
     private MessageService.MessageServiceInterface messageService;
@@ -54,8 +59,7 @@ public class ChatActivity extends ActionBarActivity {
         setContentView(R.layout.activity_chat);
         bindService(new Intent(this, MessageService.class), serviceConnection, BIND_AUTO_CREATE);
 
-        Intent intent = getIntent();
-        //recipientId = intent.getStringExtra("RECIPIENT_ID");
+
         currentUserId = ParseUser.getCurrentUser().getObjectId();
 
         messagesList = (ListView) findViewById(R.id.listMessages);
@@ -63,21 +67,49 @@ public class ChatActivity extends ActionBarActivity {
         messagesList.setAdapter(messageAdapter);
       //  populateMessageHistory();
 
+        getUsersOfChoosenGroup();
         messageBodyField = (EditText) findViewById(R.id.messageBodyField);
 
         findViewById(R.id.sendButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendMessage();
+               // sendMessage();
             }
         });
     }
+
     private final void getUsersOfChoosenGroup()
     {
-        //GroupManager.getGroupMembersFromName();
+       // Get members of choosen group
+       final LinkedList<User> members= MyApplication.currentGroup.getMembers();
+
+        // Get RecipientID's of members
+        Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
+        currentUserId = ParseUser.getCurrentUser().getObjectId();
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereNotEqualTo("objectId", currentUserId);
+        query.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> userList, com.parse.ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < userList.size(); i++) {
+                        for(int j=0; j < members.size();j++)
+                        {
+                            if ( userList.get(i).getUsername().equals(members.get(i).getUsername()))
+                            {
+                                  recipientsIds.add(userList.get(i).getObjectId());
+                                  Log.v("objectID",userList.get(i).getObjectId());
+                                break;
+                            }
+
+                        }
+
+                    }
+                }
+            }
+    });
     }
     private final void createNotification(String sender, String content){
-        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+       /* NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         Intent intent = new Intent(this,ChatActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
         Notification n  = new Notification.Builder(this)
@@ -88,7 +120,7 @@ public class ChatActivity extends ActionBarActivity {
                 .setAutoCancel(true)
                 .build();
         n.defaults |= Notification.DEFAULT_SOUND;
-        notificationManager.notify(0, n);
+        notificationManager.notify(0, n);*/
     }
     //get previous messages from parse & display
    /* private void populateMessageHistory() {
@@ -166,7 +198,7 @@ public class ChatActivity extends ActionBarActivity {
         @Override
         public void onIncomingMessage(MessageClient client, Message message) {
 
-            Log.v("OnIncoming","OnIncoming");
+          /*  Log.v("OnIncoming","OnIncoming");
             if (message.getSenderId().equals(recipientId))
             {
                 WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
@@ -174,7 +206,7 @@ public class ChatActivity extends ActionBarActivity {
             }
             ParseUser currentUser = ParseUser.getCurrentUser();
             String username= currentUser.getUsername();
-            createNotification(username,message.getTextBody());
+            createNotification(username,message.getTextBody());*/
         }
 
 
