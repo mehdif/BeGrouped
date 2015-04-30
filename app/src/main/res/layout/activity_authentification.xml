@@ -1,0 +1,120 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".AuthentificationActivity"
+    android:background="@drawable/onlyon_blured">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:touchscreenBlocksFocus="false">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.07" >
+
+            <TextView
+                android:id="@+id/label"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="50dp"
+                android:textColor="@color/background_holo_light"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="45dp"
+                android:text="Be Grouped"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="60"
+            android:gravity="center">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="Username"
+                android:textColorHint="@color/background_holo_light"
+                android:ems="10"
+                android:id="@+id/editTextId"
+                android:layout_marginTop="35dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:textColorHint="@color/background_holo_light"
+                android:id="@+id/editTextPassword"
+                android:hint="Password"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/editTextId"
+                android:layout_alignLeft="@+id/editTextId"
+                android:layout_alignStart="@+id/editTextId" />
+
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/background_holo_light"
+                android:layout_alignParentTop="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Forgot your password ?"
+                android:id="@+id/textView"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp" />
+
+            <LinearLayout
+
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="40dp">
+
+                   <Button
+                    android:id="@+id/buttonLogin"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/layers_gplus_button_bg"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="3dp"
+                    android:text="Sign In"
+                    android:textAppearance="?android:attr/textAppearanceLargeInverse" />
+
+
+                 <Button
+                    android:id="@+id/buttonRegister"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/layers_gplus_button_bg"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="3dp"
+                    android:text="Sign Up"
+                    android:textAppearance="?android:attr/textAppearanceLargeInverse" />
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>

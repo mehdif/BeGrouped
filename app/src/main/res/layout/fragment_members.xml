@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="smartcity.begrouped.activity.MembersFragment"
+    >
+
+    <com.viewpagerindicator.TitlePageIndicator
+        android:id="@+id/indicator1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dip"
+        android:background="@color/colorPrimary"
+        android:textColor="#aaa"
+        app:footerColor="@color/holo_red_light"
+        app:footerLineHeight="1dp"
+        app:footerIndicatorStyle="underline"
+        app:footerIndicatorHeight="3dp"
+        app:selectedColor="@color/background_holo_light"
+        app:selectedBold="true"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+</LinearLayout>
