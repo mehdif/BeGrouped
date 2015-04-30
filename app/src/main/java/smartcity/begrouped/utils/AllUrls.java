@@ -11,4 +11,5 @@ public final class AllUrls {
     public static final String authenticate_me =base+"me";
     public static final String GET_GROUP_INFORMATIONS = base + "group_controller/getgroup/";
     public static final String GET_GROUP_MEMBERS = base + "group_controller/getgroupmember/";
+    public static final String CREATE_RDV="createRDV/";
 }
