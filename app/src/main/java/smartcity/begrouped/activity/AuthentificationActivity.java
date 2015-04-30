@@ -37,11 +37,13 @@ public class AuthentificationActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
 
+                if (MyApplication.locationManager!=null) MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
+
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
 
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
-               Object user= UserManager.authenticate(username.getText().toString(), password.getText().toString());
+                Object user= UserManager.authenticate(username.getText().toString(), password.getText().toString());
                 if ( user instanceof User && user != null) {
 
 
@@ -68,7 +70,7 @@ public class AuthentificationActivity extends ActionBarActivity {
 
             }
         });
-        
+
     }
 
 

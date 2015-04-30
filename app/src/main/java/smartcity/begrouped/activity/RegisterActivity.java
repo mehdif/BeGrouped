@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.UserManager;
+import smartcity.begrouped.utils.MyApplication;
 
 
 public class RegisterActivity extends ActionBarActivity {
@@ -48,6 +49,7 @@ public class RegisterActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
 
+                if (MyApplication.locationManager!=null) MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);

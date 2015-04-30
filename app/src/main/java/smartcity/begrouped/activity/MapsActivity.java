@@ -81,7 +81,8 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
+        MyApplication.requestingMemberPositions=true;
+        initializeMarkers();
         mToolbar = (Toolbar) findViewById(R.id.toolbar_map);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -113,6 +114,14 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 SystemClock.elapsedRealtime() + FIVE_SECONDS , pi);
 
     }
+    private void initializeMarkers(){
+        if (MyApplication.currentGroup!=null) {
+            for (int i = 0; i < MyApplication.currentGroup.getMembers().size();i++){
+                MyApplication.currentGroup.getMembers().get(i).setMarker(null);
+            }
+        }
+
+    }
 
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
@@ -123,7 +132,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
 
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
-               // setUpMap();
+                // setUpMap();
                 mMap.setOnMarkerClickListener(this);
                 mMap.setOnMapClickListener(new MyMapClickListener());
             }
@@ -131,17 +140,17 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
     }
 
     private void majPosition(double lat, double lng) {
-       if (myPosition==null){
-           myPosition = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lng))
-                   .title("myPosition").snippet("gawri"));
-           mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 12));
-          // findDirections(lat,lng,lat+1,lng+2,GMapV2Direction.MODE_DRIVING);
-       }
+        if (myPosition==null){
+            myPosition = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lng))
+                    .title("myPosition").snippet("gawri"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 12));
+            // findDirections(lat,lng,lat+1,lng+2,GMapV2Direction.MODE_DRIVING);
+        }
 
         else{
-           myPosition.setPosition(new LatLng(lat,lng));
+            myPosition.setPosition(new LatLng(lat,lng));
 
-       }
+        }
     }
     @Override
     public boolean onMarkerClick(Marker marker) {
@@ -169,6 +178,13 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
         GetDirectionsAsyncTask asyncTask = new GetDirectionsAsyncTask(this);
         asyncTask.execute(map);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApplication.requestingMemberPositions=false;
+    }
+
     public void handleGetDirectionsResult(ArrayList directionPoints)
     {
         Polyline newPolyline;
@@ -220,7 +236,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
 
 
 
- public void findDirectionBetweenMeAndApt(Marker markerApt){
+    public void findDirectionBetweenMeAndApt(Marker markerApt){
         if (MyApplication.myIdentity!=null){
             if (MyApplication.myIdentity.getLocalisation()!=null){
                 findDirections(MyApplication.myIdentity.getLocalisation().getLatitude(),
@@ -319,10 +335,10 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
         }
 
         //if (fragment != null) {
-          //  FragmentManager fragmentManager = getSupportFragmentManager();
-            //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            //fragmentTransaction.replace(R.id.container_body, fragment);
-            //fragmentTransaction.commit();
+        //  FragmentManager fragmentManager = getSupportFragmentManager();
+        //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //fragmentTransaction.replace(R.id.container_body, fragment);
+        //fragmentTransaction.commit();
 
         //}
     }

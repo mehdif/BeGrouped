@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 
+import java.util.Map;
+
 import smartcity.begrouped.activity.MapsActivity;
+import smartcity.begrouped.utils.MyApplication;
 
 /**
  * Created by Anes on 28/04/2015.
@@ -29,12 +32,14 @@ public class ReceiverUpdatePositions extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (MapsActivity.markerManager!=null){
-            MapsActivity.markerManager.updateLocations();
-            pi = PendingIntent.getBroadcast(context, 0, new Intent(
-                    "com.authorwjf.MajPositions"), 0);
-            am = (AlarmManager) (context.getSystemService(Context.ALARM_SERVICE));
-            am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + TWO_SECONDS, pi);
+            if (MyApplication.requestingMemberPositions) {
+                MapsActivity.markerManager.updateLocations();
+                pi = PendingIntent.getBroadcast(context, 0, new Intent(
+                        "com.authorwjf.MajPositions"), 0);
+                am = (AlarmManager) (context.getSystemService(Context.ALARM_SERVICE));
+                am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        SystemClock.elapsedRealtime() + TWO_SECONDS, pi);
+            }
         }
     }
 }

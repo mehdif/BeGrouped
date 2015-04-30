@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.UserManager;
+import smartcity.begrouped.utils.MyApplication;
 
 
 public class MainActivity extends ActionBarActivity implements FragmentDrawer.FragmentDrawerListener,LocationListener {
@@ -31,7 +32,7 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
 
-    private LocationManager locationManager=null;
+
     private String provider;
     // la variable i est juste pour le test
     int i=0;
@@ -64,22 +65,24 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
 
 
 
-            // Get the location manager
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            // Define the criteria how to select the locatioin provider -> use
-            // default
-            Criteria criteria = new Criteria();
-            provider = locationManager.getBestProvider(criteria, false);
-            Location location = locationManager.getLastKnownLocation(provider);
+        // Get the location manager
+        if (MyApplication.locationManager!=null) MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
+        MyApplication.locationListener=this;
+        MyApplication.locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        // Define the criteria how to select the locatioin provider -> use
+        // default
+        Criteria criteria = new Criteria();
+        provider = MyApplication.locationManager.getBestProvider(criteria, false);
+        Location location = MyApplication.locationManager.getLastKnownLocation(provider);
 
-            // Initialize the location fields
-            if (location != null) {
-                System.out.println("Provider " + provider + " has been selected.");
-                onLocationChanged(location);
-            } else {
-                Toast.makeText(this, "no location possible ",
-                        Toast.LENGTH_SHORT).show();
-            }
+        // Initialize the location fields
+        if (location != null) {
+            System.out.println("Provider " + provider + " has been selected.");
+            onLocationChanged(location);
+        } else {
+            Toast.makeText(this, "no location possible ",
+                    Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -105,8 +108,8 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
         }
 
         //if(id == R.id.action_search){
-            //Toast.makeText(getApplicationContext(), "Search action is selected!", Toast.LENGTH_SHORT).show();
-            //return true;
+        //Toast.makeText(getApplicationContext(), "Search action is selected!", Toast.LENGTH_SHORT).show();
+        //return true;
         //}
 
         return super.onOptionsItemSelected(item);
@@ -114,7 +117,7 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
 
     @Override
     public void onDrawerItemSelected(View view, int position) {
-            displayView(position);
+        displayView(position);
     }
 
     private void displayView(int position) {
@@ -170,10 +173,10 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
     @Override
     protected void onResume() {
         super.onResume();
-
-            locationManager.requestLocationUpdates(provider, 1000, 1, this);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0,
-                    this);
+        MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
+        MyApplication.locationManager.requestLocationUpdates(provider, 1000, 1, this);
+        MyApplication.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0,
+                this);
 
 
     }
