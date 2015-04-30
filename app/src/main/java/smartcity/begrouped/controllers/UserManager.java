@@ -151,7 +151,7 @@ public class UserManager {
 
             Log.i("send Apt", "send appointment to server" );
             Log.i("send Apt", "send"+MyApplication.currentGroup.getAppointment().getLocation().getLatitude());
-            String jsonFileUrl = getFromUrl(AllUrls.BASE +AllUrls.CREATE_RDV+
+            String jsonFileUrl = getFromUrl(AllUrls.CREATE_RDV+
                     "/"+MyApplication.currentGroup.getName()+"/"+
                     MyApplication.currentGroup.getAppointment().getLocation().getLatitude()+
                     "/"+MyApplication.currentGroup.getAppointment().getLocation().getLongitude()+
