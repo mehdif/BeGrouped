@@ -214,6 +214,32 @@ public class UserManager {
 
 
     }
+    public static User getUserFromName(String username){
+
+        String jsonFileUrl = getFromUrl(AllUrls.GET_USER_FROM_USERNAME_URL+"/"+username+ "/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+
+        Log.v("getuser: ",AllUrls.GET_USER_FROM_USERNAME_URL+"/"+username+ "/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        Log.v("getuser : " ,jsonFileUrl);
+
+        //Json file parser
+        try {
+
+            JSONObject jsonObject = new JSONObject(jsonFileUrl);
+            String firstname = (String) jsonObject.get(Constants.FIRST_NAME);
+            String lastname = (String) jsonObject.get(Constants.LAST_NAME);
+            String userName = (String) jsonObject.get(Constants.USERNAME);
+            String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
+
+            User user=new User(firstname,lastname,userName,"",phoneNumber);
+            Log.v("getuser: ",user.toString());
+            return user ;
+        }
+        catch(Exception e){
+            Log.e("Error : ", e.getMessage());
+            return null;
+
+        }
+    }
     public static String createUserFromJson1(){
 
         String jsonFileUrl = getFromUrl(AllUrls.AUTHENTIFICATE_ME+"/"+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
@@ -278,6 +304,21 @@ public class UserManager {
     }
 
 
+    public static Object getUserFromUserName(String username)
+    {
+        Log.v("getusertask:",username);
+
+        try {
+            Log.v("getusertask1:",username);
+            return new TaskGetUserFromUsername().execute(username).get();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public static String authenticate1()
     {
         try
@@ -333,6 +374,17 @@ public class UserManager {
             return createUserFromJson1();
         }
 
+    }
+    public static class TaskGetUserFromUsername extends AsyncTask
+    {
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            getUserFromName(params[0].toString());
+            Log.v("getuser","inbackground");
+            Log.v("getuser",params[0].toString());
+            return null;
+        }
     }
 }
 
