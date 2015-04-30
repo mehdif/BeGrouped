@@ -67,4 +67,15 @@ public class Group {
     public void setAppointment(Appointment appointment) {
         this.appointment = appointment;
     }
+
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "supervisor=" + supervisor +
+                ", members=" + members +
+                ", name='" + name + '\'' +
+                ", locationName='" + locationName + '\'' +
+                '}';
+    }
 }
