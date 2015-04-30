@@ -17,6 +17,7 @@ public class Constants {
     public final static String PHONE_NUMBER = "phone";
 
 
+    public final static String GROUPS="groupes";
     public final static String GROUP_NAME = "groupename";
     public final static String SUPERVISOR_NAME = "supervisorname";
     public final static String REGION_NAME = "regionname";
