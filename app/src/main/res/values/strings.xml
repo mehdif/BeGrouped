@@ -14,6 +14,7 @@
     <string name="nav_item_about">About</string>
     <string name="nav_item_help">Help</string>
 
+    <string name="nav_item_logout">Log Out</string>
 
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_home</item>
@@ -22,6 +23,8 @@
         <item>@string/nav_item_manage_group</item>
         <item>@string/nav_item_about</item>
         <item>@string/nav_item_help</item>
+
+        <item>@string/nav_item_logout</item>
     </string-array>
 
     <string name="title_home">Home</string>
@@ -30,6 +33,7 @@
     <string name="title_manage_group">Manage Group</string>
     <string name="title_about">About</string>
     <string name="title_help">Help</string>
+    <string name="title_logout">Log out</string>
 
     <!-- Second Menudrawer Map -->
     <string name="nav_item_home_map">Home</string>
@@ -48,8 +52,6 @@
     <string name="title_add_appointment">Add Appointment</string>
     <string name="title_path_to_appointment">Path to Appointment</string>
     <string name="title_find_program_itinerary">Find Program Itinerary</string>
-
-
 
 
     <string name="title_activity_maps">Map</string>
