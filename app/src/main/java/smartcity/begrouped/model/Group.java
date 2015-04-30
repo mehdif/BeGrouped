@@ -13,6 +13,7 @@ public class Group {
     private String name;
     private String locationName;
     private String expirationDate;
+    private Appointment appointment;
 
     public Group(User supervisor, LinkedList<User> members, LinkedList<POI> lieuxAVisiter, String name ,String locationName) {
         this.supervisor = supervisor;
@@ -57,5 +58,13 @@ public class Group {
 
     public void setExpirationDate(String expirationDate){
         this.expirationDate = expirationDate;
+    }
+
+    public Appointment getAppointment() {
+        return appointment;
+    }
+
+    public void setAppointment(Appointment appointment) {
+        this.appointment = appointment;
     }
 }

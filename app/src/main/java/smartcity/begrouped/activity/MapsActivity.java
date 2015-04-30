@@ -288,6 +288,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 EditText date = (EditText)alertDialogView.findViewById(R.id.dateRDV);
                 if (aptMarker!=null) aptMarker.remove();
                 Appointment appoint=new Appointment(aptMarker,heure.getText().toString(), date.getText().toString());
+                MyApplication.currentGroup.setAppointment(appoint);
                 UserManager.sendAptToServer(appoint);
                 aptMarker = mMap.addMarker(new MarkerOptions().position(latLngForApt)
                         .title("Appointment").snippet(appoint.getDate().toString()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
