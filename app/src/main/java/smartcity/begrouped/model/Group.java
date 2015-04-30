@@ -1,5 +1,6 @@
 package smartcity.begrouped.model;
 
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -11,6 +12,7 @@ public class Group {
     private LinkedList<POI> lieuxAVisiter;
     private String name;
     private String locationName;
+    private String expirationDate;
 
     public Group(User supervisor, LinkedList<User> members, LinkedList<POI> lieuxAVisiter, String name ,String locationName) {
         this.supervisor = supervisor;
@@ -43,5 +45,17 @@ public class Group {
 
     public String getLocationName() {
         return locationName;
+    }
+
+    public void setLocationName(String locationName){
+        this.locationName = locationName;
+    }
+
+    public void setSupervisor(User supervisor){
+        this.supervisor = supervisor;
+    }
+
+    public void setExpirationDate(String expirationDate){
+        this.expirationDate = expirationDate;
     }
 }

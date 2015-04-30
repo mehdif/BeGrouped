@@ -27,6 +27,8 @@ import smartcity.begrouped.activity.MapsActivity;
 import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.Location;
 import smartcity.begrouped.model.User;
+import smartcity.begrouped.utils.AllUrls;
+import smartcity.begrouped.utils.Constants;
 import smartcity.begrouped.utils.MyApplication;
 
 /**
@@ -35,16 +37,7 @@ import smartcity.begrouped.utils.MyApplication;
 public class GroupManager {
 
 
-    public final static String POSITIONS = "positions";
-    public final static String LONGITUDE = "longitude";
-    public final static String LATITUDE = "latitude";
 
-    public final static String MEMBERS = "membres";
-    public final static String LAST_NAME = "lastName";
-    public final static String FIRST_NAME = "firstName";
-    public final static String USERNAME = "username";
-    public final static String PASSWORD = "hashPwd";
-    public final static String PHONE_NUMBER = "phone";
 
     static InputStream is = null;
     static String chaine = "";
@@ -78,15 +71,15 @@ public class GroupManager {
                 JSONObject jsonObj = new JSONObject(jsonFileUrl);
 
                 // Getting JSON Array node
-                members = jsonObj.getJSONArray(POSITIONS);
+                members = jsonObj.getJSONArray(Constants.POSITIONS);
 
                 // looping through All members
                 for (int i = 0; i < members.length(); i++) {
                     JSONObject jsonObject = members.getJSONObject(i);
 
-                    String username = (String) jsonObject.get(USERNAME);
-                    String longitude = (String) jsonObject.get(LONGITUDE);
-                    String latitude = (String) jsonObject.get(LATITUDE);
+                    String username = (String) jsonObject.get(Constants.USERNAME);
+                    String longitude = (String) jsonObject.get(Constants.LONGITUDE);
+                    String latitude = (String) jsonObject.get(Constants.LATITUDE);
 
                     User user = findUserByUsername(membersList, username);
                     if(user != null){
@@ -121,7 +114,7 @@ public class GroupManager {
     }
 
     public static void addLocationToUser(User user, Double longitude, Double latitude){
-        user.setLocalisation(new Location(latitude,longitude));
+        user.setLocalisation(new Location(latitude, longitude));
     }
     public static void updateGroupUserLocationsForTest(Group group){
         /*for (int i=0;i<group.getMembers().size();i++){
@@ -186,19 +179,49 @@ public class GroupManager {
         return chaine;
     }
 
+    public static Group getGroupInformations(Group group){
+
+        String jsonFileUrl = getFromUrl(AllUrls.GET_GROUP_INFORMATIONS + group.getName() +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+
+        Log.v("Json group info : ", jsonFileUrl);
+
+        //Json file parser
+        try {
+
+            JSONObject jsonObject = new JSONObject(jsonFileUrl);
+
+            String groupName = (String) jsonObject.get(Constants.GROUP_NAME);
+            String supervisorName = (String) jsonObject.get(Constants.SUPERVISOR_NAME);
+            String regionName = (String) jsonObject.get(Constants.REGION_NAME);
+            String expirationDate = (String) jsonObject.get(Constants.EXPIRATION_DATE);
+
+
+            group.setLocationName(regionName);
+            group.setExpirationDate(expirationDate);
+            addSupervisorGroup(group,supervisorName);
+
+            return group;
+
+        }
+        catch(Exception e){
+            Log.e("Error : ", e.getMessage());
+            return null;
+        }
+    }
+
     /**
      * Method that get all members of a group
      * @return Members list
      */
-    public static Group createMembersFromJson() {
+    public static Group createMembersFromJson(String groupName) {
 
         LinkedList<User> membersList = new LinkedList<>();
 
         JSONArray members;
 
-        String jsonFileUrl = getFromUrl("http://smartpld-001-site1.smarterasp.net/index.php/group_controller/getgroupmember/algertour/"+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        String jsonFileUrl = getFromUrl(AllUrls.GET_GROUP_MEMBERS + groupName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("Jsonfile : ", jsonFileUrl);
+        Log.v("Json members group: ", jsonFileUrl);
 
         //Json file parser
         if (jsonFileUrl != null) {
@@ -206,17 +229,16 @@ public class GroupManager {
                 JSONObject jsonObj = new JSONObject(jsonFileUrl);
 
                 // Getting JSON Array node
-                members = jsonObj.getJSONArray(MEMBERS);
+                members = jsonObj.getJSONArray(Constants.MEMBERS);
 
                 // looping through All members
                 for (int i = 0; i < members.length(); i++) {
                     JSONObject jsonObject = members.getJSONObject(i);
 
-                    String firstname = (String) jsonObject.get(FIRST_NAME);
-                    String lastname = (String) jsonObject.get(LAST_NAME);
-                    String username = (String) jsonObject.get(USERNAME);
-                    //String password = (String) jsonObject.get(PASSWORD);
-                    String phoneNumber = (String) jsonObject.get(PHONE_NUMBER);
+                    String firstname = (String) jsonObject.get(Constants.FIRST_NAME);
+                    String lastname = (String) jsonObject.get(Constants.LAST_NAME);
+                    String username = (String) jsonObject.get(Constants.USERNAME);
+                    String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
 
                     membersList.add(new User(firstname, lastname, username, null, phoneNumber));
 
@@ -227,13 +249,31 @@ public class GroupManager {
         } else {
             Log.e("ServiceHandler", "Couldn't get any data from the url");
         }
+
         Group group=new Group(null,membersList,null,"AlgerTour",null);
+
+        return getGroupInformations(group);
+    }
+
+
+    /**
+     * Method that adds the supervisor to a group
+     * @param group
+     * @param supervisorName
+     * @return
+     */
+    public static Group addSupervisorGroup(Group group, String supervisorName){
+        for(int i = 0; i < group.getMembers().size(); i++){
+            if(group.getMembers().get(i).getFirstname().equals(supervisorName)){
+                group.setSupervisor(group.getMembers().get(i));
+            }
+        }
         return group;
     }
 
     public static Group getGroupMembersFromName(String groupName){
         try {
-            return ((Group)new TaskGetJsonMembers().execute().get());
+            return ((Group)new TaskGetJsonMembers(groupName).execute().get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -244,10 +284,15 @@ public class GroupManager {
 
     public static class TaskGetJsonMembers extends AsyncTask {
 
+        String groupName;
+        public  TaskGetJsonMembers(String groupName){
+            this.groupName = groupName;
+        }
+
         @Override
         protected Group doInBackground(Object[] params) {
 
-            return createMembersFromJson();
+            return createMembersFromJson(groupName);
 
         }
     }
