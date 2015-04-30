@@ -80,8 +80,10 @@ public class ManageGroupFragment extends Fragment {
                 HashMap<String, String> map = (HashMap<String, String>) maListViewPerso.getItemAtPosition(position);
 
                 /// récupérer les infos sur le groupe
+                MyApplication.currentGroup= GroupManager.getGroupMembersFromName(map.get(TAG_SUPERVISEUR));
+                Log.v("currentgroup",MyApplication.currentGroup.toString());
 
-                MyApplication.currentGroup= GroupManager.getGroupMembersFromName("algertour");
+
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 GroupHomeFragment fragment = new GroupHomeFragment();
