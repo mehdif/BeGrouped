@@ -5,11 +5,12 @@ package smartcity.begrouped.utils;
  */
 public final class AllUrls {
 
-    public static final String base="http://smartpld-001-site1.smarterasp.net/index.php/";
-    public static final String authenticate_user_url=base+"login/";
-    public static final String register_user_url =base+"register/";
-    public static final String authenticate_me =base+"me";
-    public static final String GET_GROUP_INFORMATIONS = base + "group_controller/getgroup/";
-    public static final String GET_GROUP_MEMBERS = base + "group_controller/getgroupmember/";
+    public static final String BASE="http://smartpld-001-site1.smarterasp.net/index.php/";
+    public static final String AUTHENTIFICATE_USER_URL=BASE+"login/";
+    public static final String REGISTER_USER_URL =BASE+"register/";
+    public static final String AUTHENTIFICATE_ME =BASE+"me";
+    public static final String GET_GROUP_INFORMATIONS = BASE + "group_controller/getgroup/";
+    public static final String GET_GROUP_MEMBERS = BASE + "group_controller/getgroupmember/";
+    public static final String GET_MY_GROUPS_URL=BASE+"group_controller/getGroup/";
     public static final String CREATE_RDV="createRDV/";
 }
