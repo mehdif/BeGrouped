@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.Marker;
 
-import java.util.Date;
 
 /**
  * Created by Anes on 29/04/2015.
@@ -12,14 +11,28 @@ import java.util.Date;
 public class Appointment {
     private Marker aptMarker;
     private Date date;
+    private Temps temps;
+    private Location location;
 
     public Appointment(Marker aptMarker, String time, String laDate) {
         this.aptMarker = aptMarker;
-        date=dateCreation(time,laDate);
+        //dateCreation(time, laDate);
+        date=new Date(1,1,2015);
+        temps=new Temps(12,30);
+        location=new Location(aptMarker.getPosition().latitude,aptMarker.getPosition().longitude);
+
 
     }
 
-    private Date dateCreation(String time, String laDate) {
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    private void dateCreation(String time, String laDate) {
         try {
             String hh = time.substring(0, time.indexOf(":"));
             String min = time.substring(time.indexOf(":") + 1, time.length());
@@ -28,14 +41,26 @@ public class Appointment {
             String day = sansMounth.substring(0, time.indexOf("/"));
 
             String year = sansMounth.substring(time.indexOf("/") + 1, sansMounth.length());
-            return new Date(Integer.parseInt(year), Integer.parseInt(mounth), Integer.parseInt(day), Integer.parseInt(hh), Integer.parseInt(min));
-        }
-        catch (Exception e){
+            date = new Date(Integer.parseInt(day), Integer.parseInt(mounth), Integer.parseInt(year));
+            temps = new Temps(Integer.parseInt(hh), Integer.parseInt(min));
+        } catch (Exception e) {
             Log.e("date conversion erreur", "cannot convert date");
-            return new Date(2015,1,1,10,00);
+            //return new Date(2015,1,1,10,00);
         }
 
 
+    }
+
+    public void setAptMarker(Marker aptMarker) {
+        this.aptMarker = aptMarker;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setTemps(Temps temps) {
+        this.temps = temps;
     }
 
     public Marker getAptMarker() {
@@ -46,14 +71,11 @@ public class Appointment {
         return date;
     }
 
-    public void setAptMarker(Marker aptMarker) {
-        this.aptMarker = aptMarker;
+    public Temps getTemps() {
+        return temps;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
     public String getDateSousForme(){
-        return date.getDay()+"-"+date.getMonth()+"-"+date.getYear();
+        return date.getYy()+"-"+date.getMm()+"-"+date.getJj();
     }
 }
