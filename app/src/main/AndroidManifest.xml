@@ -83,6 +83,7 @@
             android:name=".activity.ChatActivity"
             android:label="@string/title_activity_chat" >
         </activity>
+        <service android:name=".utils.MessageService" />
     </application>
 
 </manifest>

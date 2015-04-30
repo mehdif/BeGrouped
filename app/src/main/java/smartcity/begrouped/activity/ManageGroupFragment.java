@@ -1,5 +1,6 @@
 package smartcity.begrouped.activity;
 
+import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import smartcity.begrouped.controllers.GroupManager;
 import smartcity.begrouped.controllers.UserManager;
 import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.User;
+import smartcity.begrouped.utils.MessageService;
 import smartcity.begrouped.utils.MyApplication;
 
 
@@ -79,9 +81,7 @@ public class ManageGroupFragment extends Fragment {
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 HashMap<String, String> map = (HashMap<String, String>) maListViewPerso.getItemAtPosition(position);
                 /// récupérer les infos sur le groupe
-                Log.v("supervisor",map.get(TAG_SUPERVISEUR));
                 MyApplication.currentGroup= GroupManager.getGroupMembersFromName(map.get(TAG_GROUP_NAME));
-                Log.v("currentgroup",MyApplication.currentGroup.toString());
 
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
