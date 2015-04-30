@@ -78,11 +78,10 @@ public class ManageGroupFragment extends Fragment {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 HashMap<String, String> map = (HashMap<String, String>) maListViewPerso.getItemAtPosition(position);
-
                 /// récupérer les infos sur le groupe
-                MyApplication.currentGroup= GroupManager.getGroupMembersFromName(map.get(TAG_SUPERVISEUR));
+                Log.v("supervisor",map.get(TAG_SUPERVISEUR));
+                MyApplication.currentGroup= GroupManager.getGroupMembersFromName(map.get(TAG_GROUP_NAME));
                 Log.v("currentgroup",MyApplication.currentGroup.toString());
-
 
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
