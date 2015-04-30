@@ -196,6 +196,7 @@ public class GroupManager {
             String expirationDate = (String) jsonObject.get(Constants.EXPIRATION_DATE);
 
 
+            group.setSupervisor(new User("","",supervisorName,"",""));
             group.setLocationName(regionName);
             group.setExpirationDate(expirationDate);
             addSupervisorGroup(group,supervisorName);
