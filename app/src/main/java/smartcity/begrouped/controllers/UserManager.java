@@ -150,7 +150,7 @@ public class UserManager {
         protected Object doInBackground(Object[] params) {
 
             Log.i("send Apt", "send appointment to server" );
-            String jsonFileUrl = getFromUrl(AllUrls.base+AllUrls.CREATE_RDV+"/"+MyApplication.currentGroup.getName()+"/"+MyApplication.currentGroup.getAppointment().getAptMarker().getPosition().latitude+"/"+MyApplication.currentGroup.getAppointment().getAptMarker().getPosition().longitude+"/"+MyApplication.currentGroup.getAppointment().getDateSousForme()+"/"+MyApplication.currentGroup.getAppointment().getDate().getHours()+"/"+MyApplication.currentGroup.getAppointment().getDate().getMinutes()+"/0/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+            String jsonFileUrl = getFromUrl(AllUrls.BASE+AllUrls.CREATE_RDV+"/"+MyApplication.currentGroup.getName()+"/"+MyApplication.currentGroup.getAppointment().getAptMarker().getPosition().latitude+"/"+MyApplication.currentGroup.getAppointment().getAptMarker().getPosition().longitude+"/"+MyApplication.currentGroup.getAppointment().getDateSousForme()+"/"+MyApplication.currentGroup.getAppointment().getDate().getHours()+"/"+MyApplication.currentGroup.getAppointment().getDate().getMinutes()+"/0/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
             return null;
         }
     }
