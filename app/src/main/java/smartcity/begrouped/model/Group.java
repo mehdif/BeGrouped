@@ -72,7 +72,7 @@ public class Group {
     @Override
     public String toString() {
         return "Group{" +
-                "supervisor=" + supervisor +
+                "supervisor=" + supervisor.getUsername() +
                 ", members=" + members +
                 ", name='" + name + '\'' +
                 ", locationName='" + locationName + '\'' +
