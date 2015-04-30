@@ -255,6 +255,48 @@ public class GroupManager {
         return getGroupInformations(group);
     }
 
+    public static LinkedList<Group> getMyGroups() {
+
+        LinkedList<Group> groupsList = new LinkedList<Group>();
+
+        JSONArray groups;
+
+        String jsonFileUrl = getFromUrl(AllUrls.GET_MY_GROUPS_URL+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+
+        Log.v("group",AllUrls.GET_MY_GROUPS_URL+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        Log.v("group : ", jsonFileUrl);
+
+        //Json file parser
+        if (jsonFileUrl != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(jsonFileUrl);
+
+                // Getting JSON Array node
+                groups = jsonObj.getJSONArray(Constants.GROUPS);
+
+                // looping through All members
+                for (int i = 0; i < groups.length(); i++) {
+                    JSONObject jsonObject = groups.getJSONObject(i);
+
+                    String groupName = (String) jsonObject.get("groupeName");
+                    String regionName = (String) jsonObject.get("regionName");
+                    String supervisorName = (String) jsonObject.get("supervisorName");
+
+                    User user=new User("","",supervisorName,"","");
+                    Group group=new Group(user,groupName,regionName);
+                    groupsList.add(group);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.e("ServiceHandler", "Couldn't get any data from the url");
+        }
+        return groupsList;
+    }
+
+
 
     /**
      * Method that adds the supervisor to a group
@@ -274,6 +316,17 @@ public class GroupManager {
     public static Group getGroupMembersFromName(String groupName){
         try {
             return ((Group)new TaskGetJsonMembers(groupName).execute().get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static LinkedList<Group> getGroups()
+    {
+        try {
+            return (LinkedList<Group>) new TaskGetMyGroups().execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -327,8 +380,18 @@ public class GroupManager {
                 MapsActivity.markerManager.updateMarkerPositions();
             }
         }
+
     }
 
+    public static class TaskGetMyGroups extends AsyncTask {
+
+        @Override
+        protected LinkedList<Group> doInBackground(Object[] params) {
+
+            return getMyGroups();
+
+        }
+    }
 
     //new methode
     /*
