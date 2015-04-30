@@ -53,4 +53,7 @@ public class Appointment {
     public void setDate(Date date) {
         this.date = date;
     }
+    public String getDateSousForme(){
+        return date.getDay()+"-"+date.getMonth()+"-"+date.getYear();
+    }
 }
