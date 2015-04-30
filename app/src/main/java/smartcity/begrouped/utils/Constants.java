@@ -10,10 +10,10 @@ public class Constants {
     public final static String LATITUDE = "latitude";
 
     public final static String MEMBERS = "membres";
-    public final static String LAST_NAME = "lastname";
-    public final static String FIRST_NAME = "firstname";
+    public final static String LAST_NAME = "lastName";
+    public final static String FIRST_NAME = "firstName";
     public final static String USERNAME = "username";
-    public final static String PASSWORD = "hashpwd";
+    public final static String PASSWORD = "hashPwd";
     public final static String PHONE_NUMBER = "phone";
 
 
