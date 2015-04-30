@@ -87,7 +87,7 @@ public class ManageGroupFragment extends Fragment {
 
                 /// récupérer les infos sur le groupe
 
-                MyApplication.currentGroup= GroupManager.getGroupMembersFromName("");
+                MyApplication.currentGroup= GroupManager.getGroupMembersFromName("algertour");
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 GroupHomeFragment fragment = new GroupHomeFragment();
