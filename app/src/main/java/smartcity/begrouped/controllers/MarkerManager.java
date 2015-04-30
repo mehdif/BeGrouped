@@ -28,8 +28,12 @@ public class MarkerManager {
     }
     public void updateLocations(){
         GroupManager.callTaskUpdateGroupMemberLocations(group);
-
+        requestForApt();
     }
+
+    private void requestForApt() {
+    }
+
     public void updateMarkerPositions(){
         try {
             for (int i = 0; i < group.getMembers().size(); i++) {
