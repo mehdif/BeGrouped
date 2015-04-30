@@ -30,6 +30,7 @@ import smartcity.begrouped.model.Appointment;
 import smartcity.begrouped.model.Location;
 import smartcity.begrouped.model.User;
 import smartcity.begrouped.utils.AllUrls;
+import smartcity.begrouped.utils.Constants;
 import smartcity.begrouped.utils.MyApplication;
 
 /**
@@ -40,11 +41,6 @@ public class UserManager {
     static InputStream is = null;
     static String chaine = "";
 
-    public final static String LAST_NAME = "lastName";
-    public final static String FIRST_NAME = "firstName";
-    public final static String USERNAME = "username";
-    public final static String PASSWORD = "hashPwd";
-    public final static String PHONE_NUMBER = "phone";
 
     static String response = null;
     public final static int GET = 1;
@@ -170,11 +166,11 @@ public class UserManager {
 
             JSONObject jsonObject = new JSONObject(jsonFileUrl);
 
-            String firstname = (String) jsonObject.get(FIRST_NAME);
-            String lastname = (String) jsonObject.get(LAST_NAME);
-            String username = (String) jsonObject.get(USERNAME);
-            String password = (String) jsonObject.get(PASSWORD);
-            String phoneNumber = (String) jsonObject.get(PHONE_NUMBER);
+            String firstname = (String) jsonObject.get(Constants.FIRST_NAME);
+            String lastname = (String) jsonObject.get(Constants.LAST_NAME);
+            String username = (String) jsonObject.get(Constants.USERNAME);
+            String password = (String) jsonObject.get(Constants.PASSWORD);
+            String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
 
             return new User(firstname, lastname, username, password, phoneNumber);
 
@@ -195,11 +191,11 @@ public class UserManager {
 
             JSONObject jsonObject = new JSONObject(jsonFileUrl);
 
-            String firstname = (String) jsonObject.get(FIRST_NAME);
-            String lastname = (String) jsonObject.get(LAST_NAME);
-            String username = (String) jsonObject.get(USERNAME);
-            String password = (String) jsonObject.get(PASSWORD);
-            String phoneNumber = (String) jsonObject.get(PHONE_NUMBER);
+            String firstname = (String) jsonObject.get(Constants.FIRST_NAME);
+            String lastname = (String) jsonObject.get(Constants.LAST_NAME);
+            String username = (String) jsonObject.get(Constants.USERNAME);
+            String password = (String) jsonObject.get(Constants.PASSWORD);
+            String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
             MyApplication.myIdentity=new User(firstname,lastname,username,password,phoneNumber);
 
         }
@@ -230,11 +226,11 @@ public class UserManager {
         try {
 
             JSONObject jsonObject = new JSONObject(jsonFileUrl);
-            String firstname = (String) jsonObject.get(FIRST_NAME);
-            String lastname = (String) jsonObject.get(LAST_NAME);
-            String username = (String) jsonObject.get(USERNAME);
-            String password = (String) jsonObject.get(PASSWORD);
-            String phoneNumber = (String) jsonObject.get(PHONE_NUMBER);
+            String firstname = (String) jsonObject.get(Constants.FIRST_NAME);
+            String lastname = (String) jsonObject.get(Constants.LAST_NAME);
+            String username = (String) jsonObject.get(Constants.USERNAME);
+            String password = (String) jsonObject.get(Constants.PASSWORD);
+            String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
 
             return  jsonFileUrl;
 
