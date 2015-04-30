@@ -56,29 +56,27 @@ public class ChatActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
         Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
         bindService(new Intent(this, MessageService.class), serviceConnection, BIND_AUTO_CREATE);
-
 
         currentUserId = ParseUser.getCurrentUser().getObjectId();
 
         Log.v("currentuserid",currentUserId);
-        messagesList = (ListView) findViewById(R.id.listMessages);
-        messageAdapter = new MessageAdapter(this);
-        messagesList.setAdapter(messageAdapter);
+       // messagesList = (ListView) findViewById(R.id.listMessages);
+       // messageAdapter = new MessageAdapter(this);
+       // messagesList.setAdapter(messageAdapter);
       //  populateMessageHistory();
 
         getUsersOfChoosenGroup();
-        messageBodyField = (EditText) findViewById(R.id.messageBodyField);
+        //messageBodyField = (EditText) findViewById(R.id.messageBodyField);
 
-        findViewById(R.id.sendButton).setOnClickListener(new View.OnClickListener() {
+      /*  findViewById(R.id.sendButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                // sendMessage();
             }
-        });
-        setContentView(R.layout.activity_chat);
-
+        });*/
     }
 
     private final void getUsersOfChoosenGroup()
@@ -91,13 +89,15 @@ public class ChatActivity extends ActionBarActivity {
         currentUserId = ParseUser.getCurrentUser().getObjectId();
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereNotEqualTo("objectId", currentUserId);
+        Log.v("object","YES");
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> userList, com.parse.ParseException e) {
                 if (e == null) {
                     for (int i = 0; i < userList.size(); i++) {
                         for(int j=0; j < members.size();j++)
                         {
-                            if ( userList.get(i).getUsername().equals(members.get(i).getUsername()))
+
+                            if ( userList.get(i).getUsername().equals(members.get(j).getUsername()))
                             {
                                   recipientsIds.add(userList.get(i).getObjectId());
                                   Log.v("objectID",userList.get(i).getObjectId());
