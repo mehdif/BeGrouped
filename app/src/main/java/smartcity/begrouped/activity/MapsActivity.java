@@ -287,9 +287,11 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 EditText heure = (EditText)alertDialogView.findViewById(R.id.heureRDV);
                 EditText date = (EditText)alertDialogView.findViewById(R.id.dateRDV);
                 if (aptMarker!=null) aptMarker.remove();
+                Appointment appoint=new Appointment(aptMarker,heure.getText().toString(), date.getText().toString());
+                UserManager.sendAptToServer(appoint);
                 aptMarker = mMap.addMarker(new MarkerOptions().position(latLngForApt)
-                        .title("Appointment").snippet(date.getText().toString()+" at "+heure.getText().toString()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-                UserManager.sendAptToServer(new Appointment(aptMarker,heure.getText().toString(), date.getText().toString()));
+                        .title("Appointment").snippet(appoint.getDate().toString()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+
             } });
         adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
