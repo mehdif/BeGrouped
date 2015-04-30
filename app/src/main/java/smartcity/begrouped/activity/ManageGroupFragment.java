@@ -63,7 +63,6 @@ public class ManageGroupFragment extends Fragment {
             String supervisorname=group.getSupervisor().getUsername();
             Object object= UserManager.getUserFromUserName(supervisorname);
             if ( object instanceof User) {
-                Log.v("getuser", "isnotnull");
                 User user=(User) object;
                 group.getSupervisor().setFirstname(user.getFirstname());
                 group.getSupervisor().setLastname(user.getLastname());
@@ -75,36 +74,6 @@ public class ManageGroupFragment extends Fragment {
             map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
             listItem.add(map);
         }
-        map = new HashMap<String, String>();
-        map.put(TAG_GROUP_NAME, "Petite balade");
-        map.put(TAG_REGION, "Lyon");
-        map.put(TAG_SUPERVISEUR, "Hassan");
-        map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
-        listItem.add(map);
-
-        map = new HashMap<String, String>();
-        map.put(TAG_GROUP_NAME, "Tahwass");
-        map.put(TAG_REGION, "Rhone Alpes");
-        map.put(TAG_SUPERVISEUR, "Anes");
-        map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
-        listItem.add(map);
-
-
-        map = new HashMap<String, String>();
-        map.put(TAG_GROUP_NAME, "Tassarkolat");
-        map.put(TAG_REGION, "Lyon");
-        map.put(TAG_SUPERVISEUR, "Maha");
-        map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
-        listItem.add(map);
-
-
-        map = new HashMap<String, String>();
-        map.put(TAG_GROUP_NAME, "Circuit d'amis");
-        map.put(TAG_REGION, "Lyon");
-        map.put(TAG_SUPERVISEUR, "Aymen");
-        map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
-        listItem.add(map);
-
         maListViewPerso.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
