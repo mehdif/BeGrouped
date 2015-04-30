@@ -16,6 +16,8 @@ public class Constants {
     public final static String PASSWORD = "hashPwd";
     public final static String PHONE_NUMBER = "phone";
 
+
+    public final static String GROUPS = "groupes";
     public final static String GROUP_NAME = "groupeName";
     public final static String SUPERVISOR_NAME = "supervisorName";
     public final static String REGION_NAME = "regionName";
