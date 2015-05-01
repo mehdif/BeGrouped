@@ -116,29 +116,7 @@ public class GroupManager {
     public static void addLocationToUser(User user, Double longitude, Double latitude){
         user.setLocalisation(new Location(latitude, longitude));
     }
-    public static void updateGroupUserLocationsForTest(Group group){
-        /*for (int i=0;i<group.getMembers().size();i++){
-            group.getMembers().get(i).getLocalisation().setLatitude(group.getMembers().get(i).getLocalisation().getLatitude()+0.01);
-            group.getMembers().get(i).getLocalisation().setLongitude(group.getMembers().get(i).getLocalisation().getLongitude() + 0.01);
-        }*/
-    }
-/*
-    public static Group createGroupForTest(){
-        User supervsr=null;
-        double f;
-        LinkedList<User> listOfUsers=new LinkedList<User>();
-        for (int i=0;i<5;i++){
-            f=i;
-            User usr=new User("usr "+i,"usr "+i,"usr "+i,"usr "+i,"usr "+i);
-            usr.setLocalisation(new Location(46+f*0.1,7+f*0.1));
-            listOfUsers.add(usr);
-            if (i==2) supervsr=usr;
-        }
-        listOfUsers.add(UserManager.myIdentity);
-        return new Group(supervsr,listOfUsers,null,"testGroup","lyon");
 
-    }
-*/
     /**
      * Method that request the server with URL and gets a Json string in response
      * @param url
@@ -179,7 +157,7 @@ public class GroupManager {
         return chaine;
     }
 
-    public static Group getGroupInformations(Group group){
+    public static Group getGroupInformation(Group group){
 
         String jsonFileUrl = getFromUrl(AllUrls.GET_GROUP_INFORMATIONS + group.getName() +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
@@ -253,7 +231,7 @@ public class GroupManager {
 
         Group group=new Group(null,membersList,null,"AlgerTour",null);
 
-        return getGroupInformations(group);
+        return getGroupInformation(group);
     }
 
     public static LinkedList<Group> getMyGroups() {
@@ -299,6 +277,36 @@ public class GroupManager {
     }
 
 
+    public static Group createNewGroup(String name ,String locationName){
+
+
+        String jsonFileUrl = getFromUrl(AllUrls.CREATE_GROUP + name +"/" + locationName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+
+        Log.v("Json create group : ", jsonFileUrl);
+
+        if(jsonFileUrl.equals("GROUP_EXIST_BEFORE")){
+            return null;
+        }
+        else{
+
+            //Json file parser
+            try {
+
+                JSONObject jsonObject = new JSONObject(jsonFileUrl);
+
+                String groupName = (String) jsonObject.get(Constants.GROUP_NAME);
+                String supervisorName = (String) jsonObject.get(Constants.SUPERVISOR_NAME);
+                String regionName = (String) jsonObject.get(Constants.REGION_NAME);
+                String expirationDate = (String) jsonObject.get(Constants.EXPIRATION_DATE);
+
+                return new Group(MyApplication.myIdentity, groupName,regionName);
+            }
+            catch(Exception e){
+                Log.e("Error : ", e.getMessage());
+                return null;
+            }
+        }
+    }
 
     /**
      * Method that adds the supervisor to a group
@@ -361,6 +369,22 @@ public class GroupManager {
 
     }
 
+
+
+    public static Group callTaskCreateNewGroup(String name, String locationName){
+
+        try {
+            return (Group) new TaskCreateNewGroup(name, locationName).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
     public static class TaskGetMemberPositions extends AsyncTask {
 
         Group group;
@@ -395,14 +419,28 @@ public class GroupManager {
         }
     }
 
-    //new methode
-    /*
-    public static Group createNewGroup(String name ,String locationName){
-        if (UserManager.myIdentity==null) return null;
-        Group newGroup=new Group(UserManager.myIdentity,name,locationName);
-        // la on envoie une requete au serveur pour l'ajouter a la BDD, ensuite:
-        return newGroup;
-    }*/
+
+
+    public static class TaskCreateNewGroup extends AsyncTask {
+
+        String name;
+        String locationName;
+
+        public TaskCreateNewGroup(String name, String locationName){
+            this.name = name;
+            this.locationName = locationName;
+        }
+
+        @Override
+        protected Group doInBackground(Object[] params) {
+
+            return createNewGroup(name, locationName);
+
+        }
+    }
+
+
+
     // new methode
     public static boolean addMeToThisGroup(String groupName){
         return false;

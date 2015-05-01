@@ -52,7 +52,7 @@ public class MembersAdapter extends FragmentPagerAdapter implements IconPagerAda
                 title = "Members";
                 break;
             case 1:
-                title = "Waiting";
+                title = "Requests";
                 break;
         }
 

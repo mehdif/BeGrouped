@@ -9,10 +9,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONObject;
+
+import smartcity.begrouped.activity.MapsActivity;
 import smartcity.begrouped.model.Appointment;
+import smartcity.begrouped.model.Date;
 import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.Location;
+import smartcity.begrouped.model.Temps;
 import smartcity.begrouped.model.User;
+import smartcity.begrouped.utils.AllUrls;
+import smartcity.begrouped.utils.Constants;
 import smartcity.begrouped.utils.MyApplication;
 
 
@@ -29,7 +36,7 @@ public class MarkerManager {
     }
     public void updateLocations(){
         GroupManager.callTaskUpdateGroupMemberLocations(group);
-      //  requestForApt();
+        if (!MapsActivity.aptEnCreation) requestForApt();
     }
 
 
@@ -66,7 +73,7 @@ public class MarkerManager {
 
 
 
-
+/*
     public class AsTaskUpdatePositions extends AsyncTask<String, Void, String> {
 
         @Override
@@ -81,15 +88,47 @@ public class MarkerManager {
             updateMarkerPositions();
         }
     }
+    */
 
 
-/*
+
     private void requestForApt() {
         new AsTaskRequestForApt().execute();
     }
 
     public Appointment getAptOfMyGroup() {
-        return aptOfMyGroup;
+        // on recupere a partir de la bdd avec getURL
+        ///return aptOfMyGroup;
+        String jsonReponse=GroupManager.getFromUrl(AllUrls.GET_RDV+"/"+MyApplication.currentGroup.getName()+"/"+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        Log.v("Json group info : ", jsonReponse);
+
+        //Json file parser
+        try {
+
+            JSONObject jsonObject = new JSONObject(jsonReponse);
+
+            String latitude = (String) jsonObject.get(Constants.LATITUDE);
+            String longitude= (String) jsonObject.get(Constants.LONGITUDE);
+            String dateSTR = (String) jsonObject.get(Constants.DATE);
+            Appointment appoint=new Appointment();
+            Location location=new Location(Double.parseDouble(latitude),Double.parseDouble(longitude));
+            Date date= Date.dateFromString(dateSTR);
+            Temps temps=Temps.tempsFromString(dateSTR);
+            appoint.setLocation(location);
+            appoint.setDate(date);
+            appoint.setTemps(temps);
+
+
+
+
+            return appoint;
+
+        }
+        catch(Exception e){
+            Log.e("Error : ", e.getMessage());
+            return null;
+        }
+
     }
     public class AsTaskRequestForApt extends AsyncTask<String, Void, String> {
 
@@ -103,9 +142,14 @@ public class MarkerManager {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            if (appoint!=null){
-
+            if ((appoint!=null) && (!MapsActivity.aptEnCreation)){
+                MyApplication.currentGroup.setAppointment(appoint);
+                // afficher le RDV sur la map
+                if (MapsActivity.aptMarker!=null) MapsActivity.aptMarker.remove();
+                MapsActivity.aptMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(appoint.getLocation().getLatitude(),appoint.getLocation().getLongitude()))
+                        .title("Appointment").snippet(appoint.getDate().afficher()+" at "+appoint.getTemps().afficher()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                appoint.setAptMarker(MapsActivity.aptMarker);
             }
         }
-    }*/
+    }
 }

@@ -56,7 +56,8 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private TextView latituteField;
     private TextView longitudeField;
-    private Marker myPosition=null, aptMarker=null,beginPath=null,endPath=null;
+    private Marker myPosition=null,beginPath=null,endPath=null;
+    public static Marker aptMarker=null;
     private LatLng latLngForApt=null;
     public static MarkerManager markerManager;
 
@@ -72,6 +73,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
     private boolean creatingApt=false;
     private boolean drawingPath1=false;
     private boolean drawingPath2=false;
+    public static boolean aptEnCreation=false;
 
     public MapsActivity(){
 
@@ -284,12 +286,16 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
             public void onClick(DialogInterface dialog, int which) {
 
                 //Lorsque l'on cliquera sur le bouton "OK", on récupère l'EditText correspondant à notre vue personnalisée (cad à alertDialogView)
-                EditText heure = (EditText)alertDialogView.findViewById(R.id.heureRDV);
-                EditText date = (EditText)alertDialogView.findViewById(R.id.dateRDV);
+                MapsActivity.aptEnCreation=true;
+                EditText hh = (EditText)alertDialogView.findViewById(R.id.hhRDV);
+                EditText min = (EditText)alertDialogView.findViewById(R.id.minRDV);
+                EditText jj = (EditText)alertDialogView.findViewById(R.id.jjRDV);
+                EditText mm = (EditText)alertDialogView.findViewById(R.id.mmRDV);
+                EditText yy = (EditText)alertDialogView.findViewById(R.id.aaRDV);
                 if (aptMarker!=null) aptMarker.remove();
                 aptMarker = mMap.addMarker(new MarkerOptions().position(latLngForApt)
-                        .title("Appointment").snippet(date.getText().toString()+" at "+heure.getText().toString()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-                Appointment appoint=new Appointment(aptMarker,heure.getText().toString(), date.getText().toString());
+                        .title("Appointment").snippet(jj.getText().toString()+"-"+mm.getText().toString()+"-"+yy.getText().toString()+" at "+hh.getText().toString()+":"+min.getText().toString()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                Appointment appoint=new Appointment(aptMarker,hh.getText().toString(),min.getText().toString(),jj.getText().toString(),mm.getText().toString(),yy.getText().toString());
                 MyApplication.currentGroup.setAppointment(appoint);
                 UserManager.sendAptToServer(appoint);
 
@@ -308,13 +314,13 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
     }
 
     private void displayView(int position) {
-        //Fragment fragment = null;
+
         String title = getString(R.string.app_name);
         switch (position) {
             case 0:
-                //fragment = new HomeFragment();
-                title = getString(R.string.title_home_map);
-                getSupportActionBar().setTitle(title);
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 break;
             case 1:
                 //fragment = new AboutFragment();
@@ -337,13 +343,6 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 break;
         }
 
-        //if (fragment != null) {
-        //  FragmentManager fragmentManager = getSupportFragmentManager();
-        //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        //fragmentTransaction.replace(R.id.container_body, fragment);
-        //fragmentTransaction.commit();
-
-        //}
     }
 
 
