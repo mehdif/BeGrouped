@@ -12,7 +12,7 @@ public final class AllUrls {
     public static final String authenticate_user_url=base+"login/";
     public static final String register_user_url =base+"register/";
     public static final String authenticate_me =base+"me";
-    public static final String GET_USER_INFO = base + "user_controller/getUser/"; //parametres : username
+    public static final String GET_USER_INFO = base + "user_controller/getuser/"; //parametres : username
     //------------------------------------------------------------------------------------------------
 
     //---- Gestion des groupes -----------------------------------------------------------------------

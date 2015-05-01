@@ -362,13 +362,6 @@ public class UserManager {
         }
 
 
-
-
-
-
-
-
-
     }
     public static class TaskRegister extends AsyncTask {
 
