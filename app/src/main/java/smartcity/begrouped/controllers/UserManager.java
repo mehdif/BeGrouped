@@ -224,9 +224,9 @@ public class UserManager {
     }
     public static User getUserFromName(String username){
 
-        String jsonFileUrl = getFromUrl(AllUrls.GET_USER_INFO+"/"+username+ "/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        String jsonFileUrl = getFromUrl(AllUrls.GET_USER_INFO+username+"/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("getuser: ",AllUrls.GET_USER_INFO+"/"+username+ "/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        Log.v("getuser: ",AllUrls.GET_USER_INFO+username+ "/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
         Log.v("getuser : " ,jsonFileUrl);
 
         //Json file parser
