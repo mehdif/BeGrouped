@@ -3,7 +3,6 @@ package smartcity.begrouped.activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -41,7 +40,7 @@ public class AuthentificationActivity extends ActionBarActivity {
                 if (MyApplication.locationManager!=null) MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                Intent intentService = new Intent(getApplicationContext(),MessageService.class);
+                //Intent intentService = new Intent(getApplicationContext(),MessageService.class);
 
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
@@ -50,9 +49,9 @@ public class AuthentificationActivity extends ActionBarActivity {
 
 
                     MyApplication.myIdentity=(User)user;
+
                     startActivity(i);
-                   // startService(intentService);
-                    Log.v("service", "service may be started");
+                  //  startService(intentService);
 
                 }
                 else {

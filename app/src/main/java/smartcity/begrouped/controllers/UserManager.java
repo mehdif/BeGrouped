@@ -26,6 +26,7 @@ import java.security.spec.ECField;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import smartcity.begrouped.activity.MapsActivity;
 import smartcity.begrouped.model.Appointment;
 import smartcity.begrouped.model.Location;
 import smartcity.begrouped.model.User;
@@ -161,13 +162,19 @@ public class UserManager {
                     "/0/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
             return null;
         }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            MapsActivity.aptEnCreation=false;
+        }
     }
 
     public static User createUserFromJson(String userName,String passWord){
 
         String jsonFileUrl = getFromUrl(AllUrls.authenticate_user_url+userName+"/"+passWord);
-        Log.v("login:",AllUrls.authenticate_user_url+userName+"/"+passWord);
-        Log.v("login:", jsonFileUrl);
+
+        Log.v("Jsonfile : " , jsonFileUrl);
 
         //Json file parser
         try {
@@ -179,7 +186,7 @@ public class UserManager {
             String username = (String) jsonObject.get(Constants.USERNAME);
             String password = (String) jsonObject.get(Constants.PASSWORD);
             String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
-            Log.v("loginSuccess:",username);
+
             return new User(firstname, lastname, username, password, phoneNumber);
 
         }
@@ -192,8 +199,7 @@ public class UserManager {
     public static String insertUser(String userName,String passWord,String firstName,String lastName,String phonenumber){
 
         String jsonFileUrl = getFromUrl(AllUrls.register_user_url+userName+"/"+passWord+"/"+firstName+"/"+lastName+"/"+phonenumber);
-        Log.v("insertuser:",AllUrls.register_user_url+userName+"/"+passWord+"/"+firstName+"/"+lastName+"/"+phonenumber);
-        Log.v("insertuser:",jsonFileUrl);
+        Log.v("Jsonfile : " , jsonFileUrl);
 
         //Json file parser
         try {
@@ -206,23 +212,29 @@ public class UserManager {
             String password = (String) jsonObject.get(Constants.PASSWORD);
             String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
             MyApplication.myIdentity=new User(firstname,lastname,username,password,phoneNumber);
-            Log.v("insertuserSuccess:",MyApplication.myIdentity.toString());
 
         }
 
         catch(Exception e){
             Log.e("Error : ", e.getMessage());
 
+
+
+
+
+
         }
         return jsonFileUrl;
-    }
 
+
+
+    }
     public static User getUserFromName(String username){
 
         String jsonFileUrl = getFromUrl(AllUrls.GET_USER_INFO+username+"/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("getusername:",AllUrls.GET_USER_INFO+username+ "/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
-        Log.v("getusername:" ,jsonFileUrl);
+        Log.v("getuser: ",AllUrls.GET_USER_INFO+username+ "/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        Log.v("getuser : " ,jsonFileUrl);
 
         //Json file parser
         try {
@@ -234,7 +246,7 @@ public class UserManager {
             String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
 
             User user=new User(firstname,lastname,userName,"",phoneNumber);
-            Log.v("getusernameSuccess: ",user.toString());
+            Log.v("getuser: ",user.toString());
             return user ;
         }
         catch(Exception e){
@@ -246,7 +258,10 @@ public class UserManager {
     public static String createUserFromJson1(){
 
         String jsonFileUrl = getFromUrl(AllUrls.authenticate_user_url+"/"+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
-
+        Log.v("URL",AllUrls.authenticate_user_url+"/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        Log.v("username: ",MyApplication.myIdentity.getUsername());
+        Log.v("pwd: ",MyApplication.myIdentity.getPassword());
+        Log.v("Jsonfile1 : " ,jsonFileUrl);
 
         //Json file parser
         try {
@@ -261,11 +276,20 @@ public class UserManager {
             return  jsonFileUrl;
 
         }
+
+
+
         catch(Exception e){
             Log.e("Error : ", e.getMessage());
             return " ";
 
         }
+
+
+
+
+
+
 
     }
 
@@ -297,8 +321,10 @@ public class UserManager {
 
     public static Object getUserFromUserName(String username)
     {
+        Log.v("getusertask:",username);
 
         try {
+            Log.v("getusertask1:",username);
             return new TaskGetUserFromUsername().execute(username).get();
 
         } catch (InterruptedException e) {
@@ -334,6 +360,15 @@ public class UserManager {
             Log.v("JSON",params[1].toString());
             return createUserFromJson(params[0].toString(),params[1].toString());
         }
+
+
+
+
+
+
+
+
+
     }
     public static class TaskRegister extends AsyncTask {
 
@@ -361,6 +396,8 @@ public class UserManager {
         @Override
         protected Object doInBackground(Object[] params) {
             getUserFromName(params[0].toString());
+            Log.v("getuser","inbackground");
+            Log.v("getuser",params[0].toString());
             return null;
         }
     }

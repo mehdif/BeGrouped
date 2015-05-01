@@ -74,16 +74,6 @@
             android:layout_weight="10"
             android:gravity="center">
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="date"
-                android:ems="10"
-                android:id="@+id/editTextExpirationDate"
-                android:hint="22-05-2015"
-                android:textColor="@color/navigationBarColor"
-                android:layout_weight="20"
-                android:layout_gravity="center" />
         </RelativeLayout>
 
         <LinearLayout
