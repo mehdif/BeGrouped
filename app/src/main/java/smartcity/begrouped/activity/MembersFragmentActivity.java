@@ -1,40 +1,60 @@
 package smartcity.begrouped.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
-
 import smartcity.begrouped.R;
 import smartcity.begrouped.adapter.MembersAdapter;
 
-public class MembersFragmentActivity extends FragmentActivity {
+public class MembersFragmentActivity extends Fragment {
     MembersAdapter mAdapter;
     ViewPager mPager;
     PageIndicator mIndicator;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    //private FragmentActivity myContext;
 
-        setContentView(R.layout.fragment_members);
-
-        mAdapter = new MembersAdapter(getSupportFragmentManager());
-
-        mPager = (ViewPager)findViewById(R.id.pager1);
-        mPager.setAdapter(mAdapter);
-
-        mIndicator = (TitlePageIndicator)findViewById(R.id.indicator1);
-        mIndicator.setViewPager(mPager);
-
-
-
+    public MembersFragmentActivity(){
 
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //mycontext.getSupportFragmentManager()
+        //getFragmentManager()
+        mAdapter = new MembersAdapter(getActivity().getSupportFragmentManager());
 
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_members, container, false);
+        mPager = (ViewPager)rootView.findViewById(R.id.pager1);
+        mPager.setAdapter(mAdapter);
+
+        mIndicator = (TitlePageIndicator)rootView.findViewById(R.id.indicator1);
+        mIndicator.setViewPager(mPager);
+
+        return rootView;
+
+    }
+
+    //@Override
+    //public void onAttach(Activity activity) {
+    //    myContext=(FragmentActivity) activity;
+    //    super.onAttach(activity);
+    //}
 
 }
