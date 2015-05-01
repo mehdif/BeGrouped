@@ -63,6 +63,8 @@ public class GroupHomeFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
+                Intent intent=new Intent(getActivity(),ChatActivity.class);
+                startActivity(intent);
 
             }
         });

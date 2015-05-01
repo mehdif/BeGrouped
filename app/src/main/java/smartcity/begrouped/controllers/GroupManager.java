@@ -196,6 +196,7 @@ public class GroupManager {
             String expirationDate = (String) jsonObject.get(Constants.EXPIRATION_DATE);
 
 
+            group.setSupervisor(new User("","",supervisorName,"",""));
             group.setLocationName(regionName);
             group.setExpirationDate(expirationDate);
             addSupervisorGroup(group,supervisorName);
@@ -261,9 +262,9 @@ public class GroupManager {
 
         JSONArray groups;
 
-        String jsonFileUrl = getFromUrl(AllUrls.GET_MY_GROUPS_URL+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        String jsonFileUrl = getFromUrl(AllUrls.GET_GROUP_INFORMATIONS+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("group",AllUrls.GET_MY_GROUPS_URL+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        Log.v("group",AllUrls.GET_GROUP_INFORMATIONS+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
         Log.v("group : ", jsonFileUrl);
 
         //Json file parser
@@ -278,9 +279,9 @@ public class GroupManager {
                 for (int i = 0; i < groups.length(); i++) {
                     JSONObject jsonObject = groups.getJSONObject(i);
 
-                    String groupName = (String) jsonObject.get("groupeName");
-                    String regionName = (String) jsonObject.get("regionName");
-                    String supervisorName = (String) jsonObject.get("supervisorName");
+                    String groupName = (String) jsonObject.get("groupename");
+                    String regionName = (String) jsonObject.get("regionname");
+                    String supervisorName = (String) jsonObject.get("supervisorname");
 
                     User user=new User("","",supervisorName,"","");
                     Group group=new Group(user,groupName,regionName);

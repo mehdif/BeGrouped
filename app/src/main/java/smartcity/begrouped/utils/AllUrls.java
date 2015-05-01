@@ -5,12 +5,50 @@ package smartcity.begrouped.utils;
  */
 public final class AllUrls {
 
-    public static final String BASE="http://smartpld-001-site1.smarterasp.net/index.php/";
-    public static final String AUTHENTIFICATE_USER_URL=BASE+"login/";
-    public static final String REGISTER_USER_URL =BASE+"register/";
-    public static final String AUTHENTIFICATE_ME =BASE+"me";
-    public static final String GET_GROUP_INFORMATIONS = BASE + "group_controller/getgroup/";
-    public static final String GET_GROUP_MEMBERS = BASE + "group_controller/getgroupmember/";
-    public static final String GET_MY_GROUPS_URL=BASE+"group_controller/getGroup/";
-    public static final String CREATE_RDV="createRDV/";
+
+    public static final String base="http://smartpld-001-site1.smarterasp.net/index.php/";
+
+    //---- Gestion des Authentification --------------------------------------------------------------
+    public static final String authenticate_user_url=base+"login/";
+    public static final String register_user_url =base+"register/";
+    public static final String authenticate_me =base+"me";
+    public static final String GET_USER_INFO = base + "user_controller/getUser/"; //parametres : username
+    //------------------------------------------------------------------------------------------------
+
+    //---- Gestion des groupes -----------------------------------------------------------------------
+    public static final String GET_GROUP_INFORMATIONS = base + "group_controller/getgroup/"; //parametres : [groupname] (facultative)
+    public static final String GET_GROUP_MEMBERS = base + "group_controller/getgroupmember/"; //paramatres : groupname 
+    public static final String GET_GROUP_DEMANDES = base + "group_controller/getgroupesdemandees/"; // Aucun parametres 
+    public static final String DEMANDER_GROUP = base + "group_controller/demandeajoutgroup/"; //paramatres : groupname
+    public static final String GET_DEMANDE_EN_ATTENTE = base + "group_controller/getdemandeenattente/"; //paramatres : groupname (fait par le superviseur)
+    public static final String ACCEPTER_AJOUT_GROUP = base + "group_controller/accepterajoutgroup/"; //paramatres : groupname, username (fait par le superviseur)
+    public static final String SORTIR_GROUP_USER = base + "group_controller/sortirgroupfromuser/"; //parametres : groupname
+    public static final String EXPULSER_GROUP_SUPERVISOR = base + "group_controller/sortirGroupFromSupervisor/"; //parametres : groupname, username (fait par le superviseur)
+    public static final String CREATE_GROUP = base + "group_controller/createGroup/"; //parametres : groupname, regionname,[expirationDate(YYYY-MM-JJ)]
+    public static final String DELETE_GROUP = base + "group_controller/deleteGroup/"; //parametres : groupname (fait par le superviseur)
+    //------------------------------------------------------------------------------------------------
+
+    //---- Gestion des positions ---------------------------------------------------------------------
+    public static final String SEND_POSITION = base + "position_controller/sendMyPosition/"; //parametres : latitude,longitude
+    public static final String GET_GROUP_POSITION = base + "position_controller/getGroupPosition/"; //parametres : groupname
+    //------------------------------------------------------------------------------------------------
+
+    //---- Gestion des poi ---------------------------------------------------------------------------
+    public static final String GET_NEAREST_POI = base + "poi_controller/getNearestPoint/"; //parametres : latitude,longitude
+    public static final String SEARCH_POI_BY_NAME = base + "poi_controller/searchPoint/"; //parametres : name (part of name)
+    public static final String GET_POI_BY_ID = base + "poi_controller/getPoiDetail/"; //parametres : id
+    //------------------------------------------------------------------------------------------------
+
+    //---- Gestion des Rendez-vous -------------------------------------------------------------------
+    public static final String CREATE_RDV=base +"rdv_controller/createRDV/"; //parametres : groupname,latitude,longitude,date (YYYY-MM-JJ),heure,minute,seconde
+    public static final String GET_RDV=base+"rdv_controller/getRDV/"; // parametres : groupname
+    public static final String REMOVE_RDV=base+"rdv_controller/removeRDV/"; // parametres : groupname
+    //------------------------------------------------------------------------------------------------
+
+    //---- Gestion des programmes -------------------------------------------------------------------
+    public static final String ADD_LIGNE_PROGRAM="program_controller/addPoiProgram/"; //parametres : poi_id,groupname,date (YYYY-MM-JJ),[heure,minute,seconde] (fait par le superviseur)
+    public static final String GET_PROGRAM="program_controller/getProgram/"; //parametres : groupname,[date (YYYY-MM-JJ)]
+    public static final String DELETE_PROGRAM="program_controller/deleteProgram/"; //parametres : groupname,[date (YYYY-MM-JJ)]
+    //------------------------------------------------------------------------------------------------
+
 }

@@ -150,14 +150,22 @@ public class UserManager {
         protected Object doInBackground(Object[] params) {
 
             Log.i("send Apt", "send appointment to server" );
-            String jsonFileUrl = getFromUrl(AllUrls.BASE +AllUrls.CREATE_RDV+"/"+MyApplication.currentGroup.getName()+"/"+MyApplication.currentGroup.getAppointment().getAptMarker().getPosition().latitude+"/"+MyApplication.currentGroup.getAppointment().getAptMarker().getPosition().longitude+"/"+MyApplication.currentGroup.getAppointment().getDateSousForme()+"/"+MyApplication.currentGroup.getAppointment().getDate().getHours()+"/"+MyApplication.currentGroup.getAppointment().getDate().getMinutes()+"/0/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+            Log.i("send Apt", "send"+MyApplication.currentGroup.getAppointment().getLocation().getLatitude());
+            String jsonFileUrl = getFromUrl(AllUrls.CREATE_RDV+
+                    "/"+MyApplication.currentGroup.getName()+"/"+
+                    MyApplication.currentGroup.getAppointment().getLocation().getLatitude()+
+                    "/"+MyApplication.currentGroup.getAppointment().getLocation().getLongitude()+
+                    "/"+MyApplication.currentGroup.getAppointment().getDateSousForme()+
+                    "/"+MyApplication.currentGroup.getAppointment().getTemps().getHh()+
+                    "/"+MyApplication.currentGroup.getAppointment().getTemps().getMm()+
+                    "/0/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
             return null;
         }
     }
 
     public static User createUserFromJson(String userName,String passWord){
 
-        String jsonFileUrl = getFromUrl(AllUrls.AUTHENTIFICATE_USER_URL+userName+"/"+passWord);
+        String jsonFileUrl = getFromUrl(AllUrls.authenticate_user_url+userName+"/"+passWord);
 
         Log.v("Jsonfile : " , jsonFileUrl);
 
@@ -183,7 +191,7 @@ public class UserManager {
 
     public static String insertUser(String userName,String passWord,String firstName,String lastName,String phonenumber){
 
-        String jsonFileUrl = getFromUrl(AllUrls.REGISTER_USER_URL+userName+"/"+passWord+"/"+firstName+"/"+lastName+"/"+phonenumber);
+        String jsonFileUrl = getFromUrl(AllUrls.register_user_url+userName+"/"+passWord+"/"+firstName+"/"+lastName+"/"+phonenumber);
         Log.v("Jsonfile : " , jsonFileUrl);
 
         //Json file parser
@@ -214,10 +222,36 @@ public class UserManager {
 
 
     }
+    public static User getUserFromName(String username){
+
+        String jsonFileUrl = getFromUrl(AllUrls.GET_USER_INFO+username+"/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+
+        Log.v("getuser: ",AllUrls.GET_USER_INFO+username+ "/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        Log.v("getuser : " ,jsonFileUrl);
+
+        //Json file parser
+        try {
+
+            JSONObject jsonObject = new JSONObject(jsonFileUrl);
+            String firstname = (String) jsonObject.get(Constants.FIRST_NAME);
+            String lastname = (String) jsonObject.get(Constants.LAST_NAME);
+            String userName = (String) jsonObject.get(Constants.USERNAME);
+            String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
+
+            User user=new User(firstname,lastname,userName,"",phoneNumber);
+            Log.v("getuser: ",user.toString());
+            return user ;
+        }
+        catch(Exception e){
+            Log.e("Error : ", e.getMessage());
+            return null;
+
+        }
+    }
     public static String createUserFromJson1(){
 
-        String jsonFileUrl = getFromUrl(AllUrls.AUTHENTIFICATE_ME+"/"+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
-        Log.v("URL",AllUrls.AUTHENTIFICATE_ME+"/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        String jsonFileUrl = getFromUrl(AllUrls.authenticate_user_url+"/"+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        Log.v("URL",AllUrls.authenticate_user_url+"/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
         Log.v("username: ",MyApplication.myIdentity.getUsername());
         Log.v("pwd: ",MyApplication.myIdentity.getPassword());
         Log.v("Jsonfile1 : " ,jsonFileUrl);
@@ -278,6 +312,21 @@ public class UserManager {
     }
 
 
+    public static Object getUserFromUserName(String username)
+    {
+        Log.v("getusertask:",username);
+
+        try {
+            Log.v("getusertask1:",username);
+            return new TaskGetUserFromUsername().execute(username).get();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public static String authenticate1()
     {
         try
@@ -333,6 +382,17 @@ public class UserManager {
             return createUserFromJson1();
         }
 
+    }
+    public static class TaskGetUserFromUsername extends AsyncTask
+    {
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            getUserFromName(params[0].toString());
+            Log.v("getuser","inbackground");
+            Log.v("getuser",params[0].toString());
+            return null;
+        }
     }
 }
 

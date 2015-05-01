@@ -1,10 +1,12 @@
 package smartcity.begrouped.activity;
 
+import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +18,14 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.GroupManager;
+import smartcity.begrouped.controllers.UserManager;
+import smartcity.begrouped.model.Group;
+import smartcity.begrouped.model.User;
+import smartcity.begrouped.utils.MessageService;
 import smartcity.begrouped.utils.MyApplication;
 
 
@@ -49,45 +56,33 @@ public class ManageGroupFragment extends Fragment {
         maListViewPerso = (ListView) rootView.findViewById(R.id.listView1);
         //Array of data to fill in the list
         listItem = new ArrayList<HashMap<String, String>>();
+        LinkedList<Group> mygroups=GroupManager.getGroups();
+        for(int i=0;i<mygroups.size();i++) {
+            Group group=mygroups.pop();
+            map = new HashMap<String, String>();
 
-        map = new HashMap<String, String>();
-        map.put(TAG_GROUP_NAME, "Petite balade");
-        map.put(TAG_REGION, "Lyon");
-        map.put(TAG_SUPERVISEUR, "Hassan");
-        map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
-        listItem.add(map);
-
-        map = new HashMap<String, String>();
-        map.put(TAG_GROUP_NAME, "Tahwass");
-        map.put(TAG_REGION, "Rhone Alpes");
-        map.put(TAG_SUPERVISEUR, "Anes");
-        map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
-        listItem.add(map);
-
-
-        map = new HashMap<String, String>();
-        map.put(TAG_GROUP_NAME, "Tassarkolat");
-        map.put(TAG_REGION, "Lyon");
-        map.put(TAG_SUPERVISEUR, "Maha");
-        map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
-        listItem.add(map);
-
-
-        map = new HashMap<String, String>();
-        map.put(TAG_GROUP_NAME, "Circuit d'amis");
-        map.put(TAG_REGION, "Lyon");
-        map.put(TAG_SUPERVISEUR, "Aymen");
-        map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
-        listItem.add(map);
-
+            // recuperer les données du superviseur
+            String supervisorname=group.getSupervisor().getUsername();
+            Object object= UserManager.getUserFromUserName(supervisorname);
+            if ( object instanceof User) {
+                User user=(User) object;
+                group.getSupervisor().setFirstname(user.getFirstname());
+                group.getSupervisor().setLastname(user.getLastname());
+                group.getSupervisor().setPhoneNumber(user.getPhoneNumber());
+            }
+            map.put(TAG_GROUP_NAME,group.getName());
+            map.put(TAG_REGION,group.getLocationName());
+            map.put(TAG_SUPERVISEUR,group.getSupervisor().getUsername());
+            map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+            listItem.add(map);
+        }
         maListViewPerso.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 HashMap<String, String> map = (HashMap<String, String>) maListViewPerso.getItemAtPosition(position);
-
                 /// récupérer les infos sur le groupe
+                MyApplication.currentGroup= GroupManager.getGroupMembersFromName(map.get(TAG_GROUP_NAME));
 
-                MyApplication.currentGroup= GroupManager.getGroupMembersFromName("");
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 GroupHomeFragment fragment = new GroupHomeFragment();

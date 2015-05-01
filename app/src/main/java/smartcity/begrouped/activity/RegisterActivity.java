@@ -7,6 +7,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.parse.Parse;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.UserManager;
@@ -34,6 +39,7 @@ public class RegisterActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
         setContentView(R.layout.activity_register);
 
         accept = (Button) findViewById(R.id.button_validate);
@@ -59,7 +65,23 @@ public class RegisterActivity extends ActionBarActivity {
                 lastname=  lastnameField.getText().toString();
                 phonenumber=phonenumberField.getText().toString();
 
+                // Register in our server
                 UserManager.register(username, password, firstname, lastname, phonenumber);
+
+                // Register in Cloud
+                ParseUser user = new ParseUser();
+                user.setUsername(username);
+                user.setPassword(password);
+
+                user.signUpInBackground(new SignUpCallback() {
+                    public void done(com.parse.ParseException e) {
+
+                            Toast.makeText(getApplicationContext(),
+                                    "Signing up successfully!"
+                                    , Toast.LENGTH_LONG).show();
+
+                    }
+                });
 
 
             }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.UserManager;
 import smartcity.begrouped.model.User;
+import smartcity.begrouped.utils.MessageService;
 import smartcity.begrouped.utils.MyApplication;
 
 
@@ -31,7 +32,6 @@ public class AuthentificationActivity extends ActionBarActivity {
         register = (Button) findViewById(R.id.buttonRegister);
         username=(EditText) findViewById(R.id.editTextId);
         password=(EditText) findViewById(R.id.editTextPassword);
-
         login.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -40,6 +40,7 @@ public class AuthentificationActivity extends ActionBarActivity {
                 if (MyApplication.locationManager!=null) MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intentService = new Intent(getApplicationContext(),MessageService.class);
 
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
@@ -50,6 +51,7 @@ public class AuthentificationActivity extends ActionBarActivity {
                     MyApplication.myIdentity=(User)user;
 
                     startActivity(i);
+                    startService(intentService);
 
                 }
                 else {
