@@ -58,12 +58,6 @@ public class ChatActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         bindService(new Intent(this, MessageService.class), serviceConnection, BIND_AUTO_CREATE);
-
-        Log.v("TAG","heeeere");
-        Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
-
-        currentUserId = ParseUser.getCurrentUser().getObjectId();
-        Log.v("currentuserid",currentUserId);
         messagesList = (ListView) findViewById(R.id.listMessages);
         messageAdapter = new MessageAdapter(this);
         messagesList.setAdapter(messageAdapter);
@@ -87,11 +81,10 @@ public class ChatActivity extends ActionBarActivity {
        final LinkedList<User> members= MyApplication.currentGroup.getMembers();
 
         // Get RecipientID's of members
-        Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
         currentUserId = ParseUser.getCurrentUser().getObjectId();
+        Log.v("currentuserid",currentUserId);
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereNotEqualTo("objectId", currentUserId);
-        Log.v("object","YES");
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> userList, com.parse.ParseException e) {
                 if (e == null) {
@@ -102,7 +95,7 @@ public class ChatActivity extends ActionBarActivity {
                             if ( userList.get(i).getUsername().equals(members.get(j).getUsername()))
                             {
                                   recipientsIds.add(userList.get(i).getObjectId());
-                                  Log.v("objectID",userList.get(i).getObjectId());
+                                  Log.v("recipientId",userList.get(i).getObjectId());
                                 break;
                             }
 
@@ -157,8 +150,10 @@ public class ChatActivity extends ActionBarActivity {
             Toast.makeText(this, "Please enter a message", Toast.LENGTH_LONG).show();
             return;
         }
-        Log.v("TAG", "yes1");
-        messageService.sendMessage(recipientsIds, messageBody);
+        Log.v("message", "send message in chat activity");
+        Log.v("message",messageBody);
+        Log.v("message",recipientsIds.toString());
+        messageService.sendMessage(recipientsIds.get(0), messageBody);
         messageBodyField.setText("");
     }
 
@@ -168,13 +163,6 @@ public class ChatActivity extends ActionBarActivity {
         unbindService(serviceConnection);
         super.onDestroy();
     }
-
-
-
-
-
-
-
 
 
     private class MyServiceConnection implements ServiceConnection {
@@ -197,30 +185,29 @@ public class ChatActivity extends ActionBarActivity {
                                     MessageFailureInfo failureInfo)
         {
             Toast.makeText(ChatActivity.this, "Message failed to send.", Toast.LENGTH_LONG).show();
+            Log.v("failure:",failureInfo.toString());
         }
 
         @Override
         public void onIncomingMessage(MessageClient client, Message message) {
 
-          Log.v("OnIncoming","OnIncoming");
-            if (message.getSenderId().equals(currentUserId))
+            Log.v("OnIncoming","OnIncoming");
+            if (message.getSenderId().equals(message.getRecipientIds().get(0)))
             {
                 WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
                 messageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING);
             }
             ParseUser currentUser = ParseUser.getCurrentUser();
-            //String username= currentUser.getUsername();
+            String username= currentUser.getUsername();
             //createNotification(username,message.getTextBody());
         }
 
 
         @Override
         public void onMessageSent(MessageClient client, Message message, String recipientId) {
-
             Log.v("OnSent","OnSent");
 
-
-            final WritableMessage writableMessage = new WritableMessage(message.getRecipientIds(), message.getTextBody());
+            final WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
 
             //only add message to parse database if it doesn't already exist there
             ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseMessage");

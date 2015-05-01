@@ -58,9 +58,9 @@ public class ManageGroupFragment extends Fragment {
         listItem = new ArrayList<HashMap<String, String>>();
         LinkedList<Group> mygroups=GroupManager.getGroups();
         for(int i=0;i<mygroups.size();i++) {
-            Group group=mygroups.pop();
+            Group group= mygroups.get(i);
+            Log.v("group",group.toString());
             map = new HashMap<String, String>();
-
             // recuperer les données du superviseur
             String supervisorname=group.getSupervisor().getUsername();
             Object object= UserManager.getUserFromUserName(supervisorname);

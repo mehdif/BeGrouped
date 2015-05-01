@@ -19,5 +19,9 @@ public final class MyApplication extends Application {
     public static LocationManager locationManager=null;
     public static LocationListener locationListener;
 
-
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
+    }
 }
