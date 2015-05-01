@@ -308,13 +308,13 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
     }
 
     private void displayView(int position) {
-        //Fragment fragment = null;
+
         String title = getString(R.string.app_name);
         switch (position) {
             case 0:
-                //fragment = new HomeFragment();
-                title = getString(R.string.title_home_map);
-                getSupportActionBar().setTitle(title);
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 break;
             case 1:
                 //fragment = new AboutFragment();
@@ -337,13 +337,6 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 break;
         }
 
-        //if (fragment != null) {
-        //  FragmentManager fragmentManager = getSupportFragmentManager();
-        //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        //fragmentTransaction.replace(R.id.container_body, fragment);
-        //fragmentTransaction.commit();
-
-        //}
     }
 
 
