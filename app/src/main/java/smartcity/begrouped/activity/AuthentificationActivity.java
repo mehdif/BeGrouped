@@ -40,7 +40,7 @@ public class AuthentificationActivity extends ActionBarActivity {
                 if (MyApplication.locationManager!=null) MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                Intent intentService = new Intent(getApplicationContext(),MessageService.class);
+                //Intent intentService = new Intent(getApplicationContext(),MessageService.class);
 
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
@@ -51,7 +51,7 @@ public class AuthentificationActivity extends ActionBarActivity {
                     MyApplication.myIdentity=(User)user;
 
                     startActivity(i);
-                    startService(intentService);
+                  //  startService(intentService);
 
                 }
                 else {
