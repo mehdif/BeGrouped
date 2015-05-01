@@ -119,8 +119,11 @@ public class MessageService extends Service implements SinchClientListener {
         }
         if (messageClient != null) {
             Log.v("TAG", "yes3");
+            Log.v("TAG",recipientsIds.get(0));
             WritableMessage message = new WritableMessage(recipientsIds, textBody);
             messageClient.send(message);
+            Log.v("TAG",recipientsIds.get(0));
+
         }
     }
 

@@ -57,11 +57,12 @@ public class ChatActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
         bindService(new Intent(this, MessageService.class), serviceConnection, BIND_AUTO_CREATE);
 
-        currentUserId = ParseUser.getCurrentUser().getObjectId();
+        Log.v("TAG","heeeere");
+        Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
 
+        currentUserId = ParseUser.getCurrentUser().getObjectId();
         Log.v("currentuserid",currentUserId);
         messagesList = (ListView) findViewById(R.id.listMessages);
         messageAdapter = new MessageAdapter(this);
@@ -157,7 +158,6 @@ public class ChatActivity extends ActionBarActivity {
             return;
         }
         Log.v("TAG", "yes1");
-      //  Log.v("REC", recipientId);
         messageService.sendMessage(recipientsIds, messageBody);
         messageBodyField.setText("");
     }
@@ -218,6 +218,7 @@ public class ChatActivity extends ActionBarActivity {
         public void onMessageSent(MessageClient client, Message message, String recipientId) {
 
             Log.v("OnSent","OnSent");
+
 
             final WritableMessage writableMessage = new WritableMessage(message.getRecipientIds(), message.getTextBody());
 
