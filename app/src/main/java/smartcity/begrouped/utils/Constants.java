@@ -24,5 +24,7 @@ public class Constants {
     public final static String EXPIRATION_DATE = "expirationdate";
     public final static String DATE = "date";
 
+    public final static String PENDING_DEMANDS = "DemandesEnAttentes";
+
 
 }

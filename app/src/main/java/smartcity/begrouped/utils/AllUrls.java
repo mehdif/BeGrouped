@@ -19,9 +19,9 @@ public final class AllUrls {
     public static final String GET_GROUP_INFORMATIONS = base + "group_controller/getgroup/"; //parametres : [groupname] (facultative)
     public static final String GET_GROUP_MEMBERS = base + "group_controller/getgroupmember/"; //paramatres : groupname 
     public static final String GET_GROUP_DEMANDES = base + "group_controller/getgroupesdemandees/"; // Aucun parametres 
-    public static final String DEMANDER_GROUP = base + "group_controller/demandeajoutgroup/"; //paramatres : groupname
-    public static final String GET_DEMANDE_EN_ATTENTE = base + "group_controller/getdemandeenattente/"; //paramatres : groupname (fait par le superviseur)
-    public static final String ACCEPTER_AJOUT_GROUP = base + "group_controller/accepterajoutgroup/"; //paramatres : groupname, username (fait par le superviseur)
+    public static final String ASK_JOIN_GROUP = base + "group_controller/demandeajoutgroup/"; //paramatres : groupname
+    public static final String GET_PENDING_DEMANDS = base + "group_controller/getdemandeenattente/"; //paramatres : groupname (fait par le superviseur)
+    public static final String ACCEPT_MEMBER_TO_GROUP = base + "group_controller/accepterajoutgroup/"; //paramatres : groupname, username (fait par le superviseur)
     public static final String SORTIR_GROUP_USER = base + "group_controller/sortirgroupfromuser/"; //parametres : groupname
     public static final String EXPULSER_GROUP_SUPERVISOR = base + "group_controller/sortirGroupFromSupervisor/"; //parametres : groupname, username (fait par le superviseur)
     public static final String CREATE_GROUP = base + "group_controller/createGroup/"; //parametres : groupname, regionname,[expirationDate(YYYY-MM-JJ)]
