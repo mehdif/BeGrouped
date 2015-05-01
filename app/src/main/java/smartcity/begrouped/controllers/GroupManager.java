@@ -262,9 +262,9 @@ public class GroupManager {
 
         JSONArray groups;
 
-        String jsonFileUrl = getFromUrl(AllUrls.GET_MY_GROUPS_URL+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        String jsonFileUrl = getFromUrl(AllUrls.GET_GROUP_INFORMATIONS+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("group",AllUrls.GET_MY_GROUPS_URL+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        Log.v("group",AllUrls.GET_GROUP_INFORMATIONS+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
         Log.v("group : ", jsonFileUrl);
 
         //Json file parser

@@ -18,6 +18,8 @@ import com.sinch.android.rtc.messaging.MessageClient;
 import com.sinch.android.rtc.messaging.MessageClientListener;
 import com.sinch.android.rtc.messaging.WritableMessage;
 
+import java.util.List;
+
 public class MessageService extends Service implements SinchClientListener {
 
     private static final String APP_KEY = "8a414cde-baa7-4e85-bde0-96a94e9a45f6";
@@ -108,7 +110,7 @@ public class MessageService extends Service implements SinchClientListener {
     {
     }
 
-    public void sendMessage(String recipientUserId, String textBody) {
+    public void sendMessage(List<String> recipientsIds, String textBody) {
 
         Log.v("textbodyyyy",textBody);
         if ( messageClient == null)
@@ -117,7 +119,7 @@ public class MessageService extends Service implements SinchClientListener {
         }
         if (messageClient != null) {
             Log.v("TAG", "yes3");
-            WritableMessage message = new WritableMessage(recipientUserId, textBody);
+            WritableMessage message = new WritableMessage(recipientsIds, textBody);
             messageClient.send(message);
         }
     }
@@ -141,9 +143,9 @@ public class MessageService extends Service implements SinchClientListener {
     }
 
     public class MessageServiceInterface extends Binder {
-        public void sendMessage(String recipientUserId, String textBody) {
+        public void sendMessage(List<String> recipientsIds, String textBody) {
             Log.v("TAG", "yes2");
-            MessageService.this.sendMessage(recipientUserId, textBody);
+            MessageService.this.sendMessage(recipientsIds, textBody);
         }
 
         public void addMessageClientListener(MessageClientListener listener) {
