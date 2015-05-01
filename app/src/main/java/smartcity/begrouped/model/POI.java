@@ -12,6 +12,8 @@ public class POI {
     private String name;
     private String addres;
     private String phone;
+    private Date dateOfVisite;
+    private Temps tempsOfVisite;
 
     public POI( String type, String typeDetail, String name, String addres, String phone) {
         this.type = type;
@@ -20,6 +22,23 @@ public class POI {
         this.addres = addres;
         this.phone = phone;
     }
+
+    public Date getDateOfVisite() {
+        return dateOfVisite;
+    }
+
+    public Temps getTempsOfVisite() {
+        return tempsOfVisite;
+    }
+
+    public void setDateOfVisite(Date dateOfVisite) {
+        this.dateOfVisite = dateOfVisite;
+    }
+
+    public void setTempsOfVisite(Temps tempsOfVisite) {
+        this.tempsOfVisite = tempsOfVisite;
+    }
+
     public POI(){}
 
     public Marker getMarker() {
