@@ -258,14 +258,14 @@ public class GroupManager {
 
     public static LinkedList<Group> getMyGroups() {
 
-        LinkedList<Group> groupsList = new LinkedList<Group>();
+        LinkedList<Group> groupsList = new LinkedList<>();
 
         JSONArray groups;
 
         String jsonFileUrl = getFromUrl(AllUrls.GET_GROUP_INFORMATIONS+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("group",AllUrls.GET_GROUP_INFORMATIONS+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
-        Log.v("group : ", jsonFileUrl);
+        Log.v("getgroups:",AllUrls.GET_GROUP_INFORMATIONS+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        Log.v("getgroups:", jsonFileUrl);
 
         //Json file parser
         if (jsonFileUrl != null) {
@@ -286,6 +286,7 @@ public class GroupManager {
                     User user=new User("","",supervisorName,"","");
                     Group group=new Group(user,groupName,regionName);
                     groupsList.add(group);
+                    Log.v("getgroupSuccess:",group.toString());
 
                 }
             } catch (JSONException e) {

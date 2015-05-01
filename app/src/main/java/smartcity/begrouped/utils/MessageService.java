@@ -29,23 +29,16 @@ public class MessageService extends Service implements SinchClientListener {
     private SinchClient sinchClient = null;
     private MessageClient messageClient = null;
     private String currentUserId;
-    private LocalBroadcastManager broadcaster;
-    private Intent broadcastIntent = new Intent("ListUsersActivity");
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
-
+        Log.v("service","on start command");
         currentUserId = ParseUser.getCurrentUser().getObjectId();
 
         if (currentUserId != null && !isSinchClientStarted()) {
-
-            Log.v("TAG","currentuserid is not null and client is started");
+            Log.v("service","currentuserid is not null and client is not started");
             startSinchClient(currentUserId);
         }
-
-        broadcaster = LocalBroadcastManager.getInstance(this);
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -60,7 +53,7 @@ public class MessageService extends Service implements SinchClientListener {
 
         sinchClient.checkManifest();
         sinchClient.start();
-        Log.v("TAG","Sinchclient has started");
+        Log.v("service","Sinchclient has started");
     }
 
     private boolean isSinchClientStarted() {
@@ -69,24 +62,17 @@ public class MessageService extends Service implements SinchClientListener {
 
     @Override
     public void onClientFailed(SinchClient client, SinchError error) {
-        broadcastIntent.putExtra("success", false);
-        broadcaster.sendBroadcast(broadcastIntent);
         sinchClient = null;
-        Log.v("TAG","Client Failed");
+        Log.v("service","sinch client failed");
 
     }
 
     @Override
     public void onClientStarted(SinchClient client) {
 
-
-        broadcastIntent.putExtra("success", true);
-        broadcaster.sendBroadcast(broadcastIntent);
-
         client.startListeningOnActiveConnection();
-        Log.v("TAG","Client started");
         messageClient = client.getMessageClient();
-
+        Log.v("service","sinch client started");
     }
 
     @Override
@@ -110,20 +96,18 @@ public class MessageService extends Service implements SinchClientListener {
     {
     }
 
-    public void sendMessage(List<String> recipientsIds, String textBody) {
+    public void sendMessage(String recipientsIds, String textBody) {
 
-        Log.v("textbodyyyy",textBody);
+        Log.v("message","on send message");
         if ( messageClient == null)
         {
-            Log.v("TAG","messageclient is null");
+            Log.v("message","messageclient is null");
         }
         if (messageClient != null) {
-            Log.v("TAG", "yes3");
-            Log.v("TAG",recipientsIds.get(0));
             WritableMessage message = new WritableMessage(recipientsIds, textBody);
             messageClient.send(message);
-            Log.v("TAG",recipientsIds.get(0));
-
+            Log.v("textBody:",textBody);
+            Log.v("recipientsid:",recipientsIds.toString());
         }
     }
 
@@ -146,8 +130,9 @@ public class MessageService extends Service implements SinchClientListener {
     }
 
     public class MessageServiceInterface extends Binder {
-        public void sendMessage(List<String> recipientsIds, String textBody) {
-            Log.v("TAG", "yes2");
+        public void sendMessage(String recipientsIds, String textBody) {
+            Log.v("messageserviceinterface",textBody);
+            Log.v("messageserviceinterface",recipientsIds.toString());
             MessageService.this.sendMessage(recipientsIds, textBody);
         }
 
