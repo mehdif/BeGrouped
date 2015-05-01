@@ -63,20 +63,21 @@ public class ChatActivity extends ActionBarActivity {
         currentUserId = ParseUser.getCurrentUser().getObjectId();
 
         Log.v("currentuserid",currentUserId);
-       // messagesList = (ListView) findViewById(R.id.listMessages);
-       // messageAdapter = new MessageAdapter(this);
-       // messagesList.setAdapter(messageAdapter);
-      //  populateMessageHistory();
-
+        messagesList = (ListView) findViewById(R.id.listMessages);
+        messageAdapter = new MessageAdapter(this);
+        messagesList.setAdapter(messageAdapter);
         getUsersOfChoosenGroup();
-        //messageBodyField = (EditText) findViewById(R.id.messageBodyField);
+       // populateMessageHistory();
 
-      /*  findViewById(R.id.sendButton).setOnClickListener(new View.OnClickListener() {
+
+        messageBodyField = (EditText) findViewById(R.id.messageBodyField);
+
+        findViewById(R.id.sendButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // sendMessage();
+               sendMessage();
             }
-        });*/
+        });
     }
 
     private final void getUsersOfChoosenGroup()
@@ -157,7 +158,7 @@ public class ChatActivity extends ActionBarActivity {
         }
         Log.v("TAG", "yes1");
       //  Log.v("REC", recipientId);
-      //  messageService.sendMessage(recipientId, messageBody);
+        messageService.sendMessage(recipientsIds, messageBody);
         messageBodyField.setText("");
     }
 
@@ -201,15 +202,15 @@ public class ChatActivity extends ActionBarActivity {
         @Override
         public void onIncomingMessage(MessageClient client, Message message) {
 
-          /*  Log.v("OnIncoming","OnIncoming");
-            if (message.getSenderId().equals(recipientId))
+          Log.v("OnIncoming","OnIncoming");
+            if (message.getSenderId().equals(currentUserId))
             {
                 WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
                 messageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING);
             }
             ParseUser currentUser = ParseUser.getCurrentUser();
-            String username= currentUser.getUsername();
-            createNotification(username,message.getTextBody());*/
+            //String username= currentUser.getUsername();
+            //createNotification(username,message.getTextBody());
         }
 
 
@@ -218,7 +219,7 @@ public class ChatActivity extends ActionBarActivity {
 
             Log.v("OnSent","OnSent");
 
-            final WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
+            final WritableMessage writableMessage = new WritableMessage(message.getRecipientIds(), message.getTextBody());
 
             //only add message to parse database if it doesn't already exist there
             ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseMessage");

@@ -165,7 +165,7 @@ public class UserManager {
 
     public static User createUserFromJson(String userName,String passWord){
 
-        String jsonFileUrl = getFromUrl(AllUrls.AUTHENTIFICATE_USER_URL+userName+"/"+passWord);
+        String jsonFileUrl = getFromUrl(AllUrls.authenticate_user_url+userName+"/"+passWord);
 
         Log.v("Jsonfile : " , jsonFileUrl);
 
@@ -191,7 +191,7 @@ public class UserManager {
 
     public static String insertUser(String userName,String passWord,String firstName,String lastName,String phonenumber){
 
-        String jsonFileUrl = getFromUrl(AllUrls.REGISTER_USER_URL+userName+"/"+passWord+"/"+firstName+"/"+lastName+"/"+phonenumber);
+        String jsonFileUrl = getFromUrl(AllUrls.register_user_url+userName+"/"+passWord+"/"+firstName+"/"+lastName+"/"+phonenumber);
         Log.v("Jsonfile : " , jsonFileUrl);
 
         //Json file parser
@@ -224,9 +224,9 @@ public class UserManager {
     }
     public static User getUserFromName(String username){
 
-        String jsonFileUrl = getFromUrl(AllUrls.GET_USER_FROM_USERNAME_URL+"/"+username+ "/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        String jsonFileUrl = getFromUrl(AllUrls.GET_USER_INFO+"/"+username+ "/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("getuser: ",AllUrls.GET_USER_FROM_USERNAME_URL+"/"+username+ "/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        Log.v("getuser: ",AllUrls.GET_USER_INFO+"/"+username+ "/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
         Log.v("getuser : " ,jsonFileUrl);
 
         //Json file parser
@@ -250,8 +250,8 @@ public class UserManager {
     }
     public static String createUserFromJson1(){
 
-        String jsonFileUrl = getFromUrl(AllUrls.AUTHENTIFICATE_ME+"/"+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
-        Log.v("URL",AllUrls.AUTHENTIFICATE_ME+"/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        String jsonFileUrl = getFromUrl(AllUrls.authenticate_user_url+"/"+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        Log.v("URL",AllUrls.authenticate_user_url+"/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
         Log.v("username: ",MyApplication.myIdentity.getUsername());
         Log.v("pwd: ",MyApplication.myIdentity.getPassword());
         Log.v("Jsonfile1 : " ,jsonFileUrl);
