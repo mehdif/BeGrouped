@@ -26,4 +26,16 @@ public class Temps {
     public int getMm() {
         return mm;
     }
+
+    public static Temps tempsFromString(String dateSTR) {
+        String hh = dateSTR.substring(dateSTR.indexOf(" ")+1, dateSTR.indexOf(":"));
+        // minute
+        String sansHour = dateSTR.substring(dateSTR.indexOf(":") + 1, dateSTR.length());
+        String min= sansHour.substring(0, sansHour.indexOf(":"));
+
+        return new Temps(Integer.parseInt(hh),Integer.parseInt(min));
+    }
+    public String afficher(){
+        return hh+":"+mm;
+    }
 }
