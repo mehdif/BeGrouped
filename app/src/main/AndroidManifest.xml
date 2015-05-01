@@ -14,9 +14,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/MyMaterialTheme" >
-
         <activity
-            android:name="smartcity.begrouped.activity.AuthentificationActivity"
+            android:name=".activity.AuthentificationActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,35 +23,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="smartcity.begrouped.activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.default" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.MembersFragmentActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.default" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.default" />
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="smartcity.begrouped.activity.MembersFragmentActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.default" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name="smartcity.begrouped.activity.RegisterActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.default" />
-            </intent-filter>
-        </activity>
-
-        <!--Integrating Anes Code -->
+        <!-- Integrating Anes Code -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -61,11 +60,11 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="smartcity.begrouped.activity.MapsActivity"
+            android:name=".activity.MapsActivity"
             android:label="@string/title_activity_maps" >
         </activity>
         <activity
-            android:name="smartcity.begrouped.activity.ShowLocationActivity"
+            android:name=".activity.ShowLocationActivity"
             android:label="@string/title_activity_show_location" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -74,13 +73,17 @@
             </intent-filter>
         </activity>
 
-
         <receiver android:name=".controllers.ReceiverUpdatePositions" >
             <intent-filter>
                 <action android:name="com.authorwjf.MajPositions" />
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".activity.ChatActivity"
+            android:label="@string/title_activity_chat" >
+        </activity>
+        <service android:name=".utils.MessageService" />
     </application>
 
 </manifest>

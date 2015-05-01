@@ -2,193 +2,193 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\Anes\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.0.0\support-annotations-22.0.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\support-annotations-22.0.0-a151750a199e6019f7dd8697eb9450621c82e371.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-games\7.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="055783146ba9654a725442563be78cad303aad1f">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-ea768ffcecb6fb8569cde1b065a615cc2922b3e1.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-fitness\7.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3c0b099f9de16b265ecd6122fcb603e7d0d29f90">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-d093dd6b919115e05d1d110107dff560e3a8ec3e.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-ads\7.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="e3d791b42eaa90416cd0b2d2e608092794a3baa4">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-fc6d9917ec8d6c98931114947f1d993e44f87172.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-drive\7.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="41b3870cbe5fa546d8095b5b89d42cb69f3dd175">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-3b873f25c9226d4a81c2e6f9f624f6341930040b.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\7.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="17f8750d5c0749e44dd7c54aa390d9c937803825">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-b546013d93024f8401521637a424c72a3851b92b.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\libs\Parse-1.6.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="2a812174191af5a4513a873602a765b0171f252c">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\Parse-1.6.0-4bbe4ede9e113eec5f1eb787c2de7c9ec958dc7c.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-48a6892c690621a6f7242fa53a1e254229c4affd.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-plus\7.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="0e8228b4bc69c6a2c8d7c18498a77e53417d2574">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-b3f0f1a2d5eee80e8148e4fdd6328cb23a5841b9.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\libs\internal_impl-22.0.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\internal_impl-22.0.0-0a827680e87bb9152b6cac4b52ac21ef10213030.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\BeGrouped.app.libraries\ViewPagerIndicator\unspecified\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="eea09b350374651e119b1439baf3bc5688d7c12e">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-ad55cc18ddc8fbb623938bcd5a2cbf949ca28ae8.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-analytics\7.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="29fd6d3794b71491c2789708cd8d03c71feb8954">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-90bfcb30c9c340e874be84737560085d203dfeec.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wallet\7.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="a96b762bde4139de855735f175ec4d17dca55a6d">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-1eebabe0dee74910945fcce0f6d96bb1f5ae4452.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-828ea562b39bedd3000dd16e7a507e2f3f8e4c93.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-location\7.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="73ccb92b70112f2e463e415ef8d7275de7da6516">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-4e2118f2e03fb59db3ad6b4f36cf5fc3f50b061d.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appindexing\7.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="a08d65794b844d8e7540bf9a33859bf3b2482d7f">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-969f58e48b7241b11490412a9cebe51c86b89839.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appstate\7.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="7ff613bf78ab057293892fdbd4169eda899c89b9">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-9c3d86651708568685dfa3374d57d78997ca1d7e.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wearable\7.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3033cc3a2c68dff3e5b646d6d084bdbdf7d00b25">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-611b8995786890ff0c2cb41c19461f284930df5a.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-nearby\7.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="ef5f051e7308febe289dc93c67c5f32785b4260a">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-846e5de23bb9d17b9687cbb2ff7dd853be0ffd4a.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\21.0.3\classes.jar"
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\21.0.3\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="4b8945fc23a7461c6fdde15753456d64b0a9358b">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-6c14f944296c59caf24772f0ee281919ede11443.jar" />
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-22c3b4b1589de2768deb6890432d83f6279b9c7b.jar" />
     </item>
     <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-safetynet\7.0.0\classes.jar"
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-fitness\7.0.0\classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="c976518693e89ad44fbfccfc654941eaec198d08">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-9ab2b5958a9f0a6e5713e5cd5e0d8fdcb6fb56a0.jar" />
+        sha1="3c0b099f9de16b265ecd6122fcb603e7d0d29f90">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-db9cee7bd3ce9a462b3f255308a8863e86ad0892.jar" />
     </item>
     <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-panorama\7.0.0\classes.jar"
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-panorama\7.0.0\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="1c5a76debf0c2857ccad422c4a80ed785982f8df">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-f62e64390b7174f0197132cb7aa710c53d38cbe5.jar" />
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-33b57e121d5a16f7788dc818a0b4b72ae65f1ef4.jar" />
     </item>
     <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\libs\sinch-android-rtc-3.6.0.jar"
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appstate\7.0.0\classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="b936e942a81ff80bffc44302c1864f4896a7c366">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\sinch-android-rtc-3.6.0-842b6d0100057f31a9154ed3b8ac77814f4867e3.jar" />
+        sha1="7ff613bf78ab057293892fdbd4169eda899c89b9">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-b6b16767bdd4ae7d80c6404c512831b1e511b9aa.jar" />
     </item>
     <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-gcm\7.0.0\classes.jar"
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="17f8750d5c0749e44dd7c54aa390d9c937803825">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-07be9ae2bcd6fee5334c264f614960f5da52d81c.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\libs\internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\internal_impl-22.0.0-67c32f3868e7f15e0b2c4baed4f7cc31a4bb69fd.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-gcm\7.0.0\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="9224bc4c54ba95147c7eabd874573763c07cb6be">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-8d037a251c58e03cc9636f3e2a8ece2bd7cfd75e.jar" />
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-1e687846f94b7bf1be0ef9d17f76f3dbb84e3840.jar" />
     </item>
     <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\7.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="4c93d99d454c975536bbe3b42283eee847f03ea3">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-960fbc7393efc23c69ce0ecae365e5ff556dc611.jar" />
-    </item>
-    <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-identity\7.0.0\classes.jar"
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-identity\7.0.0\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="fb04b12526b0073c7fb1ebb70c5842d82ee95596">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-7ad9a1d0eb44d49f43ded39b4052c836a8765482.jar" />
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-bb0bed28272fad64342b76dbb5922ff7d21c58ea.jar" />
     </item>
     <item
-        jar="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-cast\7.0.0\classes.jar"
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-drive\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="41b3870cbe5fa546d8095b5b89d42cb69f3dd175">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-1a02e55326a348c08d0174e9bfb2276f74b75f92.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-safetynet\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="c976518693e89ad44fbfccfc654941eaec198d08">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-375bbfda046996aad97d0d2affc2f219331e6d79.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appindexing\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a08d65794b844d8e7540bf9a33859bf3b2482d7f">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-b7c346895263f6d76d0a305b4a33dff5c4f4024f.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-location\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="73ccb92b70112f2e463e415ef8d7275de7da6516">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-65319c2a9b68c802003df96874d4b4538c7a1e8b.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.0.0\support-annotations-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\support-annotations-22.0.0-e5b8074e156cbdc44734ef641b519439dd1293aa.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-games\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="055783146ba9654a725442563be78cad303aad1f">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-f0ff90cf03c1b43ad5c55c7f892e585efce8e022.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4c93d99d454c975536bbe3b42283eee847f03ea3">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-2223bcfa306bac89b12e10ae091cb6ab49a3274e.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\BeGrouped.app.libraries\ViewPagerIndicator\unspecified\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="345651ad05885623199639716907803aeb108f98">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-a178395dc0cdf35f1506468578b21bb53605e0f8.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-cast\7.0.0\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="4cd0b093824b3228fffc21ea369b98d0b1db6566">
-        <dex dex="C:\Users\Anes\Desktop\PLD\V4\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-0d9d3a3fc1be8c5c57c67c6da3a038b35e3b2a27.jar" />
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-97a5623e24c90255b00607817793cf8291a9783e.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\libs\Parse-1.6.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2a812174191af5a4513a873602a765b0171f252c">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\Parse-1.6.0-0e244131396e6815f64ad4a1955d2a56f537d8ac.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-analytics\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="29fd6d3794b71491c2789708cd8d03c71feb8954">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-9f3ed16e8197ceb1b90e468a79f9c47bc8456e1d.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wallet\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a96b762bde4139de855735f175ec4d17dca55a6d">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-d960a87254d59d522346ce505850341913cc64ad.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-nearby\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="ef5f051e7308febe289dc93c67c5f32785b4260a">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-96c90f34562b8c9c8a0817978b5fe1e9e67ec96e.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-ads\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e3d791b42eaa90416cd0b2d2e608092794a3baa4">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-483082bcd32baa07fae8f11b7456ab37aec6d3e5.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wearable\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3033cc3a2c68dff3e5b646d6d084bdbdf7d00b25">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-cdba190dbbbb27f0747b5c47a55431beb531710d.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-c4369eaa398c19db9744d7349d6a7215fafda757.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-18ca981573346bcb7c8e4d341c6effe6468f9a1c.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\libs\sinch-android-rtc-3.6.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b936e942a81ff80bffc44302c1864f4896a7c366">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\sinch-android-rtc-3.6.0-df747ae3c8237102093da846865a0aab47cd3218.jar" />
+    </item>
+    <item
+        jar="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-plus\7.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0e8228b4bc69c6a2c8d7c18498a77e53417d2574">
+        <dex dex="C:\Users\a\Desktop\BeGrouped\BeGrouped\app\build\intermediates\pre-dexed\debug\classes-adb0f34a97ff76d97e98532442426704ce8a9e50.jar" />
     </item>
 
 </items>

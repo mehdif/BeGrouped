@@ -27,6 +27,19 @@ public class User {
     public void setLocalisation(Location localisation){
         this.localisation=localisation;
     }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public Location getLocalisation(){
         return localisation;
     }
@@ -51,7 +64,22 @@ public class User {
         return marker;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
     public void setMarker(Marker marker) {
         this.marker = marker;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }
+
 }
