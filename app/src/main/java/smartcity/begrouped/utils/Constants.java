@@ -22,6 +22,7 @@ public class Constants {
     public final static String SUPERVISOR_NAME = "supervisorname";
     public final static String REGION_NAME = "regionname";
     public final static String EXPIRATION_DATE = "expirationdate";
+    public final static String DATE = "date";
 
 
 }
