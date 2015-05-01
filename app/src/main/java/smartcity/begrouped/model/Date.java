@@ -35,4 +35,15 @@ public class Date {
     public void setJj(int jj) {
         this.jj = jj;
     }
+
+    public static Date dateFromString(String dateSTR) {
+        String day = dateSTR.substring(0, dateSTR.indexOf("-"));
+        String sansDay = dateSTR.substring(dateSTR.indexOf("-") + 1, dateSTR.length());
+        String mounth = sansDay.substring(0, sansDay.indexOf("-"));
+        String year = sansDay.substring(sansDay.indexOf("-") + 1, sansDay.indexOf(" "));
+        return new Date(Integer.parseInt(day),Integer.parseInt(mounth),Integer.parseInt(year));
+    }
+    public String afficher(){
+        return jj+"-"+mm+"-"+yy;
+    }
 }
