@@ -26,6 +26,7 @@ import java.security.spec.ECField;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import smartcity.begrouped.activity.MapsActivity;
 import smartcity.begrouped.model.Appointment;
 import smartcity.begrouped.model.Location;
 import smartcity.begrouped.model.User;
@@ -160,6 +161,12 @@ public class UserManager {
                     "/"+MyApplication.currentGroup.getAppointment().getTemps().getMm()+
                     "/0/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            MapsActivity.aptEnCreation=false;
         }
     }
 
