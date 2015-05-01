@@ -242,8 +242,8 @@ public class GroupManager {
 
         String jsonFileUrl = getFromUrl(AllUrls.GET_GROUP_INFORMATIONS+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("getgroups:",AllUrls.GET_GROUP_INFORMATIONS+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
-        Log.v("getgroups:", jsonFileUrl);
+        Log.v("group",AllUrls.GET_GROUP_INFORMATIONS+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        Log.v("group : ", jsonFileUrl);
 
         //Json file parser
         if (jsonFileUrl != null) {
@@ -323,6 +323,19 @@ public class GroupManager {
         return group;
     }
 
+    public static boolean deleteGroup(String groupName){
+        String jsonFileUrl = getFromUrl(AllUrls.DELETE_GROUP + groupName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+
+        Log.v("Json delete group : ", jsonFileUrl);
+
+        if(jsonFileUrl.equals("FAILED")){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     public static Group getGroupMembersFromName(String groupName){
         try {
             return ((Group)new TaskGetJsonMembers(groupName).execute().get());
@@ -370,6 +383,17 @@ public class GroupManager {
     }
 
 
+    public static boolean callTaskDeleteGroup(Group group){
+
+        try {
+            return  (Boolean) new TaskDeleteGroup(group).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public static Group callTaskCreateNewGroup(String name, String locationName){
 
@@ -439,6 +463,21 @@ public class GroupManager {
         }
     }
 
+    public static class TaskDeleteGroup extends AsyncTask {
+
+       Group group;
+
+        public TaskDeleteGroup(Group group){
+            this.group = group;
+        }
+
+        @Override
+        protected Boolean doInBackground(Object[] params) {
+
+            return deleteGroup(group.getName());
+
+        }
+    }
 
 
     // new methode
