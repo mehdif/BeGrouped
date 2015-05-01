@@ -345,11 +345,8 @@ public class UserManager {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
         return null;
     }
-
-
 
     public static class TaskAuthenticate extends AsyncTask {
 
@@ -360,14 +357,6 @@ public class UserManager {
             Log.v("JSON",params[1].toString());
             return createUserFromJson(params[0].toString(),params[1].toString());
         }
-
-
-
-
-
-
-
-
 
     }
     public static class TaskRegister extends AsyncTask {
@@ -390,6 +379,7 @@ public class UserManager {
         }
 
     }
+
     public static class TaskGetUserFromUsername extends AsyncTask
     {
 

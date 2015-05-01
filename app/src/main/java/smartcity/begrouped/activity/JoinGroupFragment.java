@@ -7,15 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import smartcity.begrouped.R;
+import smartcity.begrouped.controllers.GroupManager;
 
 
 public class JoinGroupFragment extends Fragment {
 
     private Button cancel;
     private Button join;
+    private EditText groupName;
 
     public JoinGroupFragment() {
         // Required empty public constructor
@@ -34,6 +37,7 @@ public class JoinGroupFragment extends Fragment {
 
         join = (Button) rootView.findViewById(R.id.buttonJoin);
         cancel = (Button) rootView.findViewById(R.id.buttonCancel);
+        groupName = (EditText) rootView.findViewById(R.id.editTextGroupName);
 
         join.setOnClickListener(new View.OnClickListener() {
 
@@ -43,7 +47,13 @@ public class JoinGroupFragment extends Fragment {
          startActivity(intent);
         getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
-        Toast.makeText(getActivity(), "Your Request has been sent !",Toast.LENGTH_LONG).show();
+             if(GroupManager.callTaskJoinGroup(groupName.getText().toString())){
+                 Toast.makeText(getActivity(), "You have successfully been added to the group !",Toast.LENGTH_LONG).show();
+             }else{
+                 Toast.makeText(getActivity(), "Error, you haven't been added to the group !",Toast.LENGTH_LONG).show();
+             }
+
+
         }
          });
 
