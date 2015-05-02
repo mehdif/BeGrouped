@@ -75,15 +75,10 @@ public class ProgramFragment extends Fragment {
         maListViewPerso.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                //HashMap<String, String> map = (HashMap<String, String>) maListViewPerso.getItemAtPosition(position);
-                /// récupérer les infos sur le groupe
-               // MyApplication.currentGroup= GroupManager.getGroupMembersFromName(map.get(TAG_NAME));
 
-              /*  FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                GroupHomeFragment fragment = new GroupHomeFragment();
-                fragmentTransaction.replace(R.id.container_body, fragment,"tag");
-                fragmentTransaction.commit();*/
+              // MyApplication.currentGroup= GroupManager.getGroupMembersFromName(map.get(TAG_NAME));
+
+
 
             }
         });
