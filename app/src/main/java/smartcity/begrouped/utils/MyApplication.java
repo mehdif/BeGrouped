@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.parse.Parse;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import smartcity.begrouped.model.Date;
@@ -24,6 +26,8 @@ public final class MyApplication extends Application {
     public static LocationListener locationListener;
     public static LinkedList<POI> listOfCurrentPOIS;
     public static Date dateOfCurrentProgram;
+
+    public static ArrayList<HashMap<String, String>> listItem;
 
     @Override
     public void onCreate() {

@@ -1,5 +1,6 @@
 package smartcity.begrouped.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,7 +23,7 @@ public class CreateGroupFragment extends Fragment {
     private Button cancel;
     private EditText groupName;
     private EditText regionName;
-
+    private ProgressDialog progressDialog;
 
 
     public CreateGroupFragment() {
@@ -52,22 +53,9 @@ public class CreateGroupFragment extends Fragment {
         @Override
         public void onClick(View view) {
 
-            if(groupName.getText().toString().matches("")){
-                Toast.makeText(getActivity().getBaseContext(), "Please enter a group name !", Toast.LENGTH_SHORT).show();
-            }
-            else if(regionName.getText().toString().matches("")){
-                Toast.makeText(getActivity().getBaseContext(), "Please enter a region name !", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                Group group = GroupManager.callTaskCreateNewGroup(groupName.getText().toString(), regionName.getText().toString());
-                if(group == null){
-                    Toast.makeText(getActivity().getBaseContext(), "This group already exists !", Toast.LENGTH_SHORT).show();
-                }
-            }
+            showProgress();
+            GroupManager.callTaskCreateNewGroup(groupName.getText().toString(), regionName.getText().toString(), CreateGroupFragment.this);
 
-
-            Intent intent = new Intent(getActivity(), MainActivity.class);//HAVE TO REDIRECT TO ManageGroupFragment
-            startActivity(intent);
             getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
             });
@@ -84,5 +72,35 @@ public class CreateGroupFragment extends Fragment {
 
 
         return rootView;
+    }
+
+    public void createGroup(Group group){
+
+        if(groupName.getText().toString().matches("")){
+            Toast.makeText(getActivity().getBaseContext(), "Please enter a group name !", Toast.LENGTH_SHORT).show();
+        }
+        else if(regionName.getText().toString().matches("")){
+            Toast.makeText(getActivity().getBaseContext(), "Please enter a region name !", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            if(group == null){
+                Toast.makeText(getActivity().getBaseContext(), "This group already exists !", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        hideProgress();
+        Intent intent = new Intent(getActivity(), MainActivity.class);//HAVE TO REDIRECT TO ManageGroupFragment
+        startActivity(intent);
+    }
+
+    public void showProgress(){
+        progressDialog = ProgressDialog.show(this.getActivity(), null,
+                "Loading...", true);
+    }
+
+    public void hideProgress(){
+        if(progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
     }
 }

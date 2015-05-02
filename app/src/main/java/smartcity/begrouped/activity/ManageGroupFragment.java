@@ -1,6 +1,7 @@
 package smartcity.begrouped.activity;
 
 import android.app.IntentService;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -32,6 +33,7 @@ import smartcity.begrouped.utils.MyApplication;
 public class ManageGroupFragment extends Fragment {
 
     private ListView maListViewPerso;
+    private ProgressDialog progressDialog;
     ArrayList<HashMap<String, String>> listItem;//array of items
     HashMap<String, String> map;//single item data
     private static final String TAG_GROUP_NAME = "Tassarkolat";
@@ -54,28 +56,9 @@ public class ManageGroupFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_manage_group, container, false);
         //Get the listview
         maListViewPerso = (ListView) rootView.findViewById(R.id.listView1);
-        //Array of data to fill in the list
-        listItem = new ArrayList<HashMap<String, String>>();
-        LinkedList<Group> mygroups=GroupManager.getGroups();
-        for(int i=0;i<mygroups.size();i++) {
-            Group group= mygroups.get(i);
-            Log.v("group",group.toString());
-            map = new HashMap<String, String>();
-            // recuperer les données du superviseur
-            String supervisorname=group.getSupervisor().getUsername();
-            Object object= UserManager.getUserFromUserName(supervisorname);
-            if ( object instanceof User) {
-                User user=(User) object;
-                group.getSupervisor().setFirstname(user.getFirstname());
-                group.getSupervisor().setLastname(user.getLastname());
-                group.getSupervisor().setPhoneNumber(user.getPhoneNumber());
-            }
-            map.put(TAG_GROUP_NAME,group.getName());
-            map.put(TAG_REGION,group.getLocationName());
-            map.put(TAG_SUPERVISEUR,group.getSupervisor().getUsername());
-            map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
-            listItem.add(map);
-        }
+
+        listItem = MyApplication.listItem;
+
         maListViewPerso.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
