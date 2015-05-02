@@ -78,6 +78,7 @@ public class AuthentificationActivity extends ActionBarActivity {
         }
 
     }
+
     public void getAuthentificatedUser(Object user){
 
         if (user instanceof User && user != null) {
@@ -99,16 +100,17 @@ public class AuthentificationActivity extends ActionBarActivity {
                 }
             });
 
-            hideProgress();
             startActivity(i);
         } else {
             Toast.makeText(getApplicationContext(), "NO ACCOUNT AT THIS NAME", Toast.LENGTH_LONG).show();
         }
+
+        hideProgress();
     }
 
     public void showProgress(){
         progressDialog = ProgressDialog.show(AuthentificationActivity.this, null,
-                "Loading", true);
+                "Loading...", true);
     }
 
     public void hideProgress(){
@@ -116,7 +118,6 @@ public class AuthentificationActivity extends ActionBarActivity {
             progressDialog.dismiss();
         }
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

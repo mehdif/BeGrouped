@@ -34,6 +34,7 @@ import java.util.concurrent.ExecutionException;
 
 import smartcity.begrouped.activity.AuthentificationActivity;
 import smartcity.begrouped.activity.MapsActivity;
+import smartcity.begrouped.activity.RegisterActivity;
 import smartcity.begrouped.model.Appointment;
 import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.Location;
@@ -184,7 +185,7 @@ public class UserManager {
         String jsonFileUrl = getFromUrl(AllUrls.authenticate_user_url+userName+"/"+hashedPassWord);
 
 
-        Log.v("Jsonfile : " , "" + jsonFileUrl);
+        Log.v("Jsonfile : " , " " + jsonFileUrl);
 
 
         //Json file parser
@@ -214,7 +215,7 @@ public class UserManager {
             String encodedLastName= URLEncoder.encode(lastName, "utf-8").replace("+", "%20");
             String hashedPassWord= GlobalMethodes.md5(passWord);
             jsonFileUrl = getFromUrl(AllUrls.register_user_url+userName+"/"+hashedPassWord+"/"+encodedFirstName+"/"+encodedLastName+"/"+phonenumber);
-            Log.v("Jsonfile : " , jsonFileUrl);
+            Log.v("Jsonfile : " , " " + jsonFileUrl);
 
             //Json file parser
             JSONObject jsonObject = new JSONObject(jsonFileUrl);
@@ -237,7 +238,7 @@ public class UserManager {
         String jsonFileUrl = getFromUrl(AllUrls.GET_USER_INFO+username+"/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
         Log.v("getuser: ",AllUrls.GET_USER_INFO+username+ "/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
-        Log.v("getuser : " ,jsonFileUrl);
+        Log.v("getuser : " ," " + jsonFileUrl);
 
         //Json file parser
         try {
@@ -264,7 +265,7 @@ public class UserManager {
         Log.v("URL",AllUrls.authenticate_user_url+"/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
         Log.v("username: ",MyApplication.myIdentity.getUsername());
         Log.v("pwd: ",MyApplication.myIdentity.getPassword());
-        Log.v("Jsonfile1 : " ,jsonFileUrl);
+        Log.v("Jsonfile1 : " ," " + jsonFileUrl);
 
         //Json file parser
         try {
@@ -300,15 +301,15 @@ public class UserManager {
     public static void authenticate(String username,String password, AuthentificationActivity activity)
     {
 
-            new TaskAuthenticate(activity).execute(username,password);
+            new TaskAuthenticate(activity).execute(username, password);
 
     }
 
-    public static void register(String username,String password,String firstname,String lastname,String phonenumber)
+    public static void register(String username,String password,String firstname,String lastname,String phonenumber, RegisterActivity activity)
     {
 
 
-        new TaskRegister().execute(username,password,firstname,lastname,phonenumber);
+        new TaskRegister(activity).execute(username,password,firstname,lastname,phonenumber, activity);
 
 
     }
@@ -370,12 +371,23 @@ public class UserManager {
     }
     public static class TaskRegister extends AsyncTask {
 
+        RegisterActivity activity;
+
+        public TaskRegister(RegisterActivity activity){
+            this.activity = activity;
+        }
         @Override
         protected Object doInBackground(Object[] params) {
 
             insertUser(params[0].toString(),params[1].toString(),params[2].toString(),params[3].toString(),params[4].toString());
             return null ;
         }
+
+        @Override
+        protected void onPostExecute(Object user) {
+            activity.registerUser();
+        }
+
     }
     public static class TaskAuthenticate1 extends AsyncTask {
 
