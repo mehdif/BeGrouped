@@ -282,7 +282,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
         adb.setView(alertDialogView);
         adb.setTitle("Add an appointment");
         adb.setIcon(android.R.drawable.ic_dialog_info);
-        adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        adb.setNegativeButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
                 //Lorsque l'on cliquera sur le bouton "OK", on récupère l'EditText correspondant à notre vue personnalisée (cad à alertDialogView)
@@ -300,7 +300,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 UserManager.sendAptToServer(appoint);
 
             } });
-        adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        adb.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //Lorsque l'on cliquera sur annuler on quittera l'application
 
