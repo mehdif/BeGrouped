@@ -40,8 +40,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.GroupManager;
@@ -163,39 +165,45 @@ public class ChatActivity extends Activity {
         query.whereContainedIn("senderId", Arrays.asList(userIds));
         query.whereContainedIn("recipientId", Arrays.asList(userIds));
         query.orderByAscending("createdAt");
+
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> messageList, com.parse.ParseException e) {
                 if (e == null) {
 
+                    WritableMessage message;
                     messages = new ArrayList<Msg>();
-                    for (int i = 0; i < messageList.size(); i++) {
+                   // messages.add(new Msg(messageList.get(0).get("recipientId").toString(), messageList.get(0).get("senderId").toString(),messageList.get(0).getCreatedAt(), messageList.get(0).get("messageText").toString()));
 
-                       /* for (int j = 0; j < messages.size(); j++) {
-                            if (messages.get(j).getSenderId().equals(messageList.get(i).get("senderId").toString())
-                                    && messages.get(j).getRecipientId().equals(messageList.get(i).get("recipientId").toString())
-                                  )
+
+                    for(int i=0;i<messageList.size();i++)
+                    {
+                        boolean found=false;
+                        Log.v("list",messages.toString());
+                        for(int j=0;j<messages.size();j++)
+                        {
+
+                            if (messages.get(j).equals(new Msg(messageList.get(i).get("recipientId").toString(), messageList.get(i).get("senderId").toString(), messageList.get(i).getCreatedAt(), messageList.get(i).get("messageText").toString())))
+
                             {
-                                DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-                                Date d= (Date)messageList.get(i).get("createdAt");
+                                Log.v("found", "true");
+                                found=true;
+                            }
+                        }
+                        if( ! found)
+                        {
+                            messages.add(new Msg(messageList.get(i).get("recipientId").toString(), messageList.get(i).get("senderId").toString(),messageList.get(i).getCreatedAt(), messageList.get(i).get("messageText").toString()));
 
-                                Log.v("equal:", d.toString());
-                            } else {*/
-
-                                WritableMessage message = new WritableMessage(messageList.get(i).get("recipientId").toString(), messageList.get(i).get("messageText").toString());
-                                if (messageList.get(i).get("senderId").toString().equals(currentUserId)) {
-                                    messageAdapter.addMessage(message, MessageAdapter.DIRECTION_OUTGOING);
-                                } else {
-                                    messageAdapter.addMessage(message, MessageAdapter.DIRECTION_INCOMING);
-                                }
-
-                               /* Msg msg = new Msg(messageList.get(i).get("recipientId").toString(), messageList.get(i).get("senderId").toString(), "", messageList.get(i).get("messageText").toString());
-                                messages.add(msg);
-                                Log.v("equal:", String.valueOf(messages.size()));*/
+                            message = new WritableMessage(messageList.get(i).get("recipientId").toString(), messageList.get(i).get("messageText").toString());
+                            if (messageList.get(i).get("senderId").toString().equals(currentUserId)) {
+                                messageAdapter.addMessage(message, MessageAdapter.DIRECTION_OUTGOING);
+                            } else {
+                                messageAdapter.addMessage(message, MessageAdapter.DIRECTION_INCOMING);
                             }
                         }
 
-            }
+                    }
+            }}
         });
     }
 
