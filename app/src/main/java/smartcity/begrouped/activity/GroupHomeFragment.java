@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,11 +70,27 @@ public class GroupHomeFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                MembersFragmentActivity fragment = new MembersFragmentActivity();
-                fragmentTransaction.replace(R.id.container_body, fragment,"tag");
-                fragmentTransaction.commit();
+
+
+                   if ( MyApplication.currentGroup.getSupervisor().getUsername().equals(MyApplication.myIdentity.getUsername()))
+                    {
+                        Log.v("TAG","I'm the supervisor of current group");
+                        FragmentManager fragmentManager = getFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        MembersFragmentActivity fragment = new MembersFragmentActivity();
+                        fragmentTransaction.replace(R.id.container_body, fragment, "tag");
+                        fragmentTransaction.commit();
+                    }
+                else
+                    {
+                        Log.v("TAG","I'm not the supervisor of current group");
+                        FragmentManager fragmentManager = getFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        MembersOnGroupFragment fragment = new MembersOnGroupFragment();
+                        fragmentTransaction.replace(R.id.container_body, fragment, "tag");
+                        fragmentTransaction.commit();
+                    }
+
             }
         });
 

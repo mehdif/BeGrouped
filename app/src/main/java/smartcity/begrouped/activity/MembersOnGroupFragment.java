@@ -35,9 +35,6 @@ public class MembersOnGroupFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toast.makeText(getActivity(),
-                "In members on group fragment!"
-                , Toast.LENGTH_LONG).show();
 
     }
 
