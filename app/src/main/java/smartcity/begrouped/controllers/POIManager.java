@@ -58,7 +58,7 @@ public class POIManager {
                     String phone= (String) jsonObject.get(Constants.PHONE);
                     String email= (String) jsonObject.get(Constants.EMAIL);
                     String website= (String) jsonObject.get(Constants.WEBSITE);
-                    String poiId= (String) jsonObject.get(Constants.POI_ID);
+                    String poiId= (String) jsonObject.get(Constants.ID);
                     listOfPOI.add(new POI(Integer.parseInt(poiId),type, typeDetail, name, address, phone, email, website, new Location(Double.parseDouble(latitude), Double.parseDouble(longitude))));
                 }
                 return listOfPOI;
