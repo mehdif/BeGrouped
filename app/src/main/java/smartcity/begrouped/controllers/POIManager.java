@@ -316,7 +316,7 @@ public class POIManager {
 
     private static void saveDayGroupProgram(Date date, String groupName, LinkedList<POI> dayProgram){
         for (int i=0;i<dayProgram.size();i++){
-            GlobalMethodes.getFromUrl(AllUrls.ADD_LIGNE_PROGRAM+dayProgram.get(i).getPoiId()+"/"+groupName+"/"+date.toString()+"/"+dayProgram.get(i).getTempsOfVisite().toString()+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+            GlobalMethodes.getFromUrl(AllUrls.ADD_LIGNE_PROGRAM+dayProgram.get(i).getPoiId()+"/"+groupName+"/"+date.toString()+"/"+dayProgram.get(i).getTempsOfVisite().toString()+":00"+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
         }
     }
     public static void saveDayGroupProgramByTask(Date date, String groupName, LinkedList<POI> dayProgram){

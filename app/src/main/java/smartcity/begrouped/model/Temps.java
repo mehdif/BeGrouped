@@ -56,4 +56,9 @@ public class Temps implements  Comparable{
         if (mm>otherTime.getMm()) return 1;
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return hh+":"+mm;
+    }
 }

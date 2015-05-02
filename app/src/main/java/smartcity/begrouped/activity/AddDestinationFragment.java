@@ -2,6 +2,8 @@ package smartcity.begrouped.activity;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -24,6 +26,8 @@ import java.util.LinkedList;
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.POIManager;
 import smartcity.begrouped.model.POI;
+import smartcity.begrouped.model.Temps;
+import smartcity.begrouped.utils.MyApplication;
 
 
 public class AddDestinationFragment extends Fragment {
@@ -36,6 +40,10 @@ public class AddDestinationFragment extends Fragment {
     private static final String TAG_NAME = "First day";
     private static final String TAG_TYPE = "hang out";
     private static final String TAG_TEMPS = "HH::MM";
+    private LinkedList<POI> listPOI;
+    public static EditText hhEdit;
+    public static EditText mmEdit;
+    public static int positionClicked;
 
     public AddDestinationFragment() {
         // Required empty public constructor
@@ -56,6 +64,7 @@ public class AddDestinationFragment extends Fragment {
         maListViewPerso.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                afficherDialogRDV(position);
 
             }
         });
@@ -72,7 +81,7 @@ public class AddDestinationFragment extends Fragment {
                     Toast.makeText(getActivity(), "Looking for : "+search_query.getText(), Toast.LENGTH_LONG).show();
 
                     // Anes : Call your search function here : performSearch();
-                    LinkedList<POI> listPOI= POIManager.searchPOIByNameByTask(search_query.getText().toString());
+                    listPOI= POIManager.searchPOIByNameByTask(search_query.getText().toString());
                     listItem.clear();
                     for(int i=0;i<listPOI.size();i++) {
                         POI poi= listPOI.get(i);
@@ -105,4 +114,69 @@ public class AddDestinationFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
+
+    public void afficherDialogRDV(int position){
+        positionClicked=position;
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View alertDialogView = factory.inflate(R.layout.alertdialog_poi, null);
+        AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+        adb.setView(alertDialogView);
+        adb.setTitle("Destination Detail");
+        adb.setIcon(android.R.drawable.ic_dialog_info);
+
+
+        TextView name = (TextView)alertDialogView.findViewById(R.id.name);
+        TextView type = (TextView)alertDialogView.findViewById(R.id.type);
+        TextView detailType = (TextView)alertDialogView.findViewById(R.id.typedetail);
+        TextView address = (TextView)alertDialogView.findViewById(R.id.address);
+        TextView phone = (TextView)alertDialogView.findViewById(R.id.phone);
+        hhEdit=(EditText)alertDialogView.findViewById(R.id.hhRDV);
+        mmEdit=(EditText)alertDialogView.findViewById(R.id.minRDV);
+
+        name.setText(listPOI.get(position).getName());
+        type .setText(listPOI.get(position).getType());
+        detailType .setText(listPOI.get(position).getTypeDetail());
+        address .setText(listPOI.get(position).getAddres());
+        phone .setText(listPOI.get(position).getPhone());
+
+
+
+
+        adb.setNegativeButton("Add", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Temps temps = new Temps(Integer.parseInt(hhEdit.getText().toString()),Integer.parseInt(mmEdit.getText().toString()));
+                POI poi=listPOI.get(positionClicked);
+                poi.setTempsOfVisite(temps);
+                POIManager.addPoiToSortedList(MyApplication.listOfCurrentPOIS,poi);
+                updateListViewOfDay();
+            }
+        });
+        adb.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        adb.show();
+
+    }
+    public static void updateListViewOfDay() {
+        ProgramFragment.listItem1.clear();
+        HashMap<String, String> map;
+        for(int i=0;i<MyApplication.listOfCurrentPOIS.size();i++) {
+            POI poi= MyApplication.listOfCurrentPOIS.get(i);
+            Log.v("group", poi.toString());
+            map = new HashMap<String, String>();
+            // recuperer les données du superviseur
+            map.put(TAG_NAME,poi.getName());
+            map.put(TAG_TYPE,poi.getType());
+            map.put(TAG_TEMPS,poi.getTempsOfVisite().afficher());
+            map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+            ProgramFragment.listItem1.add(map);
+        }
+        ProgramFragment.mSchedule1.notifyDataSetChanged();
+
+    }
+
 }
+
+
