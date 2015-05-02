@@ -33,6 +33,7 @@ public class ProgramFragment extends Fragment {
     private ListView maListViewPerso;
     ArrayList<HashMap<String, String>> listItem;//array of items
     HashMap<String, String> map;//single item data
+    private SimpleAdapter mSchedule;
     private static final String TAG_NAME = "First day";
     private static final String TAG_TYPE = "hang out";
     private static final String TAG_TEMPS = "HH::MM";
@@ -69,6 +70,7 @@ public class ProgramFragment extends Fragment {
             map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
             listItem.add(map);
         }
+        MyApplication.listOfCurrentPOIS=myPOIs;
         maListViewPerso.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
@@ -85,7 +87,7 @@ public class ProgramFragment extends Fragment {
             }
         });
 
-        SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+        mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
                 new String[] {"img", TAG_NAME,TAG_TYPE,TAG_TEMPS}, new int[] {R.id.img, R.id.titre, R.id.description, R.id.superviseur});
         maListViewPerso.setAdapter(mSchedule);
 
