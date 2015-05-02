@@ -55,8 +55,6 @@ public class RegisterActivity extends ActionBarActivity {
             public void onClick(View view) {
 
                 if (MyApplication.locationManager!=null) MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 username = usernameField.getText().toString();
                 password = passwordField.getText().toString();
@@ -78,6 +76,9 @@ public class RegisterActivity extends ActionBarActivity {
                             Toast.makeText(getApplicationContext(),
                                     "Signing up successfully!"
                                     , Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(getApplicationContext(), AuthentificationActivity.class);
+                        startActivity(i);
+
 
                     }
                 });
