@@ -3,7 +3,7 @@ package smartcity.begrouped.model;
 /**
  * Created by Anes on 30/04/2015.
  */
-public class Temps {
+public class Temps implements  Comparable{
     private int hh,mm;
 
     public Temps(int hh, int mm) {
@@ -45,5 +45,15 @@ public class Temps {
     }
     public String afficher(){
         return hh+":"+mm;
+    }
+
+    @Override
+    public int compareTo(Object another) {
+        Temps otherTime=(Temps)another;
+        if (hh<otherTime.getHh()) return -1;
+        if (hh>otherTime.getHh()) return 1;
+        if (mm<otherTime.getMm()) return -1;
+        if (mm>otherTime.getMm()) return 1;
+        return 0;
     }
 }
