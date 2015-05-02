@@ -4,6 +4,7 @@ package smartcity.begrouped.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import smartcity.begrouped.R;
+import smartcity.begrouped.controllers.POIManager;
+import smartcity.begrouped.model.POI;
 
 
 public class AddDestinationFragment extends Fragment {
@@ -68,7 +72,20 @@ public class AddDestinationFragment extends Fragment {
                     Toast.makeText(getActivity(), "Looking for : "+search_query.getText(), Toast.LENGTH_LONG).show();
 
                     // Anes : Call your search function here : performSearch();
-
+                    LinkedList<POI> listPOI= POIManager.searchPOIByNameByTask(search_query.getText().toString());
+                    listItem.clear();
+                    for(int i=0;i<listPOI.size();i++) {
+                        POI poi= listPOI.get(i);
+                        Log.v("group", poi.toString());
+                        map = new HashMap<String, String>();
+                        // recuperer les données du superviseur
+                        map.put(TAG_NAME,poi.getName());
+                        map.put(TAG_TYPE,poi.getType());
+                        map.put(TAG_TEMPS,"");
+                        map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+                        listItem.add(map);
+                    }
+                    mSchedule.notifyDataSetChanged();
                     return true;
                 }
                 return false;
