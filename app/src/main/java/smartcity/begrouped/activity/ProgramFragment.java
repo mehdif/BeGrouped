@@ -20,8 +20,10 @@ import java.util.LinkedList;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.GroupManager;
+import smartcity.begrouped.controllers.POIManager;
 import smartcity.begrouped.controllers.UserManager;
 import smartcity.begrouped.model.Group;
+import smartcity.begrouped.model.POI;
 import smartcity.begrouped.model.User;
 import smartcity.begrouped.utils.MyApplication;
 
@@ -31,6 +33,7 @@ public class ProgramFragment extends Fragment {
     private ListView maListViewPerso;
     ArrayList<HashMap<String, String>> listItem;//array of items
     HashMap<String, String> map;//single item data
+    private SimpleAdapter mSchedule;
     private static final String TAG_NAME = "First day";
     private static final String TAG_TYPE = "hang out";
     private static final String TAG_TEMPS = "HH::MM";
@@ -54,43 +57,37 @@ public class ProgramFragment extends Fragment {
         maListViewPerso = (ListView) rootView.findViewById(R.id.listView1);
         //Array of data to fill in the list
         listItem = new ArrayList<HashMap<String, String>>();
-        LinkedList<Group> mygroups= GroupManager.getGroups();
-        for(int i=0;i<mygroups.size();i++) {
-            Group group= mygroups.get(i);
-            Log.v("group", group.toString());
+        //LinkedList<Group> mygroups= GroupManager.getGroups();
+        LinkedList<POI> myPOIs= POIManager.getDayProgramOfGroupByTask(MyApplication.dateOfCurrentProgram,MyApplication.currentGroup.getName());
+        for(int i=0;i<myPOIs.size();i++) {
+            POI poi= myPOIs.get(i);
+            Log.v("group", poi.toString());
             map = new HashMap<String, String>();
             // recuperer les données du superviseur
-            String supervisorname=group.getSupervisor().getUsername();
-            Object object= UserManager.getUserFromUserName(supervisorname);
-            if ( object instanceof User) {
-                User user=(User) object;
-                group.getSupervisor().setFirstname(user.getFirstname());
-                group.getSupervisor().setLastname(user.getLastname());
-                group.getSupervisor().setPhoneNumber(user.getPhoneNumber());
-            }
-            map.put(TAG_NAME,group.getName());
-            map.put(TAG_TYPE,group.getLocationName());
-            map.put(TAG_TEMPS,group.getSupervisor().getUsername());
+            map.put(TAG_NAME,poi.getName());
+            map.put(TAG_TYPE,poi.getType());
+            map.put(TAG_TEMPS,poi.getTempsOfVisite().afficher());
             map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
             listItem.add(map);
         }
+        MyApplication.listOfCurrentPOIS=myPOIs;
         maListViewPerso.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                HashMap<String, String> map = (HashMap<String, String>) maListViewPerso.getItemAtPosition(position);
+                //HashMap<String, String> map = (HashMap<String, String>) maListViewPerso.getItemAtPosition(position);
                 /// récupérer les infos sur le groupe
-                MyApplication.currentGroup= GroupManager.getGroupMembersFromName(map.get(TAG_NAME));
+               // MyApplication.currentGroup= GroupManager.getGroupMembersFromName(map.get(TAG_NAME));
 
-                FragmentManager fragmentManager = getFragmentManager();
+              /*  FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 GroupHomeFragment fragment = new GroupHomeFragment();
                 fragmentTransaction.replace(R.id.container_body, fragment,"tag");
-                fragmentTransaction.commit();
+                fragmentTransaction.commit();*/
 
             }
         });
 
-        SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+        mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
                 new String[] {"img", TAG_NAME,TAG_TYPE,TAG_TEMPS}, new int[] {R.id.img, R.id.titre, R.id.description, R.id.superviseur});
         maListViewPerso.setAdapter(mSchedule);
 
