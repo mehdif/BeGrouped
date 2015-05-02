@@ -43,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/background_holo_light"
                 android:ems="10"
+                android:singleLine="true"
                 android:hint="First Name"
                 android:inputType="textPersonName" />
 
@@ -62,6 +63,7 @@
                 android:layout_marginTop="5dp"
                 android:textColorHint="@color/background_holo_light"
                 android:ems="10"
+                android:singleLine="true"
                 android:hint="Last Name "
                 android:inputType="textPersonName" />
         </FrameLayout>
@@ -77,6 +79,7 @@
                 android:layout_margin="5dp"
                 android:textColorHint="@color/background_holo_light"
                 android:ems="10"
+                android:singleLine="true"
                 android:hint="User Name"
                 android:inputType="textPersonName" />
         </FrameLayout>
@@ -91,6 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:ems="10"
+                android:singleLine="true"
                 android:textColorHint="@color/background_holo_light"
                 android:hint="Password"
                 android:inputType="textPassword" >
@@ -108,6 +112,7 @@
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/background_holo_light"
                 android:ems="10"
+                android:singleLine="true"
                 android:hint="Confir Password"
                 android:inputType="textPassword" />
 
@@ -123,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:ems="10"
+                android:singleLine="true"
                 android:textColorHint="@color/background_holo_light"
                 android:hint="Phone number"
                 android:inputType="number" />

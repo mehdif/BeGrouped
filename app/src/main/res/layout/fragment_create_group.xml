@@ -43,6 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextGroupName"
+                android:singleLine="true"
                 android:hint="Group Name"
                 android:textColor="@color/navigationBarColor"
                 android:layout_gravity="center"
@@ -62,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextRegionName"
                 android:hint="Region Name"
+                android:singleLine="true"
                 android:layout_gravity="center"
                 android:textColor="@color/navigationBarColor"
                 android:minWidth="200dp" />
