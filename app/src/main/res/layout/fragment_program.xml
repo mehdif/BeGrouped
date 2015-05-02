@@ -39,7 +39,9 @@
             android:layout_weight="45"
             android:layout_gravity="left"
             android:background="@drawable/layers_gplus_button_bg"
-            android:textAppearance="?android:attr/textAppearanceLargeInverse" />
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            android:onClick="enregistrer"/>
+
         />
 
         <LinearLayout
@@ -56,7 +58,8 @@
             android:id="@+id/buttonCancel"
             android:layout_weight="50"
             android:background="@drawable/layers_gplus_button_bg"
-            android:textAppearance="?android:attr/textAppearanceLargeInverse" />
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            android:onClick="cancel"/>
         />
     </LinearLayout>
 
