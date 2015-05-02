@@ -56,7 +56,8 @@ public class POIManager {
                     String phone= (String) jsonObject.get(Constants.PHONE);
                     String email= (String) jsonObject.get(Constants.EMAIL);
                     String website= (String) jsonObject.get(Constants.WEBSITE);
-                    listOfPOI.add(new POI(type, typeDetail, name, address, phone, email, website, new Location(Double.parseDouble(latitude), Double.parseDouble(longitude))));
+                    String poiId= (String) jsonObject.get(Constants.POI_ID);
+                    listOfPOI.add(new POI(Integer.parseInt(poiId),type, typeDetail, name, address, phone, email, website, new Location(Double.parseDouble(latitude), Double.parseDouble(longitude))));
                 }
                 return listOfPOI;
             } catch (JSONException e) {
@@ -99,7 +100,8 @@ public class POIManager {
                     String website= (String) jsonObject.get(Constants.WEBSITE);
                     String dateSTR=(String) jsonObject.get(Constants.DATE);
                     String tempsSTR=(String) jsonObject.get(Constants.TEMPS);
-                    POI poi=new POI(type,typeDetail,name,address,phone,email,website, new Location(Double.parseDouble(latitude), Double.parseDouble(longitude)));
+                    String poiId= (String) jsonObject.get(Constants.POI_ID);
+                    POI poi=new POI(Integer.parseInt(poiId),type, typeDetail, name, address, phone, email, website, new Location(Double.parseDouble(latitude), Double.parseDouble(longitude)));
                     poi.setDateOfVisite(Date.dateFromLittleString(dateSTR));
                     poi.setTempsOfVisite(Temps.tempsFromLittleString(tempsSTR));
                     listOfPOI.add(poi);
@@ -144,7 +146,8 @@ public class POIManager {
                     String website= (String) jsonObject.get(Constants.WEBSITE);
                     String dateSTR=(String) jsonObject.get(Constants.DATE);
                     String tempsSTR=(String) jsonObject.get(Constants.TEMPS);
-                    POI poi=new POI(type,typeDetail,name,address,phone,email,website, new Location(Double.parseDouble(latitude), Double.parseDouble(longitude)));
+                    String poiId= (String) jsonObject.get(Constants.POI_ID);
+                    POI poi=new POI(Integer.parseInt(poiId),type, typeDetail, name, address, phone, email, website, new Location(Double.parseDouble(latitude), Double.parseDouble(longitude)));
                     poi.setDateOfVisite(Date.dateFromLittleString(dateSTR));
                     poi.setTempsOfVisite(Temps.tempsFromLittleString(tempsSTR));
                     listOfPOI.add(poi);
@@ -160,10 +163,12 @@ public class POIManager {
         return null;
     }
     public static void initDayGroupProgram(Date date,String groupName){
-        String jsonFileUrl = GlobalMethodes.getFromUrl(AllUrls.DELETE_GROUP+groupName+"/"+date.toString()+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        String jsonFileUrl = GlobalMethodes.getFromUrl(AllUrls.DELETE_PROGRAM+groupName+"/"+date.toString()+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
     }
-    public static void saveDayGroupProgram(Date date, String grouName, LinkedList<POI> dayProgram){
-
+    public static void saveDayGroupProgram(Date date, String groupName, LinkedList<POI> dayProgram){
+        for (int i=0;i<dayProgram.size();i++){
+            GlobalMethodes.getFromUrl(AllUrls.ADD_LIGNE_PROGRAM+groupName+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        }
     }
 
 
