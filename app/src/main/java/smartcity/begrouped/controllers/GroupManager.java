@@ -331,11 +331,54 @@ public class GroupManager {
         if(jsonFileUrl.equals("FAILED")){
             return false;
         }
-        else {
+        else if(jsonFileUrl.equals("SUCCEED")){
             return true;
         }
+        return false;
     }
 
+    public static LinkedList<User> getPendingDemands(String groupName){
+
+
+        LinkedList<User> waitingMembers = new LinkedList<>();
+
+        JSONArray members;
+
+        String jsonFileUrl = getFromUrl(AllUrls.GET_PENDING_DEMANDS + groupName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+
+        Log.v("Json pending demands: ", jsonFileUrl);
+
+        //Json file parser
+        if (jsonFileUrl != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(jsonFileUrl);
+
+                // Getting JSON Array node
+                members = jsonObj.getJSONArray(Constants.PENDING_DEMANDS);
+
+                // looping through All members
+                for (int i = 0; i < members.length(); i++) {
+                    JSONObject jsonObject = members.getJSONObject(i);
+
+                    String firstname = (String) jsonObject.get(Constants.FIRST_NAME);
+                    String lastname = (String) jsonObject.get(Constants.LAST_NAME);
+                    String username = (String) jsonObject.get(Constants.USERNAME);
+                    String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
+
+                    waitingMembers.add(new User(firstname, lastname, username, null, phoneNumber));
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.e("ServiceHandler", "Couldn't get any data from the url");
+        }
+
+
+        return waitingMembers;
+
+    }
     public static Group getGroupMembersFromName(String groupName){
         try {
             return ((Group)new TaskGetJsonMembers(groupName).execute().get());
@@ -358,6 +401,46 @@ public class GroupManager {
         return null;
     }
 
+    public static Boolean joinGroup(String groupName){
+
+        String jsonFileUrl = getFromUrl(AllUrls.ASK_JOIN_GROUP + groupName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+
+        Log.v("Json join group : ", jsonFileUrl);
+
+        if(jsonFileUrl.equals("SUCCEED")){
+            return true;
+        }
+        return false;
+    }
+
+    public static Boolean acceptMember(String groupName, String memberUsername){
+
+        String jsonFileUrl = getFromUrl(AllUrls.ACCEPT_MEMBER_TO_GROUP + groupName +"/" +"/" + memberUsername + "/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+
+        Log.v("Json accept demand : ", jsonFileUrl);
+
+        if(jsonFileUrl.equals("SUCCEED")){
+            return true;
+        }
+        return false;
+    }
+
+    public static class TaskAcceptMember extends AsyncTask {
+
+        String groupName;
+        String memberUsername;
+
+        public TaskAcceptMember(String groupName, String memberUsername){
+            this.groupName = groupName;
+            this.memberUsername = memberUsername;
+        }
+        @Override
+        protected Boolean doInBackground(Object[] params)
+        {
+            return acceptMember(groupName, memberUsername);
+        }
+
+    }
     public static class TaskGetJsonMembers extends AsyncTask {
 
         String groupName;
@@ -373,6 +456,20 @@ public class GroupManager {
         }
     }
 
+    public static class TaskGetPendingDemands extends AsyncTask {
+
+        String groupName;
+        public  TaskGetPendingDemands(String groupName){
+            this.groupName = groupName;
+        }
+
+        @Override
+        protected LinkedList<User> doInBackground(Object[] params) {
+
+            return getPendingDemands(groupName);
+
+        }
+    }
 
 
     public static void callTaskUpdateGroupMemberLocations(Group group){
@@ -382,6 +479,31 @@ public class GroupManager {
 
     }
 
+    public static Boolean callTaskJoinGroup(String groupName){
+
+        try {
+            return  (Boolean) new TaskJoinGroup(groupName).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
+
+    public static Boolean callTaskAcceptMember(String groupName, String memberUsername){
+
+        try {
+            return  (Boolean) new TaskAcceptMember(groupName, memberUsername).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
 
     public static boolean callTaskDeleteGroup(Group group){
 
@@ -407,6 +529,17 @@ public class GroupManager {
         return null;
     }
 
+    public static LinkedList<User> callTaskGetPendingDemands(String groupName){
+
+        try {
+            return (LinkedList<User>) new TaskGetPendingDemands(groupName).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
     public static class TaskGetMemberPositions extends AsyncTask {
@@ -417,10 +550,7 @@ public class GroupManager {
         }
         @Override
         protected Group doInBackground(Object[] params) {
-
-
             return updateGroupUserLocations(group);
-
         }
 
         @Override
@@ -442,6 +572,22 @@ public class GroupManager {
 
         }
     }
+
+    public static class TaskJoinGroup extends AsyncTask {
+
+        String groupName;
+        public TaskJoinGroup(String groupName){
+            this.groupName=groupName;
+        }
+
+        @Override
+        protected Boolean doInBackground(Object[] params) {
+
+            return joinGroup(groupName);
+
+        }
+    }
+
 
 
 
