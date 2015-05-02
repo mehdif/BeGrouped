@@ -96,7 +96,7 @@ public class MessageService extends Service implements SinchClientListener {
     {
     }
 
-    public void sendMessage(String recipientsIds, String textBody) {
+    public void sendMessage(List<String> recipientsIds, String textBody) {
 
         Log.v("message","on send message");
         if ( messageClient == null)
@@ -130,7 +130,7 @@ public class MessageService extends Service implements SinchClientListener {
     }
 
     public class MessageServiceInterface extends Binder {
-        public void sendMessage(String recipientsIds, String textBody) {
+        public void sendMessage(List<String> recipientsIds, String textBody) {
             Log.v("messageserviceinterface",textBody);
             Log.v("messageserviceinterface",recipientsIds.toString());
             MessageService.this.sendMessage(recipientsIds, textBody);
