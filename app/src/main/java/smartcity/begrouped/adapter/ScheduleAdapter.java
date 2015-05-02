@@ -51,10 +51,10 @@ public class ScheduleAdapter extends FragmentPagerAdapter implements IconPagerAd
         String title = "";
         switch(position){
             case 0:
-                title = "Members";
+                title = "Program";
                 break;
             case 1:
-                title = "Requests";
+                title = "Add Destination";
                 break;
         }
 
