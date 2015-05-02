@@ -1,6 +1,10 @@
 package smartcity.begrouped.controllers;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -24,11 +28,14 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.spec.ECField;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import smartcity.begrouped.activity.AuthentificationActivity;
 import smartcity.begrouped.activity.MapsActivity;
 import smartcity.begrouped.model.Appointment;
+import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.Location;
 import smartcity.begrouped.model.User;
 import smartcity.begrouped.utils.AllUrls;
@@ -176,7 +183,9 @@ public class UserManager {
         String hashedPassWord= GlobalMethodes.md5(passWord);
         String jsonFileUrl = getFromUrl(AllUrls.authenticate_user_url+userName+"/"+hashedPassWord);
 
-        Log.v("Jsonfile : " , jsonFileUrl);
+
+        Log.v("Jsonfile : " , "" + jsonFileUrl);
+
 
         //Json file parser
         try {
@@ -288,19 +297,11 @@ public class UserManager {
     }
 
 
-    public static Object authenticate(String username,String password)
+    public static void authenticate(String username,String password, AuthentificationActivity activity)
     {
-        try
-        {
-            return  new TaskAuthenticate().execute(username,password).get();
-        } catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
 
-        return null;
+            new TaskAuthenticate(activity).execute(username,password);
+
     }
 
     public static void register(String username,String password,String firstname,String lastname,String phonenumber)
@@ -344,6 +345,16 @@ public class UserManager {
 
     public static class TaskAuthenticate extends AsyncTask {
 
+        private AuthentificationActivity activity;
+
+        public TaskAuthenticate(AuthentificationActivity activity){
+            this.activity = activity;
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
         @Override
         protected User doInBackground(Object[] params) {
 
@@ -352,6 +363,10 @@ public class UserManager {
             return createUserFromJson(params[0].toString(),params[1].toString());
         }
 
+        @Override
+        protected void onPostExecute(Object user) {
+           activity.getAuthentificatedUser(user);
+        }
     }
     public static class TaskRegister extends AsyncTask {
 

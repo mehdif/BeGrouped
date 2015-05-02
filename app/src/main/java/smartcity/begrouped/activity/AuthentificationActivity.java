@@ -1,6 +1,8 @@
 package smartcity.begrouped.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -26,6 +28,8 @@ public class AuthentificationActivity extends ActionBarActivity {
     private Button register;
     private EditText username;
     private EditText password;
+    private ProgressDialog progressDialog;
+    private Context context;
 
 
     @Override
@@ -34,11 +38,11 @@ public class AuthentificationActivity extends ActionBarActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_authentification);
 
-
             login = (Button) findViewById(R.id.buttonLogin);
             register = (Button) findViewById(R.id.buttonRegister);
             username = (EditText) findViewById(R.id.editTextId);
             password = (EditText) findViewById(R.id.editTextPassword);
+            context = this;
             login.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -47,31 +51,10 @@ public class AuthentificationActivity extends ActionBarActivity {
                     if (MyApplication.locationManager != null)
                         MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
 
-                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
-                    Object user = UserManager.authenticate(username.getText().toString(), password.getText().toString());
-                    if (user instanceof User && user != null) {
+                    showProgress();
 
-
-                        MyApplication.myIdentity = (User) user;
-
-                        ParseUser.logInInBackground(username.getText().toString(), password.getText().toString(), new LogInCallback() {
-                            public void done(ParseUser user, com.parse.ParseException e) {
-                                if (user != null) {
-                                    Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
-                                    startService(serviceIntent);
-                                    Log.v("service", "start service");
-
-                                }
-                            }
-                        });
-
-                        startActivity(i);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "NO ACCOUNT AT THIS NAME", Toast.LENGTH_LONG).show();
-                    }
-
+                    UserManager.authenticate(username.getText().toString(), password.getText().toString(), AuthentificationActivity.this);
                 }
             });
 
@@ -85,6 +68,7 @@ public class AuthentificationActivity extends ActionBarActivity {
                     startActivity(i);
                     overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
+
                 }
             });
         }
@@ -93,6 +77,44 @@ public class AuthentificationActivity extends ActionBarActivity {
             Log.v("throwable:","wik wik");
         }
 
+    }
+    public void getAuthentificatedUser(Object user){
+
+        if (user instanceof User && user != null) {
+
+
+            MyApplication.myIdentity = (User) user;
+
+            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+
+            ParseUser.logInInBackground(username.getText().toString(), password.getText().toString(), new LogInCallback() {
+                public void done(ParseUser user, com.parse.ParseException e) {
+                    if (user != null) {
+                        Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
+                        startService(serviceIntent);
+                        Log.v("service", "start service");
+
+                    }
+                }
+            });
+
+            hideProgress();
+            startActivity(i);
+        } else {
+            Toast.makeText(getApplicationContext(), "NO ACCOUNT AT THIS NAME", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void showProgress(){
+        progressDialog = ProgressDialog.show(AuthentificationActivity.this, null,
+                "Loading", true);
+    }
+
+    public void hideProgress(){
+        if(progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
     }
 
 
