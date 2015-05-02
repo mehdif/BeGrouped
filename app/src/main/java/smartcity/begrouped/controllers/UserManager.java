@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.spec.ECField;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -197,13 +198,14 @@ public class UserManager {
     }
 
     public static String insertUser(String userName,String passWord,String firstName,String lastName,String phonenumber){
-
-        String jsonFileUrl = getFromUrl(AllUrls.register_user_url+userName+"/"+passWord+"/"+firstName+"/"+lastName+"/"+phonenumber);
-        Log.v("Jsonfile : " , jsonFileUrl);
-
-        //Json file parser
+        String jsonFileUrl = "";
         try {
+            String encodedFirstName= URLEncoder.encode(firstName, "utf-8").replace("+", "%20");
+            String encodedLastName= URLEncoder.encode(lastName, "utf-8").replace("+", "%20");
+            jsonFileUrl = getFromUrl(AllUrls.register_user_url+userName+"/"+passWord+"/"+encodedFirstName+"/"+encodedLastName+"/"+phonenumber);
+            Log.v("Jsonfile : " , jsonFileUrl);
 
+            //Json file parser
             JSONObject jsonObject = new JSONObject(jsonFileUrl);
 
             String firstname = (String) jsonObject.get(Constants.FIRST_NAME);
@@ -212,22 +214,12 @@ public class UserManager {
             String password = (String) jsonObject.get(Constants.PASSWORD);
             String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
             MyApplication.myIdentity=new User(firstname,lastname,username,password,phoneNumber);
-
         }
 
         catch(Exception e){
             Log.e("Error : ", e.getMessage());
-
-
-
-
-
-
         }
         return jsonFileUrl;
-
-
-
     }
     public static User getUserFromName(String username){
 
@@ -365,8 +357,6 @@ public class UserManager {
         protected Object doInBackground(Object[] params) {
 
             insertUser(params[0].toString(),params[1].toString(),params[2].toString(),params[3].toString(),params[4].toString());
-
-
             return null ;
         }
     }
