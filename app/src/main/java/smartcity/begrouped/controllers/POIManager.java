@@ -58,7 +58,7 @@ public class POIManager {
                     String phone= (String) jsonObject.get(Constants.PHONE);
                     String email= (String) jsonObject.get(Constants.EMAIL);
                     String website= (String) jsonObject.get(Constants.WEBSITE);
-                    String poiId= (String) jsonObject.get(Constants.POI_ID);
+                    String poiId= (String) jsonObject.get(Constants.ID);
                     listOfPOI.add(new POI(Integer.parseInt(poiId),type, typeDetail, name, address, phone, email, website, new Location(Double.parseDouble(latitude), Double.parseDouble(longitude))));
                 }
                 return listOfPOI;
@@ -109,9 +109,10 @@ public class POIManager {
 
 
 
-    private static LinkedList<POI> getDayProgramOfGroup(Date date,String groupName){
+    public static LinkedList<POI> getDayProgramOfGroup(Date date,String groupName){
 
         JSONArray poiList;
+        Log.i("entree2","entree2");
         LinkedList<POI> listOfPOI=new LinkedList<POI>();
         String jsonFileUrl = GlobalMethodes.getFromUrl(AllUrls.GET_PROGRAM+groupName+"/"+date.toString()+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
         Log.v("Jsonfile : ", " " + jsonFileUrl);
@@ -127,24 +128,13 @@ public class POIManager {
                 // looping through All members
                 for (int i = 0; i < poiList.length(); i++) {
                     JSONObject jsonObject = poiList.getJSONObject(i);
-
-                    String type= (String) jsonObject.get(Constants.TYPE);
-                    String typeDetail= (String) jsonObject.get(Constants.TYPE_DETAIL);
-                    String name= (String) jsonObject.get(Constants.NAME);
-                    String latitude= (String) jsonObject.get(Constants.LATITUDE);
-                    String longitude= (String) jsonObject.get(Constants.LONGITUDE);
-                    String address= (String) jsonObject.get(Constants.ADDRESS);
-                    String phone= (String) jsonObject.get(Constants.PHONE);
-                    String email= (String) jsonObject.get(Constants.EMAIL);
-                    String website= (String) jsonObject.get(Constants.WEBSITE);
                     String dateSTR=(String) jsonObject.get(Constants.DATE);
                     String tempsSTR=(String) jsonObject.get(Constants.TEMPS);
                     String poiId= (String) jsonObject.get(Constants.POI_ID);
-                    POI poi=new POI(Integer.parseInt(poiId),type, typeDetail, name, address, phone, email, website, new Location(Double.parseDouble(latitude), Double.parseDouble(longitude)));
+                    POI poi=getPOIById(Integer.parseInt(poiId));
                     poi.setDateOfVisite(Date.dateFromLittleString(dateSTR));
                     poi.setTempsOfVisite(Temps.tempsFromLittleString(tempsSTR));
                     listOfPOI.add(poi);
-
                 }
                 return listOfPOI;
             } catch (JSONException e) {
@@ -166,7 +156,7 @@ public class POIManager {
         }
         return null;
     }
-    private static class TaskGetDayProgramOfGroup extends AsyncTask {
+    public  static class TaskGetDayProgramOfGroup extends AsyncTask {
 
         String groupName;
         Date date;
@@ -178,11 +168,37 @@ public class POIManager {
         @Override
         protected LinkedList<POI> doInBackground(Object[] params)
         {
-            return getDayProgramOfGroup(date,groupName);
+           return getDayProgramOfGroup(date,groupName);
         }
 
     }
 
+    private static POI getPOIById(int poiId){
+        String jsonFileUrl = GlobalMethodes.getFromUrl(AllUrls.GET_POI_BY_ID + poiId + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
+
+
+        //Json file parser
+        try {
+
+            JSONObject jsonObject = new JSONObject(jsonFileUrl);
+            String type= (String) jsonObject.get(Constants.TYPE);
+            String typeDetail= (String) jsonObject.get(Constants.TYPE_DETAIL);
+            String name= (String) jsonObject.get(Constants.NAME);
+            String latitude= (String) jsonObject.get(Constants.LATITUDE);
+            String longitude= (String) jsonObject.get(Constants.LONGITUDE);
+            String address= (String) jsonObject.get(Constants.ADDRESS);
+            String phone= (String) jsonObject.get(Constants.PHONE);
+            String email= (String) jsonObject.get(Constants.EMAIL);
+            String website= (String) jsonObject.get(Constants.WEBSITE);
+
+            return  new POI(poiId,type,typeDetail,name,address,phone,email,website,new Location(Double.parseDouble(latitude),Double.parseDouble(longitude)));
+
+        }
+        catch(Exception e){
+            Log.e("Error : ", e.getMessage());
+            return null;
+        }
+    }
 
 
 
@@ -208,24 +224,13 @@ public class POIManager {
                 // looping through All members
                 for (int i = 0; i < poiList.length(); i++) {
                     JSONObject jsonObject = poiList.getJSONObject(i);
-
-                    String type= (String) jsonObject.get(Constants.TYPE);
-                    String typeDetail= (String) jsonObject.get(Constants.TYPE_DETAIL);
-                    String name= (String) jsonObject.get(Constants.NAME);
-                    String latitude= (String) jsonObject.get(Constants.LATITUDE);
-                    String longitude= (String) jsonObject.get(Constants.LONGITUDE);
-                    String address= (String) jsonObject.get(Constants.ADDRESS);
-                    String phone= (String) jsonObject.get(Constants.PHONE);
-                    String email= (String) jsonObject.get(Constants.EMAIL);
-                    String website= (String) jsonObject.get(Constants.WEBSITE);
                     String dateSTR=(String) jsonObject.get(Constants.DATE);
                     String tempsSTR=(String) jsonObject.get(Constants.TEMPS);
                     String poiId= (String) jsonObject.get(Constants.POI_ID);
-                    POI poi=new POI(Integer.parseInt(poiId),type, typeDetail, name, address, phone, email, website, new Location(Double.parseDouble(latitude), Double.parseDouble(longitude)));
+                    POI poi=getPOIById(Integer.parseInt(poiId));
                     poi.setDateOfVisite(Date.dateFromLittleString(dateSTR));
                     poi.setTempsOfVisite(Temps.tempsFromLittleString(tempsSTR));
                     listOfPOI.add(poi);
-
                 }
                 return listOfPOI;
             } catch (JSONException e) {
@@ -336,6 +341,16 @@ public class POIManager {
             return null;
         }
     }
+
+
+
+
+
+
+
+
+
+
 
 
 
