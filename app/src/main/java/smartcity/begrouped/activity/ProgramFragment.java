@@ -49,7 +49,7 @@ public class ProgramFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_program, container, false);
-
+        /*
         //Get the listview
         maListViewPerso = (ListView) rootView.findViewById(R.id.listView1);
         //Array of data to fill in the list
@@ -93,7 +93,7 @@ public class ProgramFragment extends Fragment {
         SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
                 new String[] {"img", TAG_NAME,TAG_TYPE,TAG_TEMPS}, new int[] {R.id.img, R.id.titre, R.id.description, R.id.superviseur});
         maListViewPerso.setAdapter(mSchedule);
-
+    */
         return rootView;
 
     }

@@ -1,5 +1,6 @@
 package smartcity.begrouped.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ public class RegisterActivity extends ActionBarActivity {
     private EditText lastnameField;
     private EditText phonenumberField;
 
+    private ProgressDialog progressDialog;
 
 
     private String username;
@@ -55,8 +57,6 @@ public class RegisterActivity extends ActionBarActivity {
             public void onClick(View view) {
 
                 if (MyApplication.locationManager!=null) MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 username = usernameField.getText().toString();
                 password = passwordField.getText().toString();
@@ -64,23 +64,9 @@ public class RegisterActivity extends ActionBarActivity {
                 lastname=  lastnameField.getText().toString();
                 phonenumber=phonenumberField.getText().toString();
 
+                showProgress();
                 // Register in our server
-                UserManager.register(username, password, firstname, lastname, phonenumber);
-
-                // Register in Cloud
-                ParseUser user = new ParseUser();
-                user.setUsername(username);
-                user.setPassword(password);
-
-                user.signUpInBackground(new SignUpCallback() {
-                    public void done(com.parse.ParseException e) {
-
-                            Toast.makeText(getApplicationContext(),
-                                    "Signing up successfully!"
-                                    , Toast.LENGTH_LONG).show();
-
-                    }
-                });
+                UserManager.register(username, password, firstname, lastname, phonenumber, RegisterActivity.this);
 
 
             }
@@ -99,7 +85,41 @@ public class RegisterActivity extends ActionBarActivity {
         });
     }
 
+    public void registerUser(){
 
+
+        // Register in Cloud
+        ParseUser user = new ParseUser();
+        user.setUsername(username);
+        user.setPassword(password);
+
+        user.signUpInBackground(new SignUpCallback() {
+            public void done(com.parse.ParseException e) {
+
+                Toast.makeText(getApplicationContext(),
+                        "Signing up successfully!"
+                        , Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+        hideProgress();
+
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(i);
+
+    }
+
+    public void showProgress(){
+        progressDialog = ProgressDialog.show(this, null,
+                "Loading...", true);
+    }
+
+    public void hideProgress(){
+        if(progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
