@@ -22,7 +22,7 @@ public class MembersFragmentActivity extends Fragment {
     ViewPager mPager;
     PageIndicator mIndicator;
 
-    //private FragmentActivity myContext;
+
 
     public MembersFragmentActivity(){
 
