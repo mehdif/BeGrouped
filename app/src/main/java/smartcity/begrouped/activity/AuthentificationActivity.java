@@ -21,7 +21,7 @@ import smartcity.begrouped.utils.MessageService;
 import smartcity.begrouped.utils.MyApplication;
 
 
-public class AuthentificationActivity extends Activity {
+public class AuthentificationActivity extends ActionBarActivity {
     private Button login;
     private Button register;
     private EditText username;
