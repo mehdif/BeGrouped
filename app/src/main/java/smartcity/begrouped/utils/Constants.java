@@ -27,4 +27,15 @@ public class Constants {
     public final static String PENDING_DEMANDS = "DemandesEnAttentes";
 
 
+    public final static String POINTS = "points";
+    public final static String TYPE = "type";
+    public final static String TYPE_DETAIL = "typedetail";
+    public final static String NAME = "name";
+    public final static String ADDRESS = "address";
+    public final static String PHONE = "phone";
+    public final static String EMAIL = "email";
+    public final static String WEBSITE = "website";
+    public final static String PROGRAM = "program";
+
+
 }
