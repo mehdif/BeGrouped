@@ -1,5 +1,6 @@
 package smartcity.begrouped.controllers;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.Marker;
@@ -9,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.LinkedList;
+import java.util.concurrent.ExecutionException;
 
 import smartcity.begrouped.model.Date;
 import smartcity.begrouped.model.Location;
@@ -28,7 +30,7 @@ public class POIManager {
 
 
 
-    public static LinkedList<POI> searchPOIByName(String searchName){
+    private static LinkedList<POI> searchPOIByName(String searchName){
         JSONArray poiList;
         LinkedList<POI> listOfPOI=new LinkedList<POI>();
         String jsonFileUrl = GlobalMethodes.getFromUrl(AllUrls.SEARCH_POI_BY_NAME+searchName+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
@@ -70,7 +72,44 @@ public class POIManager {
     }
 
 
-    public static LinkedList<POI> getDayProgramOfGroup(Date date,String groupName){
+    public static LinkedList<POI> searchPOIByNameByTask(String searchName){
+        TaskSearchPOIByName task=new TaskSearchPOIByName(searchName);
+        try {
+                return (LinkedList<POI>) task.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static class TaskSearchPOIByName extends AsyncTask {
+
+        String searchName;
+
+
+        public TaskSearchPOIByName(String searchName){
+            this.searchName= searchName;
+        }
+        @Override
+        protected LinkedList<POI> doInBackground(Object[] params)
+        {
+            return searchPOIByName(searchName);
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    private static LinkedList<POI> getDayProgramOfGroup(Date date,String groupName){
 
         JSONArray poiList;
         LinkedList<POI> listOfPOI=new LinkedList<POI>();
@@ -116,7 +155,42 @@ public class POIManager {
         }
         return null;
     }
-    public static LinkedList<POI> getProgramOfGroup(String groupName){
+    public static LinkedList<POI> getDayProgramOfGroupByTask(Date date,String groupName){
+        TaskGetDayProgramOfGroup  task=new TaskGetDayProgramOfGroup(date,groupName);
+        try {
+            return (LinkedList<POI>) task.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static class TaskGetDayProgramOfGroup extends AsyncTask {
+
+        String groupName;
+        Date date;
+
+        public TaskGetDayProgramOfGroup (Date date,String groupName){
+            this.groupName= groupName;
+            this.date=date;
+        }
+        @Override
+        protected LinkedList<POI> doInBackground(Object[] params)
+        {
+            return getDayProgramOfGroup(date,groupName);
+        }
+
+    }
+
+
+
+
+
+
+
+
+    private static LinkedList<POI> getProgramOfGroup(String groupName){
 
         JSONArray poiList;
         LinkedList<POI> listOfPOI=new LinkedList<POI>();
@@ -162,12 +236,69 @@ public class POIManager {
         }
         return null;
     }
-    public static void initDayGroupProgram(Date date,String groupName){
+    public static LinkedList<POI> getProgramOfGroupByTask(String groupName){
+        TaskGetProgramOfGroup   task=new TaskGetProgramOfGroup (groupName);
+        try {
+            return (LinkedList<POI>) task.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static class TaskGetProgramOfGroup extends AsyncTask {
+
+        String groupName;
+
+
+        public TaskGetProgramOfGroup  (String groupName){
+            this.groupName= groupName;
+        }
+        @Override
+        protected LinkedList<POI> doInBackground(Object[] params)
+        {
+            return getProgramOfGroup(groupName);
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private static void initDayGroupProgram(Date date,String groupName){
         String jsonFileUrl = GlobalMethodes.getFromUrl(AllUrls.DELETE_PROGRAM+groupName+"/"+date.toString()+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
     }
-    public static void saveDayGroupProgram(Date date, String groupName, LinkedList<POI> dayProgram){
-        for (int i=0;i<dayProgram.size();i++){
-            GlobalMethodes.getFromUrl(AllUrls.ADD_LIGNE_PROGRAM+groupName+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+
+    public static void initDayGroupProgramByTask(Date date,String groupName){
+        TaskInitDayGroupProgram   task=new TaskInitDayGroupProgram (date,groupName);
+        task.execute();
+    }
+    private static class TaskInitDayGroupProgram extends AsyncTask {
+
+        String groupName;
+        Date date;
+
+        public TaskInitDayGroupProgram  (Date date,String groupName){
+            this.groupName= groupName;
+            this.date=date;
+        }
+        @Override
+        protected Object doInBackground(Object[] params)
+        {
+            initDayGroupProgram(date,groupName);
+            return null;
         }
     }
 
@@ -175,5 +306,35 @@ public class POIManager {
 
 
 
+
+
+
+    private static void saveDayGroupProgram(Date date, String groupName, LinkedList<POI> dayProgram){
+        for (int i=0;i<dayProgram.size();i++){
+            GlobalMethodes.getFromUrl(AllUrls.ADD_LIGNE_PROGRAM+dayProgram.get(i).getPoiId()+"/"+groupName+"/"+date.toString()+"/"+dayProgram.get(i).getTempsOfVisite().toString()+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        }
+    }
+    public static void saveDayGroupProgramByTask(Date date, String groupName, LinkedList<POI> dayProgram){
+    TasksaveDayGroupProgram   task=new TasksaveDayGroupProgram(date, groupName,dayProgram);
+        task.execute();
+    }
+    private static class TasksaveDayGroupProgram extends AsyncTask {
+
+        Date date;
+        String groupName;
+        LinkedList<POI> dayProgram;
+
+        public TasksaveDayGroupProgram  (Date date, String groupName, LinkedList<POI> dayProgram){
+            this.date=date;
+            this.groupName=groupName;
+            this.dayProgram=dayProgram;
+        }
+        @Override
+        protected Object doInBackground(Object[] params)
+        {
+            saveDayGroupProgram(date,groupName,dayProgram);
+            return null;
+        }
+    }
 
 }
