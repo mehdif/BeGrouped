@@ -71,7 +71,6 @@ public class POIManager {
         return null;
     }
 
-
     public static LinkedList<POI> searchPOIByNameByTask(String searchName){
         TaskSearchPOIByName task=new TaskSearchPOIByName(searchName);
         try {
@@ -95,6 +94,80 @@ public class POIManager {
         protected LinkedList<POI> doInBackground(Object[] params)
         {
             return searchPOIByName(searchName);
+        }
+
+    }
+
+
+    private static LinkedList<POI> getNearestPoint(double alatitude,double alongitude){
+        JSONArray poiList;
+        LinkedList<POI> listOfPOI=new LinkedList<POI>();
+        Log.v("aymen", AllUrls.GET_NEAREST_POI+alatitude+"/"+alongitude+"/" + "ba_belfodil"+"/"+"4a7d1ed414474e4033ac29ccb8653d9b");
+        String jsonFileUrl = GlobalMethodes.getFromUrl(AllUrls.GET_NEAREST_POI+alatitude+"/"+alongitude+"/" + "ba_belfodil"+"/"+"4a7d1ed414474e4033ac29ccb8653d9b");
+        Log.v("aymen", " " +jsonFileUrl);
+
+        //Json file parser
+        if (jsonFileUrl != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(jsonFileUrl);
+
+                // Getting JSON Array node
+                poiList= jsonObj.getJSONArray(Constants.POINTS);
+
+                // looping through All members
+                for (int i = 0; i < poiList.length(); i++) {
+                    JSONObject jsonObject = poiList.getJSONObject(i);
+
+                    String type= (String) jsonObject.get(Constants.TYPE);
+                    String typeDetail= (String) jsonObject.get(Constants.TYPE_DETAIL);
+                    String name= (String) jsonObject.get(Constants.NAME);
+                    String latitude= (String) jsonObject.get(Constants.LATITUDE);
+                    String longitude= (String) jsonObject.get(Constants.LONGITUDE);
+
+                    String address= (String) jsonObject.get(Constants.ADDRESS);
+                    String phone= (String) jsonObject.get(Constants.PHONE);
+                    String email= (String) jsonObject.get(Constants.EMAIL);
+                    String website= (String) jsonObject.get(Constants.WEBSITE);
+                    String poiId= (String) jsonObject.get(Constants.ID);
+                    listOfPOI.add(new POI(Integer.parseInt(poiId),type, typeDetail, name, address, phone, email, website, new Location(Double.parseDouble(latitude), Double.parseDouble(longitude))));
+                }
+                return listOfPOI;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.e("ServiceHandler", "Couldn't get any data from the url");
+        }
+        return null;
+    }
+
+    public static LinkedList<POI> getNearestPoiByTask(double latitude,double longitude){
+        TaskGetNearestPoi task=new TaskGetNearestPoi(latitude,longitude);
+        try {
+            return (LinkedList<POI>) task.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static class TaskGetNearestPoi extends AsyncTask {
+
+        double latitude;
+        double longitude;
+
+        public TaskGetNearestPoi(double latitude,double longitude)
+        {
+            this.latitude= latitude;
+            this.longitude= longitude;
+        }
+
+
+        @Override
+        protected LinkedList<POI> doInBackground(Object[] params)
+        {
+            return getNearestPoint(latitude,longitude);
         }
 
     }
