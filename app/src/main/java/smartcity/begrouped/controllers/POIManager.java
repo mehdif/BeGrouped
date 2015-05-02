@@ -34,7 +34,7 @@ public class POIManager {
         JSONArray poiList;
         LinkedList<POI> listOfPOI=new LinkedList<POI>();
         String jsonFileUrl = GlobalMethodes.getFromUrl(AllUrls.SEARCH_POI_BY_NAME+searchName+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
-        Log.v("Jsonfile : ", jsonFileUrl);
+        Log.v("Jsonfile : ", " " +jsonFileUrl);
 
         //Json file parser
         if (jsonFileUrl != null) {
@@ -114,7 +114,7 @@ public class POIManager {
         JSONArray poiList;
         LinkedList<POI> listOfPOI=new LinkedList<POI>();
         String jsonFileUrl = GlobalMethodes.getFromUrl(AllUrls.GET_PROGRAM+groupName+"/"+date.toString()+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
-        Log.v("Jsonfile : ", jsonFileUrl);
+        Log.v("Jsonfile : ", " " + jsonFileUrl);
 
         //Json file parser
         if (jsonFileUrl != null) {
@@ -195,7 +195,7 @@ public class POIManager {
         JSONArray poiList;
         LinkedList<POI> listOfPOI=new LinkedList<POI>();
         String jsonFileUrl = GlobalMethodes.getFromUrl(AllUrls.GET_PROGRAM+groupName+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
-        Log.v("Jsonfile : ", jsonFileUrl);
+        Log.v("Jsonfile : ", " " + jsonFileUrl);
 
         //Json file parser
         if (jsonFileUrl != null) {

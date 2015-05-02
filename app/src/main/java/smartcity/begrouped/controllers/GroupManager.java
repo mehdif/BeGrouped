@@ -1,6 +1,10 @@
 package smartcity.begrouped.controllers;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.Paint;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -21,8 +25,14 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
+import smartcity.begrouped.activity.AuthentificationActivity;
+import smartcity.begrouped.activity.CreateGroupFragment;
+import smartcity.begrouped.activity.HomeFragment;
+import smartcity.begrouped.activity.JoinGroupFragment;
+import smartcity.begrouped.activity.ManageGroupFragment;
 import smartcity.begrouped.activity.MapsActivity;
 import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.Location;
@@ -63,7 +73,7 @@ public class GroupManager {
         LinkedList<User> membersList = group.getMembers();
 
         String jsonFileUrl = getFromUrl("http://smartpld-001-site1.smarterasp.net/index.php/position_controller/getGroupPosition/algertour/"+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
-        Log.v("Jsonfile : ", jsonFileUrl);
+        Log.v("Jsonfile : ", " " + jsonFileUrl);
 
         //Json file parser
         if (jsonFileUrl != null) {
@@ -161,7 +171,7 @@ public class GroupManager {
 
         String jsonFileUrl = getFromUrl(AllUrls.GET_GROUP_INFORMATIONS + group.getName() +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("Json group info : ", jsonFileUrl);
+        Log.v("Json group info : ", " " + jsonFileUrl);
 
         //Json file parser
         try {
@@ -200,7 +210,7 @@ public class GroupManager {
 
         String jsonFileUrl = getFromUrl(AllUrls.GET_GROUP_MEMBERS + groupName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("Json members group: ", jsonFileUrl);
+        Log.v("Json members group: ", " " + jsonFileUrl);
 
         //Json file parser
         if (jsonFileUrl != null) {
@@ -243,7 +253,7 @@ public class GroupManager {
         String jsonFileUrl = getFromUrl(AllUrls.GET_GROUP_INFORMATIONS+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
         Log.v("group",AllUrls.GET_GROUP_INFORMATIONS+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
-        Log.v("group : ", jsonFileUrl);
+        Log.v("group : ", " " + jsonFileUrl);
 
         //Json file parser
         if (jsonFileUrl != null) {
@@ -282,9 +292,9 @@ public class GroupManager {
 
         String jsonFileUrl = getFromUrl(AllUrls.CREATE_GROUP + name +"/" + locationName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("Json create group : ", jsonFileUrl);
+        Log.v("Json create group : ", " " + jsonFileUrl);
 
-        if(jsonFileUrl.equals("GROUP_EXIST_BEFORE")){
+        if(jsonFileUrl != null && jsonFileUrl.equals("GROUP_EXIST_BEFORE")){
             return null;
         }
         else{
@@ -326,12 +336,12 @@ public class GroupManager {
     public static boolean deleteGroup(String groupName){
         String jsonFileUrl = getFromUrl(AllUrls.DELETE_GROUP + groupName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("Json delete group : ", jsonFileUrl);
+        Log.v("Json delete group : ", " " + jsonFileUrl);
 
-        if(jsonFileUrl.equals("FAILED")){
+        if(jsonFileUrl != null && jsonFileUrl.equals("FAILED")){
             return false;
         }
-        else if(jsonFileUrl.equals("SUCCEED")){
+        else if(jsonFileUrl != null && jsonFileUrl.equals("SUCCEED")){
             return true;
         }
         return false;
@@ -346,7 +356,7 @@ public class GroupManager {
 
         String jsonFileUrl = getFromUrl(AllUrls.GET_PENDING_DEMANDS + groupName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("Json pending demands: ", jsonFileUrl);
+        Log.v("Json pending demands: ", " " + jsonFileUrl);
 
         //Json file parser
         if (jsonFileUrl != null) {
@@ -389,25 +399,18 @@ public class GroupManager {
         }
         return null;
     }
-    public static LinkedList<Group> getGroups()
+    public static void getGroups(HomeFragment fragment)
     {
-        try {
-            return (LinkedList<Group>) new TaskGetMyGroups().execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
+        new TaskGetMyGroups(fragment).execute();
     }
 
     public static Boolean joinGroup(String groupName){
 
         String jsonFileUrl = getFromUrl(AllUrls.ASK_JOIN_GROUP + groupName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("Json join group : ", jsonFileUrl);
+        Log.v("Json join group : ", " " + jsonFileUrl);
 
-        if(jsonFileUrl.equals("SUCCEED")){
+        if(jsonFileUrl != null && jsonFileUrl.equals("SUCCEED")){
             return true;
         }
         return false;
@@ -419,7 +422,7 @@ public class GroupManager {
 
         Log.v("Json accept demand : ", jsonFileUrl);
 
-        if(jsonFileUrl.equals("SUCCEED")){
+        if(jsonFileUrl != null && jsonFileUrl.equals("SUCCEED")){
             return true;
         }
         return false;
@@ -479,10 +482,10 @@ public class GroupManager {
 
     }
 
-    public static Boolean callTaskJoinGroup(String groupName){
+    public static Boolean callTaskJoinGroup(String groupName, JoinGroupFragment fragment){
 
         try {
-            return  (Boolean) new TaskJoinGroup(groupName).execute().get();
+            return  (Boolean) new TaskJoinGroup(groupName, fragment).execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -517,16 +520,11 @@ public class GroupManager {
         return false;
     }
 
-    public static Group callTaskCreateNewGroup(String name, String locationName){
+    public static void callTaskCreateNewGroup(String name, String locationName, CreateGroupFragment fragment){
 
-        try {
-            return (Group) new TaskCreateNewGroup(name, locationName).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
+
+        new TaskCreateNewGroup(name, locationName, fragment).execute();
+
     }
 
     public static LinkedList<User> callTaskGetPendingDemands(String groupName){
@@ -565,47 +563,68 @@ public class GroupManager {
 
     public static class TaskGetMyGroups extends AsyncTask {
 
+        HomeFragment fragment;
+
+       public TaskGetMyGroups(HomeFragment fragment){
+           this.fragment = fragment;
+       }
+
+
         @Override
         protected LinkedList<Group> doInBackground(Object[] params) {
-
             return getMyGroups();
+        }
 
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            fragment.getGroup((LinkedList<Group>) o);
         }
     }
 
     public static class TaskJoinGroup extends AsyncTask {
 
-        String groupName;
-        public TaskJoinGroup(String groupName){
+        private String groupName;
+        private JoinGroupFragment fragment;
+
+        public TaskJoinGroup(String groupName, JoinGroupFragment fragment){
             this.groupName=groupName;
+            this.fragment = fragment;
         }
 
         @Override
         protected Boolean doInBackground(Object[] params) {
-
             return joinGroup(groupName);
+        }
 
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            fragment.joinGroup((Boolean) o);
         }
     }
 
-
-
-
     public static class TaskCreateNewGroup extends AsyncTask {
 
-        String name;
-        String locationName;
+        private String name;
+        private String locationName;
+        private CreateGroupFragment fragment;
 
-        public TaskCreateNewGroup(String name, String locationName){
+        public TaskCreateNewGroup(String name, String locationName, CreateGroupFragment fragment){
             this.name = name;
             this.locationName = locationName;
+            this.fragment = fragment;
         }
 
         @Override
         protected Group doInBackground(Object[] params) {
-
             return createNewGroup(name, locationName);
+        }
 
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            fragment.createGroup((Group) o);
         }
     }
 
