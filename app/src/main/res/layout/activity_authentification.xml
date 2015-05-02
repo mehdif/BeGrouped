@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:textSize="45dp"
-                android:text="Be Grouped"
+                android:text="BeGrouped"
                 android:textStyle="bold" />
         </FrameLayout>
 
