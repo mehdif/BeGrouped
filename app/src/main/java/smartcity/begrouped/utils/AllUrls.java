@@ -46,9 +46,9 @@ public final class AllUrls {
     //------------------------------------------------------------------------------------------------
 
     //---- Gestion des programmes -------------------------------------------------------------------
-    public static final String ADD_LIGNE_PROGRAM="program_controller/addPoiProgram/"; //parametres : poi_id,groupname,date (YYYY-MM-JJ),[heure,minute,seconde] (fait par le superviseur)
-    public static final String GET_PROGRAM="program_controller/getProgram/"; //parametres : groupname,[date (YYYY-MM-JJ)]
-    public static final String DELETE_PROGRAM="program_controller/deleteProgram/"; //parametres : groupname,[date (YYYY-MM-JJ)]
+    public static final String ADD_LIGNE_PROGRAM=base+"program_controller/addPoiProgram/"; //parametres : poi_id,groupname,date (YYYY-MM-JJ),[heure,minute,seconde] (fait par le superviseur)
+    public static final String GET_PROGRAM=base+"program_controller/getProgram/"; //parametres : groupname,[date (YYYY-MM-JJ)]
+    public static final String DELETE_PROGRAM=base+"program_controller/deleteProgram/"; //parametres : groupname,[date (YYYY-MM-JJ)]
     //------------------------------------------------------------------------------------------------
 
 }
