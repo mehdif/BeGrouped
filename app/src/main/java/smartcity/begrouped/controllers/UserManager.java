@@ -33,6 +33,7 @@ import smartcity.begrouped.model.Location;
 import smartcity.begrouped.model.User;
 import smartcity.begrouped.utils.AllUrls;
 import smartcity.begrouped.utils.Constants;
+import smartcity.begrouped.utils.GlobalMethodes;
 import smartcity.begrouped.utils.MyApplication;
 
 /**
@@ -172,8 +173,8 @@ public class UserManager {
     }
 
     public static User createUserFromJson(String userName,String passWord){
-
-        String jsonFileUrl = getFromUrl(AllUrls.authenticate_user_url+userName+"/"+passWord);
+        String hashedPassWord= GlobalMethodes.md5(passWord);
+        String jsonFileUrl = getFromUrl(AllUrls.authenticate_user_url+userName+"/"+hashedPassWord);
 
         Log.v("Jsonfile : " , jsonFileUrl);
 
@@ -202,7 +203,8 @@ public class UserManager {
         try {
             String encodedFirstName= URLEncoder.encode(firstName, "utf-8").replace("+", "%20");
             String encodedLastName= URLEncoder.encode(lastName, "utf-8").replace("+", "%20");
-            jsonFileUrl = getFromUrl(AllUrls.register_user_url+userName+"/"+passWord+"/"+encodedFirstName+"/"+encodedLastName+"/"+phonenumber);
+            String hashedPassWord= GlobalMethodes.md5(passWord);
+            jsonFileUrl = getFromUrl(AllUrls.register_user_url+userName+"/"+hashedPassWord+"/"+encodedFirstName+"/"+encodedLastName+"/"+phonenumber);
             Log.v("Jsonfile : " , jsonFileUrl);
 
             //Json file parser
