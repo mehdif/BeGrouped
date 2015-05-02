@@ -12,9 +12,10 @@ import com.viewpagerindicator.TitlePageIndicator;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.adapter.MembersAdapter;
+import smartcity.begrouped.adapter.ScheduleAdapter;
 
 public class ScheduleFragmentActivity extends Fragment {
-    MembersAdapter mAdapter;
+    ScheduleAdapter mAdapter;
     ViewPager mPager;
     PageIndicator mIndicator;
 
@@ -28,7 +29,7 @@ public class ScheduleFragmentActivity extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAdapter = new MembersAdapter(getActivity().getSupportFragmentManager());
+        mAdapter = new ScheduleAdapter(getActivity().getSupportFragmentManager());
 
     }
 
