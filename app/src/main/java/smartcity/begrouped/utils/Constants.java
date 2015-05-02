@@ -36,6 +36,7 @@ public class Constants {
     public final static String EMAIL = "email";
     public final static String WEBSITE = "website";
     public final static String PROGRAM = "program";
+    public final static String TEMPS= "temps";
 
 
 }
