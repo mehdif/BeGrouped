@@ -337,4 +337,36 @@ public class POIManager {
         }
     }
 
+
+
+    public static LinkedList<POI> sortPOIByTime(LinkedList<POI> poiList){
+        LinkedList<POI> sortedPOI=new LinkedList<POI>();
+        int earLiestPOI=0;
+        while (poiList.size()>0){
+            earLiestPOI=0;
+            for (int i=0;i<poiList.size();i++){
+                if (poiList.get(earLiestPOI).getTempsOfVisite().compareTo(poiList.get(i).getTempsOfVisite())>0)
+                    earLiestPOI=i;
+            }
+            sortedPOI.add(poiList.get(earLiestPOI));
+            poiList.remove(earLiestPOI);
+        }
+        return sortedPOI;
+    }
+    public static LinkedList<POI> getSortedPOIOfDay(LinkedList<POI> poiList, Date date){
+        LinkedList<POI> poisOfDay=new LinkedList<POI>();
+        for (int i=0;i<poiList.size();i++){
+            if (date.equals(poiList.get(i).getDateOfVisite())){
+                poisOfDay.add(poiList.get(i));
+            }
+        }
+        return sortPOIByTime(poisOfDay);
+    }
+    public static void addPoiToSortedList(LinkedList<POI> sortedPOIS, POI poi){
+        int i=0;
+        for (i=0;i<sortedPOIS.size();i++){
+            if (poi.getTempsOfVisite().compareTo(sortedPOIS.get(i).getTempsOfVisite())<0) break;
+        }
+        sortedPOIS.add(i,poi);
+    }
 }

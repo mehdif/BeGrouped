@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import smartcity.begrouped.R;
+import smartcity.begrouped.utils.MyApplication;
 
 
 public class GroupHomeFragment extends Fragment {
@@ -166,6 +167,7 @@ public class GroupHomeFragment extends Fragment {
                         );
 
                         Toast.makeText(getActivity(), dateViewFormatter.format(choosen.getTime()),Toast.LENGTH_LONG).show();
+                        MyApplication.dateOfCurrentProgram=new smartcity.begrouped.model.Date(choosen.get(Calendar.DAY_OF_MONTH),choosen.get(Calendar.MONTH),choosen.get(Calendar.YEAR));
                         dialog.dismiss();
                         FragmentManager fragmentManager = getFragmentManager();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

@@ -58,4 +58,10 @@ public class Date {
     public String toString() {
         return yy+"-"+mm+"-"+jj;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Date other=(Date )o;
+        return ((jj==other.getJj()) && (mm==other.getMm()) && (yy==other.getYy()));
+    }
 }
