@@ -34,4 +34,37 @@ public class Msg {
     public String getText() {
         return text;
     }
+
+   /* public boolean equals(Msg o) {
+        return senderId.equals(o.getSenderId())  && text.equals(o.getText());
+    }*/
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+
+        if(o == null || (this.getClass() != o.getClass())){
+            return false;
+        }
+
+            Msg msg = (Msg) o;
+            return senderId.equals(msg.getSenderId())  && createdAt.toString().equals(getCreatedAt().toString()) && text.equals(msg.getText());
+    }
+    public int hashCode(){
+        return
+                senderId.hashCode() *
+                createdAt.hashCode() * text.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Msg{" +
+                "recipientId='" + recipientId + '\'' +
+                ", senderId='" + senderId + '\'' +
+                ", createdAt=" + createdAt +
+                ", text='" + text + '\'' +
+                '}';
+    }
+
+
 }
