@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -38,10 +39,10 @@ import smartcity.begrouped.utils.MyApplication;
 
 public class ProgramFragment extends Fragment {
 
-    private ListView maListViewPerso;
-    ArrayList<HashMap<String, String>> listItem;//array of items
+    private ListView maListViewPerso1;
+    public static ArrayList<HashMap<String, String>> listItem1;//array of items
     HashMap<String, String> map;//single item data
-    private SimpleAdapter mSchedule;
+    public static SimpleAdapter mSchedule1;
     private static final String TAG_NAME = "First day";
     private static final String TAG_TYPE = "hang out";
     private static final String TAG_TEMPS = "HH::MM";
@@ -61,10 +62,45 @@ public class ProgramFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_program, container, false);
 
+        Button save=(Button)rootView.findViewById(R.id.buttonSave);
+        Button cancel=(Button)rootView.findViewById(R.id.buttonCancel);
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                POIManager.initDayGroupProgramByTask(MyApplication.dateOfCurrentProgram,MyApplication.currentGroup.getName());
+                POIManager.saveDayGroupProgramByTask(MyApplication.dateOfCurrentProgram,MyApplication.currentGroup.getName(),MyApplication.listOfCurrentPOIS);
+                /*
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                    fm.popBackStack();
+                }*/
+
+                FragmentManager fragmentManager = getFragmentManager();
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                GroupHomeFragment fragment = new GroupHomeFragment();
+                fragmentTransaction.replace(R.id.container_body, fragment,"tag");
+                fragmentTransaction.commit();
+
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                GroupHomeFragment fragment = new GroupHomeFragment();
+                fragmentTransaction.replace(R.id.container_body, fragment,"tag");
+                fragmentTransaction.commit();
+            }
+        });
+
+
         //Get the listview
-        maListViewPerso = (ListView) rootView.findViewById(R.id.listView1);
+        maListViewPerso1 = (ListView) rootView.findViewById(R.id.listView1);
         //Array of data to fill in the list
-        listItem = new ArrayList<HashMap<String, String>>();
+        listItem1 = new ArrayList<HashMap<String, String>>();
         //LinkedList<Group> mygroups= GroupManager.getGroups();
         LinkedList<POI> myPOIs= POIManager.getDayProgramOfGroupByTask(MyApplication.dateOfCurrentProgram,MyApplication.currentGroup.getName());
         if (myPOIs==null) myPOIs=new LinkedList<>();
@@ -77,10 +113,10 @@ public class ProgramFragment extends Fragment {
             map.put(TAG_TYPE,poi.getType());
             map.put(TAG_TEMPS,poi.getTempsOfVisite().afficher());
             map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
-            listItem.add(map);
+            listItem1.add(map);
         }
         MyApplication.listOfCurrentPOIS=myPOIs;
-        maListViewPerso.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        maListViewPerso1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 afficherDialogRDV(position);
@@ -88,9 +124,9 @@ public class ProgramFragment extends Fragment {
             }
         });
 
-        mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+        mSchedule1 = new SimpleAdapter(getActivity(), listItem1, R.layout.affichageitem,
                 new String[] {"img", TAG_NAME,TAG_TYPE,TAG_TEMPS}, new int[] {R.id.img, R.id.titre, R.id.description, R.id.superviseur});
-        maListViewPerso.setAdapter(mSchedule);
+        maListViewPerso1.setAdapter(mSchedule1);
 
         return rootView;
 
@@ -138,4 +174,8 @@ public class ProgramFragment extends Fragment {
         adb.show();
 
     }
+
+
+
+
 }
