@@ -1,7 +1,9 @@
 package smartcity.begrouped.activity;
 
+import android.app.AlertDialog;
 import android.app.IntentService;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -51,7 +53,7 @@ public class ManageGroupFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_manage_group, container, false);
         //Get the listview
@@ -74,6 +76,50 @@ public class ManageGroupFragment extends Fragment {
 
             }
         });
+
+
+        maListViewPerso.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                final HashMap<String, String> map = (HashMap<String, String>) maListViewPerso.getItemAtPosition(position);
+
+                if ( MyApplication.myIdentity.getUsername().equals(map.get(TAG_SUPERVISEUR))) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Are you sure you want to delete " + map.get(TAG_GROUP_NAME) + " ?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                    boolean result = GroupManager.callTaskDeleteGroup(map.get(TAG_GROUP_NAME));
+                                    if (result) {
+                                        Toast.makeText(getActivity(), "Group deleted with success", Toast.LENGTH_LONG).show();
+                                        getActivity().recreate();
+
+
+                                    } else
+                                        Toast.makeText(getActivity(), "There is a problem with deleting this group", Toast.LENGTH_LONG).show();
+
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+                return false;
+            }
+        });
+
+
+
+
+
 
         SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
                 new String[] {"img", TAG_GROUP_NAME,TAG_REGION,TAG_SUPERVISEUR}, new int[] {R.id.img, R.id.titre, R.id.description, R.id.superviseur});
