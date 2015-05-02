@@ -334,6 +334,7 @@ public class GroupManager {
     }
 
     public static boolean deleteGroup(String groupName){
+        Log.v("TAG",groupName);
         String jsonFileUrl = getFromUrl(AllUrls.DELETE_GROUP + groupName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
         Log.v("Json delete group : ", " " + jsonFileUrl);
@@ -508,10 +509,10 @@ public class GroupManager {
 
     }
 
-    public static boolean callTaskDeleteGroup(Group group){
+    public static boolean callTaskDeleteGroup(String groupName){
 
         try {
-            return  (Boolean) new TaskDeleteGroup(group).execute().get();
+            return  (Boolean) new TaskDeleteGroup(groupName).execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -630,16 +631,16 @@ public class GroupManager {
 
     public static class TaskDeleteGroup extends AsyncTask {
 
-       Group group;
+       String groupName;
 
-        public TaskDeleteGroup(Group group){
-            this.group = group;
+        public TaskDeleteGroup(String groupName){ this.groupName=groupName;
+
         }
 
         @Override
         protected Boolean doInBackground(Object[] params) {
 
-            return deleteGroup(group.getName());
+            return deleteGroup(groupName);
 
         }
     }
