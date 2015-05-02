@@ -14,13 +14,32 @@ public class POI {
     private String phone;
     private Date dateOfVisite;
     private Temps tempsOfVisite;
+    private String website;
+    private String email;
+    private Location location;
 
-    public POI( String type, String typeDetail, String name, String addres, String phone) {
+
+    public POI(String type, String typeDetail, String name, String addres, String phone, String email, String website, Location location) {
         this.type = type;
         this.typeDetail = typeDetail;
         this.name = name;
         this.addres = addres;
         this.phone = phone;
+        this.email = email;
+        this.website = website;
+        this.location = location;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 
     public Date getDateOfVisite() {
