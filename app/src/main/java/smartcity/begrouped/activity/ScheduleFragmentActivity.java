@@ -2,6 +2,7 @@ package smartcity.begrouped.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,7 @@ public class ScheduleFragmentActivity extends Fragment {
     ScheduleAdapter mAdapter;
     ViewPager mPager;
     PageIndicator mIndicator;
-
+    private FragmentActivity myContext;
     //private FragmentActivity myContext;
 
     public ScheduleFragmentActivity(){
@@ -28,7 +29,7 @@ public class ScheduleFragmentActivity extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //myContext=new FragmentActivity();
         mAdapter = new ScheduleAdapter(getActivity().getSupportFragmentManager());
 
     }
