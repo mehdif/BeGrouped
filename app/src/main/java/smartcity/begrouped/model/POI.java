@@ -17,9 +17,9 @@ public class POI {
     private String website;
     private String email;
     private Location location;
+    private int poiId;
 
-
-    public POI(String type, String typeDetail, String name, String addres, String phone, String email, String website, Location location) {
+    public POI(int poiId,String type, String typeDetail, String name, String addres, String phone, String email, String website, Location location) {
         this.type = type;
         this.typeDetail = typeDetail;
         this.name = name;
@@ -28,6 +28,11 @@ public class POI {
         this.email = email;
         this.website = website;
         this.location = location;
+        this.poiId=poiId;
+    }
+
+    public int getPoiId() {
+        return poiId;
     }
 
     public String getWebsite() {
