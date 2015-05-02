@@ -1,13 +1,18 @@
 package smartcity.begrouped.activity;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -30,8 +35,11 @@ import com.sinch.android.rtc.messaging.MessageDeliveryInfo;
 import com.sinch.android.rtc.messaging.MessageFailureInfo;
 import com.sinch.android.rtc.messaging.WritableMessage;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,9 +48,10 @@ import smartcity.begrouped.controllers.GroupManager;
 import smartcity.begrouped.model.User;
 import smartcity.begrouped.utils.MessageAdapter;
 import smartcity.begrouped.utils.MessageService;
+import smartcity.begrouped.utils.Msg;
 import smartcity.begrouped.utils.MyApplication;
 
-public class ChatActivity extends ActionBarActivity {
+public class ChatActivity extends Activity {
     private List<String> recipientsIds=new ArrayList<String>();
     private EditText messageBodyField;
     private String messageBody;
@@ -52,37 +61,57 @@ public class ChatActivity extends ActionBarActivity {
     private String currentUserId;
     private ServiceConnection serviceConnection = new MyServiceConnection();
     private MessageClientListener messageClientListener = new MyMessageClientListener();
+    private ProgressDialog progressDialog;
+    private BroadcastReceiver receiver = null;
+    private boolean sent=false;
+    private List<Msg> messages=new ArrayList<Msg>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
-        bindService(new Intent(this, MessageService.class), serviceConnection, BIND_AUTO_CREATE);
-        messagesList = (ListView) findViewById(R.id.listMessages);
-        messageAdapter = new MessageAdapter(this);
-        messagesList.setAdapter(messageAdapter);
-        getUsersOfChoosenGroup();
-       // populateMessageHistory();
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_chat);
+            showSpinner();
 
+            bindService(new Intent(this, MessageService.class), serviceConnection, BIND_AUTO_CREATE);
+            Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
+            currentUserId = ParseUser.getCurrentUser().getObjectId();
+            Log.v("currentuserid", currentUserId);
 
-        messageBodyField = (EditText) findViewById(R.id.messageBodyField);
+            messagesList = (ListView) findViewById(R.id.listMessages);
+            messageAdapter = new MessageAdapter(this);
+            messagesList.setAdapter(messageAdapter);
+            getUsersOfChoosenGroup();
+            Log.v("history","history");
+            messageBodyField = (EditText) findViewById(R.id.messageBodyField);
 
-        findViewById(R.id.sendButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               sendMessage();
-            }
-        });
+            findViewById(R.id.sendButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sent=false;
+                    sendMessage();
+                }
+            });
+        }
+        catch(Exception e)
+        {
+
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        populateMessageHistory();
     }
 
     private final void getUsersOfChoosenGroup()
     {
-       // Get members of choosen group
-       final LinkedList<User> members= MyApplication.currentGroup.getMembers();
+        // Get members of choosen group
+        final LinkedList<User> members= MyApplication.currentGroup.getMembers();
 
         // Get RecipientID's of members
-        currentUserId = ParseUser.getCurrentUser().getObjectId();
-        Log.v("currentuserid",currentUserId);
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereNotEqualTo("objectId", currentUserId);
         query.findInBackground(new FindCallback<ParseUser>() {
@@ -94,8 +123,8 @@ public class ChatActivity extends ActionBarActivity {
 
                             if ( userList.get(i).getUsername().equals(members.get(j).getUsername()))
                             {
-                                  recipientsIds.add(userList.get(i).getObjectId());
-                                  Log.v("recipientId",userList.get(i).getObjectId());
+                                recipientsIds.add(userList.get(i).getObjectId());
+                                Log.v("recipientId",userList.get(i).getObjectId());
                                 break;
                             }
 
@@ -103,8 +132,10 @@ public class ChatActivity extends ActionBarActivity {
 
                     }
                 }
+                populateMessageHistory();
             }
-    });
+        });
+       //populateMessageHistory();
     }
     private final void createNotification(String sender, String content){
        /* NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
@@ -121,8 +152,13 @@ public class ChatActivity extends ActionBarActivity {
         notificationManager.notify(0, n);*/
     }
     //get previous messages from parse & display
-   /* private void populateMessageHistory() {
-        String[] userIds = {currentUserId, recipientId};
+    private void populateMessageHistory() {
+        String[] userIds=new String[recipientsIds.size()+1];
+        userIds[0]=currentUserId;
+        for(int i=0;i<recipientsIds.size();i++)
+        {
+            userIds[i+1]=recipientsIds.get(i);
+        }
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseMessage");
         query.whereContainedIn("senderId", Arrays.asList(userIds));
         query.whereContainedIn("recipientId", Arrays.asList(userIds));
@@ -131,18 +167,37 @@ public class ChatActivity extends ActionBarActivity {
             @Override
             public void done(List<ParseObject> messageList, com.parse.ParseException e) {
                 if (e == null) {
+
+                    messages = new ArrayList<Msg>();
                     for (int i = 0; i < messageList.size(); i++) {
-                        WritableMessage message = new WritableMessage(messageList.get(i).get("recipientId").toString(), messageList.get(i).get("messageText").toString());
-                        if (messageList.get(i).get("senderId").toString().equals(currentUserId)) {
-                            messageAdapter.addMessage(message, MessageAdapter.DIRECTION_OUTGOING);
-                        } else {
-                            messageAdapter.addMessage(message, MessageAdapter.DIRECTION_INCOMING);
+
+                       /* for (int j = 0; j < messages.size(); j++) {
+                            if (messages.get(j).getSenderId().equals(messageList.get(i).get("senderId").toString())
+                                    && messages.get(j).getRecipientId().equals(messageList.get(i).get("recipientId").toString())
+                                  )
+                            {
+                                DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                                Date d= (Date)messageList.get(i).get("createdAt");
+
+                                Log.v("equal:", d.toString());
+                            } else {*/
+
+                                WritableMessage message = new WritableMessage(messageList.get(i).get("recipientId").toString(), messageList.get(i).get("messageText").toString());
+                                if (messageList.get(i).get("senderId").toString().equals(currentUserId)) {
+                                    messageAdapter.addMessage(message, MessageAdapter.DIRECTION_OUTGOING);
+                                } else {
+                                    messageAdapter.addMessage(message, MessageAdapter.DIRECTION_INCOMING);
+                                }
+
+                               /* Msg msg = new Msg(messageList.get(i).get("recipientId").toString(), messageList.get(i).get("senderId").toString(), "", messageList.get(i).get("messageText").toString());
+                                messages.add(msg);
+                                Log.v("equal:", String.valueOf(messages.size()));*/
+                            }
                         }
-                    }
-                }
+
             }
         });
-    }*/
+    }
 
     private void sendMessage() {
         messageBody = messageBodyField.getText().toString();
@@ -153,7 +208,7 @@ public class ChatActivity extends ActionBarActivity {
         Log.v("message", "send message in chat activity");
         Log.v("message",messageBody);
         Log.v("message",recipientsIds.toString());
-        messageService.sendMessage(recipientsIds.get(0), messageBody);
+        messageService.sendMessage(recipientsIds,MyApplication.myIdentity.getUsername()+" says: "+messageBody);
         messageBodyField.setText("");
     }
 
@@ -164,6 +219,25 @@ public class ChatActivity extends ActionBarActivity {
         super.onDestroy();
     }
 
+    private void showSpinner() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Loading");
+        progressDialog.setMessage("Please wait...");
+        progressDialog.show();
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Boolean success = intent.getBooleanExtra("success", false);
+                progressDialog.dismiss();
+                if (!success) {
+                    Toast.makeText(getApplicationContext(), "Messaging service failed to start", Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("ChatActivity"));
+    }
 
     private class MyServiceConnection implements ServiceConnection {
         @Override
@@ -188,15 +262,18 @@ public class ChatActivity extends ActionBarActivity {
             Log.v("failure:",failureInfo.toString());
         }
 
+
         @Override
         public void onIncomingMessage(MessageClient client, Message message) {
 
             Log.v("OnIncoming","OnIncoming");
-            if (message.getSenderId().equals(message.getRecipientIds().get(0)))
-            {
-                WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
+            //if (message.getSenderId().equals(message.getRecipientIds().get(0)))
+           // {
+                Log.v("senderid",message.getSenderId().toString());
+                Log.v("recipieeentid",message.getRecipientIds().get(0));
+                WritableMessage writableMessage = new WritableMessage(message.getRecipientIds(), message.getTextBody());
                 messageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING);
-            }
+           // }
             ParseUser currentUser = ParseUser.getCurrentUser();
             String username= currentUser.getUsername();
             //createNotification(username,message.getTextBody());
@@ -205,30 +282,40 @@ public class ChatActivity extends ActionBarActivity {
 
         @Override
         public void onMessageSent(MessageClient client, Message message, String recipientId) {
-            Log.v("OnSent","OnSent");
+            if ( ! sent) {
+                Log.v("OnSent", "OnSent");
 
-            final WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
+                final WritableMessage writableMessage = new WritableMessage(message.getRecipientIds(), message.getTextBody());
 
-            //only add message to parse database if it doesn't already exist there
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseMessage");
-            query.whereEqualTo("sinchId", message.getMessageId());
-            query.findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> messageList, com.parse.ParseException e) {
-                    if (e == null) {
-                        if (messageList.size() == 0) {
-                            ParseObject parseMessage = new ParseObject("ParseMessage");
-                            parseMessage.put("senderId", currentUserId);
-                            parseMessage.put("recipientId", writableMessage.getRecipientIds().get(0));
-                            parseMessage.put("messageText", writableMessage.getTextBody());
-                            parseMessage.put("sinchId", writableMessage.getMessageId());
-                            parseMessage.saveInBackground();
+                final WritableMessage writableMessage1 = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
 
-                            messageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING);
+                Log.v("size:", message.getRecipientIds().get(0));
+                messageAdapter.addMessage(writableMessage1, MessageAdapter.DIRECTION_OUTGOING);
+
+                //only add message to parse database if it doesn't already exist there
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseMessage");
+                query.whereEqualTo("sinchId", message.getMessageId());
+                query.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> messageList, com.parse.ParseException e) {
+                        if (e == null) {
+                            if (messageList.size() == 0) {
+                                Log.v("size:", String.valueOf(writableMessage.getRecipientIds().size()));
+                                for (int i = 0; i < writableMessage.getRecipientIds().size(); i++) {
+                                    ParseObject parseMessage = new ParseObject("ParseMessage");
+                                    parseMessage.put("senderId", currentUserId);
+                                    parseMessage.put("recipientId", writableMessage.getRecipientIds().get(i));
+                                    parseMessage.put("messageText", writableMessage.getTextBody());
+                                    parseMessage.put("sinchId", writableMessage.getMessageId());
+                                    parseMessage.saveInBackground();
+                                }
+
+                            }
                         }
                     }
-                }
-            });
+                });
+                sent=true;
+            }
         }
 
         @Override
