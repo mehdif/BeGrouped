@@ -120,7 +120,7 @@ public class ProgramFragment extends Fragment {
         TextView detailType = (TextView)alertDialogView.findViewById(R.id.typedetail);
         TextView address = (TextView)alertDialogView.findViewById(R.id.address);
         TextView phone = (TextView)alertDialogView.findViewById(R.id.phone);
-        TextView temps = (TextView)alertDialogView.findViewById(R.id.temps);
+        TextView temps = (TextView)alertDialogView.findViewById(R.id.timeVisit);
         name.setText(MyApplication.listOfCurrentPOIS.get(position).getName());
         type .setText(MyApplication.listOfCurrentPOIS.get(position).getType());
         detailType .setText(MyApplication.listOfCurrentPOIS.get(position).getTypeDetail());
