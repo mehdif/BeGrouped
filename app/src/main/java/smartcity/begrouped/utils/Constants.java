@@ -38,6 +38,7 @@ public class Constants {
     public final static String PROGRAM = "program";
     public final static String TEMPS= "temps";
     public final static String POI_ID= "poi_id";
+    public final static String ID= "id";
 
 
 }

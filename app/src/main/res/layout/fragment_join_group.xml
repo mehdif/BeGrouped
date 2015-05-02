@@ -62,11 +62,15 @@
                         android:id="@+id/buttonJoin"
                         android:layout_weight="45"
                         android:layout_gravity="left"
-                        android:background="@color/onlyon_red" />
+                        android:background="@drawable/layers_gplus_button_bg"
+                        android:textAppearance="?android:attr/textAppearanceLargeInverse" />
+                    />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="fill_parent"
-                        android:layout_weight="10"></LinearLayout>
+                        android:layout_weight="8">
+                    </LinearLayout>
 
                     <Button
                         style="?android:attr/buttonStyleSmall"
@@ -75,7 +79,9 @@
                         android:text="Cancel"
                         android:id="@+id/buttonCancel"
                         android:layout_weight="50"
-                        android:background="@color/onlyon_red" />
+                        android:background="@drawable/layers_gplus_button_bg"
+                        android:textAppearance="?android:attr/textAppearanceLargeInverse" />
+                    />
                 </LinearLayout>
 
                 <LinearLayout
