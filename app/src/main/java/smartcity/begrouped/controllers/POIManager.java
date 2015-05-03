@@ -102,9 +102,9 @@ public class POIManager {
     private static LinkedList<POI> getNearestPoint(double alatitude,double alongitude){
         JSONArray poiList;
         LinkedList<POI> listOfPOI=new LinkedList<POI>();
-        Log.v("aymen", AllUrls.GET_NEAREST_POI+alatitude+"/"+alongitude+"/" + "ba_belfodil"+"/"+"4a7d1ed414474e4033ac29ccb8653d9b");
-        String jsonFileUrl = GlobalMethodes.getFromUrl(AllUrls.GET_NEAREST_POI+alatitude+"/"+alongitude+"/" + "ba_belfodil"+"/"+"4a7d1ed414474e4033ac29ccb8653d9b");
-        Log.v("aymen", " " +jsonFileUrl);
+        //Log.v("aymen", AllUrls.GET_NEAREST_POI+alatitude+"/"+alongitude+"/" + "ba_belfodil"+"/"+"4a7d1ed414474e4033ac29ccb8653d9b");
+        String jsonFileUrl = GlobalMethodes.getFromUrl(AllUrls.GET_NEAREST_POI+alatitude+"/"+alongitude+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        //Log.v("aymen", " " +jsonFileUrl);
 
         //Json file parser
         if (jsonFileUrl != null) {
