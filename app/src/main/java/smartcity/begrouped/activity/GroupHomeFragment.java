@@ -71,6 +71,7 @@ public class GroupHomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
+                Log.v("supervisor:",MyApplication.currentGroup.getName());
 
                    if ( MyApplication.currentGroup.getSupervisor().getUsername().equals(MyApplication.myIdentity.getUsername()))
                     {
