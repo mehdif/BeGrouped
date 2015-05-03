@@ -83,6 +83,7 @@ public class AddDestinationFragment extends Fragment {
                     // Anes : Call your search function here : performSearch();
                     listPOI= POIManager.searchPOIByNameByTask(search_query.getText().toString());
                     listItem.clear();
+                    if (listPOI==null) listPOI=new LinkedList<POI>();
                     for(int i=0;i<listPOI.size();i++) {
                         POI poi= listPOI.get(i);
                         Log.v("group", poi.toString());
