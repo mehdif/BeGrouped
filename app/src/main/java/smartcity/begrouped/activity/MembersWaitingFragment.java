@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -80,6 +81,16 @@ public class MembersWaitingFragment extends Fragment {
                                     SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
                                             new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
                                     membersWaitingView.setAdapter(mSchedule);
+
+
+                                    // add to convirmed listView
+                                    HashMap map2=new HashMap<String,String>();
+                                    map2.put("username",map.get("username"));
+                                    map2.put("telephone",map.get("username"));
+                                    map2.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+                                    map2.put("flname",map.get("flname"));//Ici l icone qui va s'afficher
+                                    MembersOnGroupFragment.listItem.add(map2);
+                                    MembersOnGroupFragment.mSchedule.notifyDataSetChanged();
                                 } else
                                     Toast.makeText(getActivity(), "There is a problem with adding this member", Toast.LENGTH_LONG).show();
 
