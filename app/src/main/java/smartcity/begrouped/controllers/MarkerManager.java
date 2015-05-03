@@ -76,22 +76,7 @@ public class MarkerManager {
 
 
 
-/*
-    public class AsTaskUpdatePositions extends AsyncTask<String, Void, String> {
 
-        @Override
-        protected String doInBackground(String... params) {
-            GroupManager.updateGroupUserLocationsForTest(group);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            updateMarkerPositions();
-        }
-    }
-    */
 
 
 
