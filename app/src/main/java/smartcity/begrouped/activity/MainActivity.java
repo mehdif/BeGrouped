@@ -204,8 +204,8 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
     protected void onResume() {
         super.onResume();
         MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
-        MyApplication.locationManager.requestLocationUpdates(provider, 1000, 1, this);
-        MyApplication.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0,
+        MyApplication.locationManager.requestLocationUpdates(provider, 20000, 1, this);
+        MyApplication.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 20000, 0,
                 this);
 
 
