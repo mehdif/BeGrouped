@@ -57,43 +57,49 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
 
-        // create me statically for test
-        //UserManager.createMeForTest();
+            // create me statically for test
+            //UserManager.createMeForTest();
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+            mToolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        drawerFragment = (FragmentDrawer)
-                getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
-        drawerFragment.setDrawerListener(this);
+            drawerFragment = (FragmentDrawer)
+                    getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+            drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
+            drawerFragment.setDrawerListener(this);
 
-        // display the first navigation drawer view on app launch
-        displayView(0);
+            // display the first navigation drawer view on app launch
+            displayView(0);
 
 
+            // Get the location manager
+            if (MyApplication.locationManager != null)
+                MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
+            MyApplication.locationListener = this;
+            MyApplication.locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            // Define the criteria how to select the locatioin provider -> use
+            // default
+            Criteria criteria = new Criteria();
+            provider = MyApplication.locationManager.getBestProvider(criteria, false);
+            Location location = MyApplication.locationManager.getLastKnownLocation(provider);
 
-        // Get the location manager
-        if (MyApplication.locationManager!=null) MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
-        MyApplication.locationListener=this;
-        MyApplication.locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        // Define the criteria how to select the locatioin provider -> use
-        // default
-        Criteria criteria = new Criteria();
-        provider = MyApplication.locationManager.getBestProvider(criteria, false);
-        Location location = MyApplication.locationManager.getLastKnownLocation(provider);
+            // Initialize the location fields
+            if (location != null) {
+                System.out.println("Provider " + provider + " has been selected.");
+                onLocationChanged(location);
+            } else {
+                Toast.makeText(this, "no location possible ",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch(Exception e)
+        {
 
-        // Initialize the location fields
-        if (location != null) {
-            System.out.println("Provider " + provider + " has been selected.");
-            onLocationChanged(location);
-        } else {
-            Toast.makeText(this, "no location possible ",
-                    Toast.LENGTH_SHORT).show();
         }
 
         setUpRequestNearestPoint();
