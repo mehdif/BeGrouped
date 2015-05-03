@@ -237,6 +237,7 @@ public class POIManager {
         public TaskGetDayProgramOfGroup (Date date,String groupName){
             this.groupName= groupName;
             this.date=date;
+
         }
         @Override
         protected LinkedList<POI> doInBackground(Object[] params)
