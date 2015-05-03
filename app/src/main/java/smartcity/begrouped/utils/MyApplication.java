@@ -13,6 +13,7 @@ import java.util.LinkedList;
 
 import smartcity.begrouped.model.Date;
 import smartcity.begrouped.model.Group;
+import smartcity.begrouped.model.Location;
 import smartcity.begrouped.model.POI;
 import smartcity.begrouped.model.User;
 
@@ -26,6 +27,7 @@ public final class MyApplication extends Application {
     public static LocationListener locationListener;
     public static LinkedList<POI> listOfCurrentPOIS;
     public static Date dateOfCurrentProgram;
+    public static Location myPosition=null;
 
     public static ArrayList<HashMap<String, String>> listItem;
 

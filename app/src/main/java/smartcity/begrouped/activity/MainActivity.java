@@ -1,6 +1,8 @@
 package smartcity.begrouped.activity;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Criteria;
@@ -8,6 +10,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -29,6 +32,14 @@ import smartcity.begrouped.utils.MyApplication;
 public class MainActivity extends ActionBarActivity implements FragmentDrawer.FragmentDrawerListener,LocationListener {
 
     private static String TAG = MainActivity.class.getSimpleName();
+
+
+
+    final static private long ONE_MINUTE = 60000;
+    final static private long FIVE_MINUTES = ONE_MINUTE * 5;
+    final static private long FIVE_SECONDS = 5000;
+    PendingIntent pi;
+    AlarmManager am;
 
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
@@ -85,8 +96,16 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
                     Toast.LENGTH_SHORT).show();
         }
 
+        setUpRequestNearestPoint();
     }
 
+    private void setUpRequestNearestPoint() {
+        pi = PendingIntent.getBroadcast(this, 0, new Intent(
+                "com.authorwjf.nearestpoint"), 0);
+        am = (AlarmManager) (this.getSystemService(Context.ALARM_SERVICE));
+        am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + FIVE_SECONDS , pi);
+    }
 
 
     @Override
@@ -195,6 +214,13 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
                 Toast.LENGTH_SHORT).show();
         i++;
         UserManager.updateMyLocationToServer(new LatLng(lat,lng));
+        if (MyApplication.myPosition==null){
+            MyApplication.myPosition=new smartcity.begrouped.model.Location(lat,lng);
+        }
+        else {
+            MyApplication.myPosition.setLatitude(lat);
+            MyApplication.myPosition.setLongitude(lng);
+        }
 
     }
 
