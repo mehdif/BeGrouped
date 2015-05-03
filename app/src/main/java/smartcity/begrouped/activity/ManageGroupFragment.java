@@ -66,9 +66,22 @@ public class ManageGroupFragment extends Fragment {
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 HashMap<String, String> map = (HashMap<String, String>) maListViewPerso.getItemAtPosition(position);
                 /// récupérer les infos sur le groupe
-                MyApplication.currentGroup= GroupManager.getGroupMembersFromName(map.get(TAG_GROUP_NAME));
+                Log.v("groupname",map.get(TAG_GROUP_NAME));
+                Group group=new Group(null,null,null,map.get(TAG_GROUP_NAME),null);
+                group= GroupManager.callTaskGetGroupInformation(group);
+                Object object= UserManager.getUserFromUserName(group.getSupervisor().getUsername());
+                if ( object instanceof User) {
+                    User user=(User) object;
+                    group.getSupervisor().setFirstname(user.getFirstname());
+                    group.getSupervisor().setLastname(user.getLastname());
+                    group.getSupervisor().setPhoneNumber(user.getPhoneNumber());
+                }
 
-                Log.v("curreeent", MyApplication.currentGroup.toString());
+                Log.v("super",group.getSupervisor().toString());
+                Group group1=GroupManager.getGroupMembersFromName(group.getName());
+                group.setMembers(group1.getMembers());
+
+                MyApplication.currentGroup=group;
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 GroupHomeFragment fragment = new GroupHomeFragment();
@@ -98,11 +111,8 @@ public class ManageGroupFragment extends Fragment {
                                     if (result) {
                                         Toast.makeText(getActivity(), "Group deleted with success", Toast.LENGTH_LONG).show();
                                         getActivity().recreate();
-
-
                                     } else
                                         Toast.makeText(getActivity(), "There is a problem with deleting this group", Toast.LENGTH_LONG).show();
-
                                 }
                             })
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
