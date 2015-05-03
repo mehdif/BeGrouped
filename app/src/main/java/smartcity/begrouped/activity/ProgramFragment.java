@@ -46,6 +46,7 @@ public class ProgramFragment extends Fragment {
     private static final String TAG_NAME = "First day";
     private static final String TAG_TYPE = "hang out";
     private static final String TAG_TEMPS = "HH::MM";
+    private int positionRMV;
 
     public ProgramFragment() {
         // Required empty public constructor
@@ -70,11 +71,8 @@ public class ProgramFragment extends Fragment {
             public void onClick(View v) {
                 POIManager.initDayGroupProgramByTask(MyApplication.dateOfCurrentProgram,MyApplication.currentGroup.getName());
                 POIManager.saveDayGroupProgramByTask(MyApplication.dateOfCurrentProgram,MyApplication.currentGroup.getName(),MyApplication.listOfCurrentPOIS);
-                /*
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-                    fm.popBackStack();
-                }*/
+
+
 
                 FragmentManager fragmentManager = getFragmentManager();
 
@@ -123,6 +121,34 @@ public class ProgramFragment extends Fragment {
 
             }
         });
+        maListViewPerso1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                positionRMV=position;
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Delete Destination")
+                        .setMessage("Are you sure you want to delete this destination?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                                MyApplication.listOfCurrentPOIS.remove(positionRMV);
+                                listItem1.remove(positionRMV);
+                                mSchedule1.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
+
+                return false;
+            }
+        });
+
 
         mSchedule1 = new SimpleAdapter(getActivity(), listItem1, R.layout.affichageitem,
                 new String[] {"img", TAG_NAME,TAG_TYPE,TAG_TEMPS}, new int[] {R.id.img, R.id.titre, R.id.description, R.id.superviseur});

@@ -74,10 +74,7 @@ public class ChatActivity extends Activity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_chat);
-            showSpinner();
-
             bindService(new Intent(this, MessageService.class), serviceConnection, BIND_AUTO_CREATE);
-            Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
             currentUserId = ParseUser.getCurrentUser().getObjectId();
             Log.v("currentuserid", currentUserId);
 
@@ -213,10 +210,12 @@ public class ChatActivity extends Activity {
             Toast.makeText(this, "Please enter a message", Toast.LENGTH_LONG).show();
             return;
         }
-        Log.v("message", "send message in chat activity");
-        Log.v("message",messageBody);
+
         Log.v("message",recipientsIds.toString());
-        messageService.sendMessage(recipientsIds,MyApplication.myIdentity.getUsername()+" says: "+messageBody);
+       // for(int i=0;i<recipientsIds.size();i++)
+       // {
+        messageService.sendMessage(recipientsIds, MyApplication.myIdentity.getUsername() + " says: " + messageBody);
+        //}
         messageBodyField.setText("");
     }
 
@@ -289,16 +288,12 @@ public class ChatActivity extends Activity {
 
 
         @Override
-        public void onMessageSent(MessageClient client, Message message, String recipientId) {
-            if ( ! sent) {
-                Log.v("OnSent", "OnSent");
+        public void onMessageSent(MessageClient client, Message message, final String recipientId) {
 
-                final WritableMessage writableMessage = new WritableMessage(message.getRecipientIds(), message.getTextBody());
+            Log.v("OnSent","OnSent");
 
-                final WritableMessage writableMessage1 = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
-
-                Log.v("size:", message.getRecipientIds().get(0));
-                messageAdapter.addMessage(writableMessage1, MessageAdapter.DIRECTION_OUTGOING);
+            if(! sent) {
+                final WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
 
                 //only add message to parse database if it doesn't already exist there
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseMessage");
@@ -308,22 +303,24 @@ public class ChatActivity extends Activity {
                     public void done(List<ParseObject> messageList, com.parse.ParseException e) {
                         if (e == null) {
                             if (messageList.size() == 0) {
-                                Log.v("size:", String.valueOf(writableMessage.getRecipientIds().size()));
-                                for (int i = 0; i < writableMessage.getRecipientIds().size(); i++) {
+                                for (int i = 0; i < recipientsIds.size(); i++) {
                                     ParseObject parseMessage = new ParseObject("ParseMessage");
                                     parseMessage.put("senderId", currentUserId);
-                                    parseMessage.put("recipientId", writableMessage.getRecipientIds().get(i));
+                                    parseMessage.put("recipientId", recipientsIds.get(i));
                                     parseMessage.put("messageText", writableMessage.getTextBody());
                                     parseMessage.put("sinchId", writableMessage.getMessageId());
                                     parseMessage.saveInBackground();
                                 }
 
+                                messageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING);
                             }
                         }
                     }
                 });
                 sent=true;
             }
+
+
         }
 
         @Override

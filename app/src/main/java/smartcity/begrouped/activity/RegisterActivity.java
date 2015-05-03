@@ -105,9 +105,8 @@ public class RegisterActivity extends ActionBarActivity {
 
         hideProgress();
 
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        Intent i = new Intent(getApplicationContext(), AuthentificationActivity.class);
         startActivity(i);
-
     }
 
     public void showProgress(){
