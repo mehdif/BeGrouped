@@ -28,18 +28,17 @@ public class ReceiverNearestPoint extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        Log.i("receiver", "receiver de nearest point");
+        if (MyApplication.myIdentity!=null) {
+            Log.i("receiver", "receiver de nearest point");
             // Wa rrougi dir traitement te3ek hna
 
 
+            pi = PendingIntent.getBroadcast(context, 0, new Intent(
+                    "com.authorwjf.nearestpoint"), 0);
+            am = (AlarmManager) (context.getSystemService(Context.ALARM_SERVICE));
+            am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime() + FIVE_SECONDS, pi);
 
-        pi = PendingIntent.getBroadcast(context, 0, new Intent(
-                "com.authorwjf.nearestpoint"), 0);
-        am = (AlarmManager) (context.getSystemService(Context.ALARM_SERVICE));
-        am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + FIVE_SECONDS, pi);
-
-
+        }
     }
 }
