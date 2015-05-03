@@ -39,13 +39,13 @@ public class MembersOnGroupFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_members_on_group, container, false);
+        Log.v("oncreateview","oncreateview");
 
         membersView = (ListView) rootView.findViewById(R.id.listView1);
         listItem = new ArrayList<HashMap<String, String>>();
@@ -86,8 +86,12 @@ public class MembersOnGroupFragment extends Fragment {
                                     boolean result = GroupManager.callTaskDeleteMember(MyApplication.currentGroup.getName(), map.get("username"));
                                     if (result) {
                                         Toast.makeText(getActivity(), "Member deleted with success", Toast.LENGTH_LONG).show();
+                                        reload();
+                                       SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+                                                new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
+                                       membersView.setAdapter(mSchedule);
 
-                                        getActivity().recreate();
+
                                     } else
                                         Toast.makeText(getActivity(), "There is a problem with deleting this member", Toast.LENGTH_LONG).show();
 
@@ -111,10 +115,31 @@ public class MembersOnGroupFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        Toast.makeText(getActivity(), "OnAttach", Toast.LENGTH_LONG).show();
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    public   void reload()
+    {
+        listItem = new ArrayList<HashMap<String, String>>();
+        String groupname=MyApplication.currentGroup.getName();
+        Group group=GroupManager.getGroupMembersFromName(groupname);
+        final LinkedList<User> members=group.getMembers();
+        Log.v("ongroup",String.valueOf(members.size()));
+        for(int i=0; i<members.size();i++)
+        {
+            HashMap map=new HashMap<String,String>();
+            map.put("username",members.get(i).getUsername());
+            map.put("telephone",members.get(i).getPhoneNumber());
+            map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+            map.put("flname",members.get(i).getLastname()+" "+ members.get(i).getFirstname() );//Ici l icone qui va s'afficher
+            listItem.add(map);
+        }
+
     }
 }
