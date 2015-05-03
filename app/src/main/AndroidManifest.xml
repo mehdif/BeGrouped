@@ -77,6 +77,11 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".controllers.ReceiverNearestPoint" >
+            <intent-filter>
+                <action android:name="com.authorwjf.nearestpoint" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".activity.ChatActivity"
             android:label="@string/title_activity_chat" 
