@@ -76,8 +76,10 @@ public class MembersWaitingFragment extends Fragment {
                                 boolean result = GroupManager.callTaskAcceptMember(MyApplication.currentGroup.getName(),map.get("username"));
                                 if (result) {
                                     Toast.makeText(getActivity(), "Member added with success", Toast.LENGTH_LONG).show();
-                                    getActivity().recreate();
-
+                                    reload();
+                                    SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+                                            new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
+                                    membersWaitingView.setAdapter(mSchedule);
                                 } else
                                     Toast.makeText(getActivity(), "There is a problem with adding this member", Toast.LENGTH_LONG).show();
 
@@ -108,5 +110,22 @@ public class MembersWaitingFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+    public void reload()
+    {
+
+        listItem = new ArrayList<HashMap<String, String>>();
+        LinkedList<User> membersWaiting= GroupManager.callTaskGetPendingDemands(MyApplication.currentGroup.getName());
+
+        for(int i=0; i<membersWaiting.size();i++)
+        {
+            HashMap map=new HashMap<String,String>();
+            map.put("username",membersWaiting.get(i).getUsername());
+            map.put("telephone",membersWaiting.get(i).getPhoneNumber());
+            map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+            map.put("flname",membersWaiting.get(i).getLastname()+" "+ membersWaiting.get(i).getFirstname() );//Ici l icone qui va s'afficher
+            listItem.add(map);
+        }
+
     }
 }
