@@ -53,7 +53,7 @@
     </string-array>
 
     <string name="title_home_map">Map</string>
-    <string name="title_add_appointment">Add Appointment</string>
+    <string name="title_add_appointment">Add/remove Appointment</string>
     <string name="title_path_to_appointment">Path to Appointment</string>
     <string name="title_find_program_itinerary">Show/hide Program Itinerary</string>
     <string name="title_show_program">Show Program</string>
