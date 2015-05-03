@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseUser;
 
 import smartcity.begrouped.R;
@@ -37,6 +38,13 @@ public class AuthentificationActivity extends ActionBarActivity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_authentification);
+
+            Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            if (currentUser != null) {
+               Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
+                startService(serviceIntent);
+            }
 
             login = (Button) findViewById(R.id.buttonLogin);
             register = (Button) findViewById(R.id.buttonRegister);
