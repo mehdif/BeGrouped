@@ -434,16 +434,13 @@ public class GroupManager {
         new TaskGetMyGroups(fragment).execute();
     }
 
-    public static Boolean joinGroup(String groupName){
+    public static String joinGroup(String groupName){
 
-        String jsonFileUrl = getFromUrl(AllUrls.ASK_JOIN_GROUP + groupName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        String message = getFromUrl(AllUrls.ASK_JOIN_GROUP + groupName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("Json join group : ", " " + jsonFileUrl);
+        Log.v("Json join group : ", " " + message);
 
-        if(jsonFileUrl != null && jsonFileUrl.equals("SUCCEED")){
-            return true;
-        }
-        return false;
+        return message;
     }
 
     public static Boolean acceptMember(String groupName, String memberUsername){
@@ -512,16 +509,16 @@ public class GroupManager {
 
     }
 
-    public static Boolean callTaskJoinGroup(String groupName, JoinGroupFragment fragment){
+    public static String callTaskJoinGroup(String groupName, JoinGroupFragment fragment){
 
         try {
-            return  (Boolean) new TaskJoinGroup(groupName, fragment).execute().get();
+            return  (String) new TaskJoinGroup(groupName, fragment).execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        return false;
+        return "0000";
 
     }
 
@@ -634,14 +631,14 @@ public class GroupManager {
         }
 
         @Override
-        protected Boolean doInBackground(Object[] params) {
+        protected String doInBackground(Object[] params) {
             return joinGroup(groupName);
         }
 
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-            fragment.joinGroup((Boolean) o);
+            fragment.joinGroup((String) o);
         }
     }
 
