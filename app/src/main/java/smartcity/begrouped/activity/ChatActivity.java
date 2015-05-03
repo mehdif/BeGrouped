@@ -161,6 +161,7 @@ public class ChatActivity extends Activity {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseMessage");
         query.whereContainedIn("senderId", Arrays.asList(userIds));
         query.whereContainedIn("recipientId", Arrays.asList(userIds));
+        query.whereContains("groupName",MyApplication.currentGroup.getName());
         query.orderByAscending("createdAt");
 
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -309,6 +310,7 @@ public class ChatActivity extends Activity {
                                     parseMessage.put("recipientId", recipientsIds.get(i));
                                     parseMessage.put("messageText", writableMessage.getTextBody());
                                     parseMessage.put("sinchId", writableMessage.getMessageId());
+                                    parseMessage.put("groupName",MyApplication.currentGroup.getName());
                                     parseMessage.saveInBackground();
                                 }
 
