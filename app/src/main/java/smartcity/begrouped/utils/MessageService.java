@@ -104,7 +104,7 @@ public class MessageService extends Service implements SinchClientListener {
             Log.v("message","messageclient is null");
         }
         if (messageClient != null) {
-            WritableMessage message = new WritableMessage(recipientsIds, textBody);
+            WritableMessage message = new WritableMessage(recipientsIds,textBody);
             messageClient.send(message);
             Log.v("textBody:",textBody);
             Log.v("recipientsid:",recipientsIds.toString());
