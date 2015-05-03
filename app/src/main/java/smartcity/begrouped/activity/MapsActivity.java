@@ -58,8 +58,12 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
     private TextView longitudeField;
     private Marker myPosition=null,beginPath=null,endPath=null;
     public static Marker aptMarker=null;
+    public static boolean aptPathShown=false;
+    public static boolean programPathShown=false;
     private LatLng latLngForApt=null;
     public static MarkerManager markerManager;
+    public static Polyline pathToApt=null;
+    public static Polyline programPath=null;
 
     final static private long ONE_MINUTE = 60000;
     final static private long TWENTY_SECONDS = 20000;
@@ -197,6 +201,15 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
             rectLine.add((LatLng) directionPoints.get(i));
         }
         newPolyline = mMap.addPolyline(rectLine);
+
+        if (aptEnCreation) {
+            if (pathToApt!=null) pathToApt.remove();
+            pathToApt=newPolyline;
+
+        }
+
+        aptEnCreation=false;
+
     }
 
     public void createAppointment(){
@@ -238,12 +251,15 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
 
 
 
-    public void findDirectionBetweenMeAndApt(Marker markerApt){
+    public void findDirectionBetweenMeAndApt(){
         if (MyApplication.myIdentity!=null){
             if (MyApplication.myIdentity.getLocalisation()!=null){
                 findDirections(MyApplication.myIdentity.getLocalisation().getLatitude(),
                         MyApplication.myIdentity.getLocalisation().getLongitude(),
-                        markerApt.getPosition().latitude,markerApt.getPosition().longitude, GMapV2Direction.MODE_DRIVING);
+                        aptMarker.getPosition().latitude,aptMarker.getPosition().longitude, GMapV2Direction.MODE_DRIVING);
+            }
+            else {
+                Toast.makeText(getApplicationContext(), "Your position is not known yet", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -326,19 +342,78 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 //fragment = new AboutFragment();
                 title = getString(R.string.title_add_appointment);
                 getSupportActionBar().setTitle(title);
-                createAppointment();
-                Toast.makeText(getApplicationContext(), "Choose a location !",Toast.LENGTH_LONG).show();
+                if (aptMarker==null) {
+                    createAppointment();
+                    Toast.makeText(getApplicationContext(), "Choose a location !", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    aptEnCreation=true;
+                    new AlertDialog.Builder(this)
+                            .setTitle("Delete Appointment")
+                            .setMessage("Are you sure you want to delete the appointment?")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // continue with delete
+                                    aptMarker.remove();
+                                    aptMarker=null;
+                                    MyApplication.currentGroup.setAppointment(null);
+                                    UserManager.sendRemoveApt(MyApplication.currentGroup.getName());
+                                    if (pathToApt!=null){
+                                        pathToApt.remove();
+                                        pathToApt=null;
+                                    }
+
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do nothing
+                                    aptEnCreation=false;
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
                 break;
             case 2:
                 //fragment = new HelpFragment();
                 title = getString(R.string.title_path_to_appointment);
                 getSupportActionBar().setTitle(title);
-                Toast.makeText(getApplicationContext(), "Path to Approintment",Toast.LENGTH_LONG).show();
+                if (aptMarker==null)
+                Toast.makeText(getApplicationContext(), "There is no appointment",Toast.LENGTH_LONG).show();
+                else {
+                    if (pathToApt==null) {
+                        aptEnCreation = true;
+                        findDirectionBetweenMeAndApt();
+                    }
+                    else {
+                        pathToApt.remove();
+                        pathToApt=null;
+                    }
+
+
+                }
+
+
+
+
+
                 break;
             case 3:
                 title = getString(R.string.title_find_program_itinerary);
                 getSupportActionBar().setTitle(title);
                 Toast.makeText(getApplicationContext(), "Find Program itinirerary !",Toast.LENGTH_LONG).show();
+                break;
+            case 4:
+                title = getString(R.string.title_show_program);
+                getSupportActionBar().setTitle(title);
+                Toast.makeText(getApplicationContext(), "Show Program !",Toast.LENGTH_LONG).show();
+                break;
+            case 5:
+                title = getString(R.string.title_hide_program);
+                getSupportActionBar().setTitle(title);
+                Toast.makeText(getApplicationContext(), "Hide Pogram !",Toast.LENGTH_LONG).show();
+                break;
             default:
                 break;
         }

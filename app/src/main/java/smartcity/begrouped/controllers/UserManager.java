@@ -180,6 +180,37 @@ public class UserManager {
         }
     }
 
+    public static void sendRemoveApt(String groupName){
+        TaskSendRemoveApt task=new TaskSendRemoveApt(groupName);
+        task.execute();
+    }
+
+    public static class TaskSendRemoveApt extends AsyncTask {
+
+        String groupName;
+        public TaskSendRemoveApt(String groupName){
+            super();
+            this.groupName=groupName;
+        }
+        @Override
+        protected Object doInBackground(Object[] params) {
+
+            Log.i("send remove apt", "send remove apt" );
+
+            String jsonFileUrl = getFromUrl(AllUrls.REMOVE_RDV+groupName+"/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            MapsActivity.aptEnCreation=false;
+        }
+    }
+
+
+
+
     public static User createUserFromJson(String userName,String passWord){
         String hashedPassWord= GlobalMethodes.md5(passWord);
         String jsonFileUrl = getFromUrl(AllUrls.authenticate_user_url+userName+"/"+hashedPassWord);
