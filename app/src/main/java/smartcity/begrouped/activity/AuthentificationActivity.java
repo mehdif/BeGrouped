@@ -1,6 +1,9 @@
 package smartcity.begrouped.activity;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -59,10 +62,14 @@ public class AuthentificationActivity extends ActionBarActivity {
                     if (MyApplication.locationManager != null)
                         MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
 
+                    String login = username.getText().toString();
+                    String pass = password.getText().toString();
 
-                    showProgress();
-
-                    UserManager.authenticate(username.getText().toString(), password.getText().toString(), AuthentificationActivity.this);
+                    if (login.isEmpty() || pass.isEmpty()) Toast.makeText(AuthentificationActivity.this, "Please enter your username and your password",Toast.LENGTH_SHORT).show();
+                    else {
+                        showProgress();
+                        UserManager.authenticate(login, pass, AuthentificationActivity.this);
+                    }
                 }
             });
 
@@ -75,7 +82,6 @@ public class AuthentificationActivity extends ActionBarActivity {
                     Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.right_in, R.anim.left_out);
-
 
                 }
             });
@@ -141,4 +147,6 @@ public class AuthentificationActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

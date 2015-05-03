@@ -38,7 +38,7 @@ public class ReceiverUpdatePositions extends BroadcastReceiver {
                         "com.authorwjf.MajPositions"), 0);
                 am = (AlarmManager) (context.getSystemService(Context.ALARM_SERVICE));
                 am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                        SystemClock.elapsedRealtime() + TWO_SECONDS, pi);
+                        SystemClock.elapsedRealtime() + TWENTY_SECONDS, pi);
             }
         }
     }

@@ -27,4 +27,10 @@ public class Location {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Location other=(Location)o;
+        return ((other.getLatitude()==latitude) && (other.getLongitude()==longitude));
+    }
 }

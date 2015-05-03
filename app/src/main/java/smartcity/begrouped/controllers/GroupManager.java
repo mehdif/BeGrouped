@@ -187,7 +187,7 @@ public class GroupManager {
             group.setSupervisor(new User("","",supervisorName,"",""));
             group.setLocationName(regionName);
             group.setExpirationDate(expirationDate);
-            addSupervisorGroup(group,supervisorName);
+            //addSupervisorGroup(group,supervisorName);
 
             return group;
 
@@ -239,9 +239,10 @@ public class GroupManager {
             Log.e("ServiceHandler", "Couldn't get any data from the url");
         }
 
-        Group group=new Group(null,membersList,null,"AlgerTour",null);
+        Group group=new Group(null,membersList,null,null,null);
 
-        return getGroupInformation(group);
+        return group;
+       // return //getGroupInformation(group);
     }
 
     public static LinkedList<Group> getMyGroups() {
@@ -326,7 +327,7 @@ public class GroupManager {
      */
     public static Group addSupervisorGroup(Group group, String supervisorName){
         for(int i = 0; i < group.getMembers().size(); i++){
-            if(group.getMembers().get(i).getFirstname().equals(supervisorName)){
+            if(group.getMembers().get(i).getUsername().equals(supervisorName)){
                 group.setSupervisor(group.getMembers().get(i));
             }
         }
@@ -385,11 +386,26 @@ public class GroupManager {
         } else {
             Log.e("ServiceHandler", "Couldn't get any data from the url");
         }
-
-
         return waitingMembers;
 
     }
+
+      public static boolean expulseMember(String groupName,String userName)
+      {
+          String jsonFileUrl = getFromUrl(AllUrls.EXPULSER_GROUP_SUPERVISOR +groupName+"/"+ userName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+
+          Log.v("Json delete member : ", " " + jsonFileUrl);
+
+          if(jsonFileUrl != null && jsonFileUrl.equals("FAILED")){
+              return false;
+          }
+          else if(jsonFileUrl != null && jsonFileUrl.equals("SUCCEED")){
+              return true;
+          }
+          return false;
+      }
+
+
     public static Group getGroupMembersFromName(String groupName){
         try {
             return ((Group)new TaskGetJsonMembers(groupName).execute().get());
@@ -399,6 +415,19 @@ public class GroupManager {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Group callTaskGetGroupInformation(Group group)
+    {
+        try {
+            return (Group)new TaskGroupInformation().execute(group).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
     public static void getGroups(HomeFragment fragment)
     {
@@ -513,6 +542,17 @@ public class GroupManager {
 
         try {
             return  (Boolean) new TaskDeleteGroup(groupName).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public static boolean callTaskDeleteMember(String groupName,String userName){
+
+        try {
+            return  (Boolean) new TaskDeleteMember().execute(groupName,userName).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -641,6 +681,23 @@ public class GroupManager {
         protected Boolean doInBackground(Object[] params) {
 
             return deleteGroup(groupName);
+
+        }
+    }
+    public static class TaskDeleteMember extends AsyncTask {
+        @Override
+        protected Boolean doInBackground(Object[] params) {
+
+            return  expulseMember(params[0].toString(),params[1].toString());
+
+        }
+    }
+    public static class TaskGroupInformation extends AsyncTask {
+
+        @Override
+        protected Group doInBackground(Object[] params) {
+
+            return getGroupInformation((Group)params[0]);
 
         }
     }

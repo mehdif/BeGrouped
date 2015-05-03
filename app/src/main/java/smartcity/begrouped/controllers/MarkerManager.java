@@ -57,6 +57,7 @@ public class MarkerManager {
                         user.getMarker().setSnippet("Me");
                         user.getMarker().setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                         MyApplication.myIdentity.setLocalisation(new Location(user.getMarker().getPosition().latitude, user.getMarker().getPosition().longitude));
+                        MyApplication.myIdentity.setMarker(user.getMarker());
                         if (firstTime)
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user.getMarker().getPosition(), 12));
                         firstTime = false;
@@ -76,22 +77,7 @@ public class MarkerManager {
 
 
 
-/*
-    public class AsTaskUpdatePositions extends AsyncTask<String, Void, String> {
 
-        @Override
-        protected String doInBackground(String... params) {
-            GroupManager.updateGroupUserLocationsForTest(group);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            updateMarkerPositions();
-        }
-    }
-    */
 
 
 
@@ -146,6 +132,15 @@ public class MarkerManager {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             if ((appoint!=null) && (!MapsActivity.aptEnCreation)){
+                // supprimer le chemin si l'appointment n'est pas l'ancien
+                if (MyApplication.currentGroup.getAppointment()!=null){
+                    if ((!appoint.getLocation().equals(MyApplication.currentGroup.getAppointment().getLocation()))){
+                        if (MapsActivity.pathToApt!=null) {
+                            MapsActivity.pathToApt.remove();
+                            MapsActivity.pathToApt=null;
+                        }
+                    }
+                }
                 MyApplication.currentGroup.setAppointment(appoint);
                 // afficher le RDV sur la map
                 if (MapsActivity.aptMarker!=null) MapsActivity.aptMarker.remove();
