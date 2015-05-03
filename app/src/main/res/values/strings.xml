@@ -37,7 +37,7 @@
 
     <!-- Second Menudrawer Map -->
     <string name="nav_item_home_map">Home</string>
-    <string name="nav_item_add_appointment">Add Appointment</string>
+    <string name="nav_item_add_appointment">Add/remove Appointment</string>
     <string name="nav_item_path_to_appointment">Path to Appointment</string>
     <string name="nav_item_find_program_itinerary">Find Program Itinerary</string>
     <string name="nav_item_show_program">Show Progam</string>
