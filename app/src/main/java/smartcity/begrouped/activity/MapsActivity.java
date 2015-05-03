@@ -197,6 +197,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
             rectLine.add((LatLng) directionPoints.get(i));
         }
         newPolyline = mMap.addPolyline(rectLine);
+
     }
 
     public void createAppointment(){
@@ -326,8 +327,33 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 //fragment = new AboutFragment();
                 title = getString(R.string.title_add_appointment);
                 getSupportActionBar().setTitle(title);
-                createAppointment();
-                Toast.makeText(getApplicationContext(), "Choose a location !",Toast.LENGTH_LONG).show();
+                if (aptMarker==null) {
+                    createAppointment();
+                    Toast.makeText(getApplicationContext(), "Choose a location !", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    creatingApt=true;
+                    new AlertDialog.Builder(this)
+                            .setTitle("Delete Appointment")
+                            .setMessage("Are you sure you want to delete the appointment?")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // continue with delete
+                                    aptMarker.remove();
+                                    aptMarker=null;
+                                    MyApplication.currentGroup.setAppointment(null);
+                                    UserManager.sendRemoveApt(MyApplication.currentGroup.getName());
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do nothing
+                                    creatingApt=false;
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
                 break;
             case 2:
                 //fragment = new HelpFragment();
@@ -339,6 +365,17 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 title = getString(R.string.title_find_program_itinerary);
                 getSupportActionBar().setTitle(title);
                 Toast.makeText(getApplicationContext(), "Find Program itinirerary !",Toast.LENGTH_LONG).show();
+                break;
+            case 4:
+                title = getString(R.string.title_show_program);
+                getSupportActionBar().setTitle(title);
+                Toast.makeText(getApplicationContext(), "Show Program !",Toast.LENGTH_LONG).show();
+                break;
+            case 5:
+                title = getString(R.string.title_hide_program);
+                getSupportActionBar().setTitle(title);
+                Toast.makeText(getApplicationContext(), "Hide Pogram !",Toast.LENGTH_LONG).show();
+                break;
             default:
                 break;
         }
