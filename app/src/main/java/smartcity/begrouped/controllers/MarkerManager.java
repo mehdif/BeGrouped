@@ -44,26 +44,29 @@ public class MarkerManager {
     public void updateMarkerPositions(){
         try {
             for (int i = 0; i < group.getMembers().size(); i++) {
-                User user = group.getMembers().get(i);
-                if (user.getMarker() != null)
-                    user.getMarker().setPosition(new LatLng(user.getLocalisation().getLatitude(), user.getLocalisation().getLongitude()));
-                else
-                    user.setMarker(mMap.addMarker(new MarkerOptions().position(new LatLng(user.getLocalisation().getLatitude(), user.getLocalisation().getLongitude()))
-                            .title(user.getFirstname() + " " + user.getLastname()).snippet("member")));
 
-                if (user.getUsername().equals(MyApplication.myIdentity.getUsername())) {
-                    user.getMarker().setSnippet("Me");
-                    user.getMarker().setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                    MyApplication.myIdentity.setLocalisation(new Location(user.getMarker().getPosition().latitude, user.getMarker().getPosition().longitude));
-                    if (firstTime)
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user.getMarker().getPosition(), 12));
-                    firstTime = false;
-                }
+                User user = group.getMembers().get(i);
+                if (user.getLocalisation() != null) {
+                    if (user.getMarker() != null)
+                        user.getMarker().setPosition(new LatLng(user.getLocalisation().getLatitude(), user.getLocalisation().getLongitude()));
+                    else
+                        user.setMarker(mMap.addMarker(new MarkerOptions().position(new LatLng(user.getLocalisation().getLatitude(), user.getLocalisation().getLongitude()))
+                                .title(user.getFirstname() + " " + user.getLastname()).snippet("member")));
+
+                    if (user.getUsername().equals(MyApplication.myIdentity.getUsername())) {
+                        user.getMarker().setSnippet("Me");
+                        user.getMarker().setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                        MyApplication.myIdentity.setLocalisation(new Location(user.getMarker().getPosition().latitude, user.getMarker().getPosition().longitude));
+                        if (firstTime)
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user.getMarker().getPosition(), 12));
+                        firstTime = false;
+                    }
             /*
             if (user.getUsername().equals(group.getSupervisor().getUsername())){
                 user.getMarker().setSnippet("Supervisor");
                 user.getMarker().setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
             }*/
+                }
             }
         } catch(Exception e){
             Log.e("exception", e.getMessage());
