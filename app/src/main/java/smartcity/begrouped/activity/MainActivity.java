@@ -195,6 +195,13 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
                 Toast.LENGTH_SHORT).show();
         i++;
         UserManager.updateMyLocationToServer(new LatLng(lat,lng));
+        if (MyApplication.myPosition==null){
+            MyApplication.myPosition=new smartcity.begrouped.model.Location(lat,lng);
+        }
+        else {
+            MyApplication.myPosition.setLatitude(lat);
+            MyApplication.myPosition.setLongitude(lng);
+        }
 
     }
 
