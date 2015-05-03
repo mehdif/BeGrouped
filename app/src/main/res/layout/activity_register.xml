@@ -45,7 +45,8 @@
                 android:ems="10"
                 android:singleLine="true"
                 android:hint="First Name"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
 
         </FrameLayout>
 
@@ -65,7 +66,9 @@
                 android:ems="10"
                 android:singleLine="true"
                 android:hint="Last Name "
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
+                />
         </FrameLayout>
 
         <FrameLayout
@@ -81,7 +84,8 @@
                 android:ems="10"
                 android:singleLine="true"
                 android:hint="User Name"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:digits="_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"/>
         </FrameLayout>
 
         <FrameLayout
@@ -107,13 +111,13 @@
             android:layout_height="wrap_content" >
 
             <EditText
-                android:id="@+id/editText6"
+                android:id="@+id/confirmpassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/background_holo_light"
                 android:ems="10"
                 android:singleLine="true"
-                android:hint="Confir Password"
+                android:hint="ConfirmPassword"
                 android:inputType="textPassword" />
 
         </FrameLayout>
@@ -131,7 +135,8 @@
                 android:singleLine="true"
                 android:textColorHint="@color/background_holo_light"
                 android:hint="Phone number"
-                android:inputType="number" />
+                android:inputType="number"
+                android:digits="1234567890"/>
         </FrameLayout>
 
         <FrameLayout
@@ -139,7 +144,7 @@
             android:layout_height="wrap_content" >
 
             <CheckBox
-                android:id="@+id/checkBox1"
+                android:id="@+id/terms"
                 android:textColor="@color/background_holo_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
