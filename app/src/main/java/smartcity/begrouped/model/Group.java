@@ -68,6 +68,9 @@ public class Group {
         this.appointment = appointment;
     }
 
+    public void setMembers(LinkedList<User> members) {
+        this.members = members;
+    }
 
     @Override
     public String toString() {
