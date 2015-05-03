@@ -152,7 +152,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 "com.authorwjf.MajPositions"), 0);
         am = (AlarmManager) (this.getSystemService(Context.ALARM_SERVICE));
         am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + FIVE_SECONDS , pi);
+                SystemClock.elapsedRealtime() + TWENTY_SECONDS , pi);
 
     }
     private void initializeMarkers(){
