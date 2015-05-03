@@ -3,6 +3,8 @@ package smartcity.begrouped.activity;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -48,6 +50,7 @@ import smartcity.begrouped.drawpathclasses.GMapV2Direction;
 import smartcity.begrouped.drawpathclasses.GetDirectionsAsyncTask;
 import smartcity.begrouped.model.Appointment;
 import smartcity.begrouped.model.Date;
+import smartcity.begrouped.model.POI;
 import smartcity.begrouped.utils.MyApplication;
 
 public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap.FragmentDrawerListener,GoogleMap.OnMarkerClickListener {
@@ -115,6 +118,33 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
 
     }
 
+
+/*    private void createNotification(View view) {
+        // Prepare intent which is triggered if the
+        // notification is selected
+        Intent intent = new Intent(this, MapsActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        // Build notification
+        // Actions are just fake
+        if(MyApplication.myPosition != null) {
+
+            LinkedList<POI> listPOI = POIManager.getNearestPoiByTask(MyApplication.myPosition.getLatitude(), MyApplication.myPosition.getLongitude());
+
+            if(listPOI != null){
+                Notification noti = new Notification.Builder(this)
+                        .setContentTitle("You are near " + listPOI.get(0).getName())
+                        .setContentText(listPOI.get(0).getType()).setSmallIcon(R.drawable.monument)
+                        .setContentIntent(pIntent).build();
+                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                // hide the notification after its selected
+                noti.flags |= Notification.FLAG_AUTO_CANCEL;
+
+                notificationManager.notify(0, noti);
+            }
+
+        }
+    }*/
 
     private void setupUpdatePositionTask() {
         markerManager=new MarkerManager(mMap, MyApplication.currentGroup);
