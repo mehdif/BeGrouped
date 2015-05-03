@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -26,15 +27,17 @@ public class RegisterActivity extends ActionBarActivity {
 
     private EditText usernameField;
     private EditText passwordField;
+    private EditText confirmpasswordField;
     private EditText firstnameField;
     private EditText lastnameField;
     private EditText phonenumberField;
-
+    private CheckBox termAcceptation;
     private ProgressDialog progressDialog;
 
 
     private String username;
     private String password;
+    private String confirmpassword;
     private String firstname;
     private String lastname;
     private String phonenumber;
@@ -47,9 +50,11 @@ public class RegisterActivity extends ActionBarActivity {
         cancel = (Button) findViewById(R.id.button_cancel);
         usernameField = (EditText) findViewById(R.id.username);
         passwordField = (EditText) findViewById(R.id.password);
+        confirmpasswordField = (EditText) findViewById(R.id.confirmpassword);
         firstnameField= (EditText) findViewById(R.id.prenom);
         lastnameField=  (EditText) findViewById(R.id.nom);
         phonenumberField=(EditText) findViewById(R.id.phonenumber);
+        termAcceptation=(CheckBox) findViewById(R.id.terms);
 
         accept.setOnClickListener(new View.OnClickListener() {
 
@@ -60,15 +65,24 @@ public class RegisterActivity extends ActionBarActivity {
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 username = usernameField.getText().toString();
                 password = passwordField.getText().toString();
+                confirmpassword=confirmpasswordField.getText().toString();
+
+
                 firstname= firstnameField.getText().toString();
                 lastname=  lastnameField.getText().toString();
                 phonenumber=phonenumberField.getText().toString();
 
-                showProgress();
-                // Register in our server
-                UserManager.register(username, password, firstname, lastname, phonenumber, RegisterActivity.this);
-
-
+                if (username.isEmpty() || password.isEmpty() || confirmpassword.isEmpty() || firstname.isEmpty() || lastname.isEmpty())
+                    Toast.makeText(RegisterActivity.this, "All fields should be completed",Toast.LENGTH_SHORT).show();
+                else if (! password.equals(confirmpassword))
+                    Toast.makeText(RegisterActivity.this, "Please confirm your password correctly",Toast.LENGTH_SHORT).show();
+                else if (! termAcceptation.isChecked())
+                    Toast.makeText(RegisterActivity.this, "Please accept the terms and conditions of use",Toast.LENGTH_SHORT).show();
+                else {
+                    showProgress();
+                    // Register in our server
+                    UserManager.register(username, password, firstname, lastname, phonenumber, RegisterActivity.this);
+                }
             }
         });
 
@@ -84,8 +98,8 @@ public class RegisterActivity extends ActionBarActivity {
             }
         });
     }
-
     public void registerUser(){
+
 
 
         // Register in Cloud
