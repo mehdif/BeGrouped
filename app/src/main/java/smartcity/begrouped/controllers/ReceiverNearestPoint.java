@@ -43,7 +43,7 @@ public class ReceiverNearestPoint extends BroadcastReceiver {
                     "com.authorwjf.nearestpoint"), 0);
             am = (AlarmManager) (context.getSystemService(Context.ALARM_SERVICE));
             am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + FIVE_SECONDS, pi);
+                    SystemClock.elapsedRealtime() + TWENTY_SECONDS, pi);
 
             // Prepare intent which is triggered if the
             // notification is selected
