@@ -81,6 +81,7 @@ public class GroupHomeFragment extends Fragment {
                         MembersFragmentActivity fragment = new MembersFragmentActivity();
                         fragmentTransaction.replace(R.id.container_body, fragment, "tag");
                         fragmentTransaction.commit();
+
                     }
                 else
                     {
