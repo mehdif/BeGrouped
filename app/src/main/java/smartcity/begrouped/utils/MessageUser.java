@@ -26,8 +26,10 @@ public class MessageUser {
         EnglishMessages.put("1207","You're the superviser of the group, you cannot exit the group");
         EnglishMessages.put("1208","Group already exists, please change the groupname");
         EnglishMessages.put("1209","Please enter the group name");
+        EnglishMessages.put("1210","All feilds must be completed");
 
         EnglishMessages.put("2201","Your demand has been sent");
+        EnglishMessages.put("2202","The group has been successfully created");
 
     }
 

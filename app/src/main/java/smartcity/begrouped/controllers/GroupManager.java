@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -289,33 +290,37 @@ public class GroupManager {
 
 
     public static Group createNewGroup(String name ,String locationName){
+        try {
+            String encodedName = URLEncoder.encode(name, "utf-8").replace("+", "%20");
+            String encodedRegion = URLEncoder.encode(locationName, "utf-8").replace("+", "%20");
 
+            String jsonFileUrl = getFromUrl(AllUrls.CREATE_GROUP + encodedName + "/" + encodedRegion + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
 
-        String jsonFileUrl = getFromUrl(AllUrls.CREATE_GROUP + name +"/" + locationName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+            Log.v("Json create group : ", " " + jsonFileUrl);
 
-        Log.v("Json create group : ", " " + jsonFileUrl);
-
-        if(jsonFileUrl != null && jsonFileUrl.equals("GROUP_EXIST_BEFORE")){
-            return null;
-        }
-        else{
-
-            //Json file parser
-            try {
-
-                JSONObject jsonObject = new JSONObject(jsonFileUrl);
-
-                String groupName = (String) jsonObject.get(Constants.GROUP_NAME);
-                String supervisorName = (String) jsonObject.get(Constants.SUPERVISOR_NAME);
-                String regionName = (String) jsonObject.get(Constants.REGION_NAME);
-                String expirationDate = (String) jsonObject.get(Constants.EXPIRATION_DATE);
-
-                return new Group(MyApplication.myIdentity, groupName,regionName);
-            }
-            catch(Exception e){
-                Log.e("Error : ", e.getMessage());
+            if (jsonFileUrl != null && jsonFileUrl.equals("1208")) {
                 return null;
+            } else {
+
+                //Json file parser
+                try {
+
+                    JSONObject jsonObject = new JSONObject(jsonFileUrl);
+
+                    String groupName = (String) jsonObject.get(Constants.GROUP_NAME);
+                    String supervisorName = (String) jsonObject.get(Constants.SUPERVISOR_NAME);
+                    String regionName = (String) jsonObject.get(Constants.REGION_NAME);
+                    String expirationDate = (String) jsonObject.get(Constants.EXPIRATION_DATE);
+
+                    return new Group(MyApplication.myIdentity, groupName, regionName);
+                } catch (Exception e) {
+                    Log.e("Error : ", e.getMessage());
+                    return null;
+                }
             }
+        }
+        catch (Exception e) {
+            return null;
         }
     }
 
