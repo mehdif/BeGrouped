@@ -389,12 +389,12 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 EditText mm = (EditText)alertDialogView.findViewById(R.id.mmRDV);
                 EditText yy = (EditText)alertDialogView.findViewById(R.id.aaRDV);
                 Date date=new Date(Integer.parseInt(jj.getText().toString()),Integer.parseInt(mm.getText().toString()),Integer.parseInt(yy.getText().toString()));
-                MyApplication.listOfCurrentPOIS=POIManager.sortPOIByTime(POIManager.getDayProgramOfGroupByTask(date,MyApplication.currentGroup.getName()));
+                LinkedList<POI> listPOI= POIManager.sortPOIByTime(POIManager.getDayProgramOfGroupByTask(date,MyApplication.currentGroup.getName()));
                 if (programShown){
                     hideProgram();
                     programShown=false;
                 }
-
+                MyApplication.listOfCurrentPOIS=listPOI;
 
                 if (MyApplication.listOfCurrentPOIS!=null){
                     programShown=true;
