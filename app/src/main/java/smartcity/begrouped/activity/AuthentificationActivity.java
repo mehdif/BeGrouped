@@ -103,7 +103,6 @@ public class AuthentificationActivity extends ActionBarActivity {
             MyApplication.myIdentity = (User) user;
 
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
-            overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
             ParseUser.logInInBackground(username.getText().toString(), password.getText().toString(), new LogInCallback() {
                 public void done(ParseUser user, com.parse.ParseException e) {
@@ -117,6 +116,7 @@ public class AuthentificationActivity extends ActionBarActivity {
             });
 
             startActivity(i);
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
         } else {
             Toast.makeText(getApplicationContext(), MessageUser.EnglishMessages.get("1103"), Toast.LENGTH_LONG).show();
         }
