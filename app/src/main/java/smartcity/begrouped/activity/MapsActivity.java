@@ -407,7 +407,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                                         aptMarker.remove();
                                         aptMarker = null;
                                         MyApplication.currentGroup.setAppointment(null);
-                                        UserManager.sendRemoveApt(MyApplication.currentGroup.getName());
+                                        UserManager.sendRemoveApt(MyApplication.currentGroup.getName(),MapsActivity.this);
                                         if (pathToApt != null) {
                                             pathToApt.remove();
                                             pathToApt = null;
