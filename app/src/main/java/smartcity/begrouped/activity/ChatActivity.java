@@ -26,7 +26,9 @@ import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.sinch.android.rtc.PushPair;
@@ -36,6 +38,9 @@ import com.sinch.android.rtc.messaging.MessageClientListener;
 import com.sinch.android.rtc.messaging.MessageDeliveryInfo;
 import com.sinch.android.rtc.messaging.MessageFailureInfo;
 import com.sinch.android.rtc.messaging.WritableMessage;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -139,7 +144,7 @@ public class ChatActivity extends Activity {
         });
     }
     private final void createNotification(String sender, String content){
-       NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+       /*NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         Intent intent = new Intent(this,ChatActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
         Notification n  = new Notification.Builder(this)
@@ -151,7 +156,7 @@ public class ChatActivity extends Activity {
                 .build();
         n.sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
                 + "://" + getPackageName() + "/raw/notificationbegrouped");
-        notificationManager.notify(0, n);
+        notificationManager.notify(0, n);*/
     }
     //get previous messages from parse & display
     private void populateMessageHistory() {
@@ -269,8 +274,10 @@ public class ChatActivity extends Activity {
         public void onMessageFailed(MessageClient client, Message message,
                                     MessageFailureInfo failureInfo)
         {
-            Toast.makeText(ChatActivity.this, "Message failed to send.", Toast.LENGTH_LONG).show();
-            Log.v("failure:",failureInfo.toString());
+            Toast.makeText(ChatActivity.this, "Message failed to send."+failureInfo.getSinchError().getMessage(), Toast.LENGTH_LONG).show();
+            Log.v("failure:",failureInfo.getSinchError().getMessage());
+
+
         }
 
 
@@ -330,7 +337,80 @@ public class ChatActivity extends Activity {
         public void onMessageDelivered(MessageClient client, MessageDeliveryInfo deliveryInfo) {}
 
         @Override
-        public void onShouldSendPushData(MessageClient client, Message message, List<PushPair> pushPairs) {}
+        public void onShouldSendPushData(MessageClient client, Message message, List<PushPair> pushPairs)
+        {
+             Log.v("onshouldsendpush","onshouldsendpush");
+           final WritableMessage writableMessage=new WritableMessage(message.getRecipientIds().get(0),message.getTextBody());
+
+            Log.v("firstone",writableMessage.getRecipientIds().get(0));
+
+            JSONObject obj;
+            try {
+                obj = new JSONObject();
+                obj.put("alert", message.getTextBody());
+                obj.put("title","Message from begrouped");
+
+                //ParseQuery userquery= ParseUser.getQuery();
+               // userquery.whereEqualTo("objectId",writableMessage.getRecipientIds());
+
+               // ParseQuery pushquery=ParseInstallation.getQuery();
+               // pushquery.whereMatchesQuery("userName",userquery);
+
+                ParsePush push=new ParsePush();
+                ParseQuery query = ParseInstallation.getQuery();
+
+                ParseQuery userQuery = ParseUser.getQuery();
+             //   userQuery.whereEqualTo("objectId",writableMessage.getRecipientIds().get(0));
+
+                // Push the notification to Android users
+                query.whereEqualTo("deviceType", "android");
+                query.whereEqualTo("userName",writableMessage.getRecipientIds().get(0));
+                push.setQuery(query);
+
+                push.setData(obj);
+                push.sendInBackground();
+                Log.v("seeeeeeeeeend","send");
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          /*  JSONObject obj;
+            try {
+                obj = new JSONObject();
+                obj.put("alert", "hello!");
+                obj.put("title","Message");
+                // obj.put("action", MyCustomReceiver.intentAction);
+                // obj.put("customdata","My message");
+
+                ParsePush push = new ParsePush();
+                ParseQuery query = ParseInstallation.getQuery();
+
+                // Push the notification to Android users
+                query.whereEqualTo("deviceType", "android");
+                push.setQuery(query);
+                push.setData(obj);
+                push.sendInBackground();
+                Log.v("send,=","send");
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }*/
+
+        }
     }
 
 
