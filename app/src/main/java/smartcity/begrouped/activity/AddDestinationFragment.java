@@ -17,14 +17,22 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.POIManager;
+import smartcity.begrouped.controllers.UserManager;
+import smartcity.begrouped.model.Appointment;
+import smartcity.begrouped.model.Date;
 import smartcity.begrouped.model.POI;
 import smartcity.begrouped.model.Temps;
 import smartcity.begrouped.utils.MyApplication;
@@ -132,8 +140,6 @@ public class AddDestinationFragment extends Fragment {
         TextView detailType = (TextView)alertDialogView.findViewById(R.id.typedetail);
         TextView address = (TextView)alertDialogView.findViewById(R.id.address);
         TextView phone = (TextView)alertDialogView.findViewById(R.id.phone);
-        hhEdit=(EditText)alertDialogView.findViewById(R.id.hhRDV);
-        mmEdit=(EditText)alertDialogView.findViewById(R.id.minRDV);
 
         name.setText(listPOI.get(position).getName());
         type .setText(listPOI.get(position).getType());
@@ -146,11 +152,8 @@ public class AddDestinationFragment extends Fragment {
 
         adb.setNegativeButton("Add", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Temps temps = new Temps(Integer.parseInt(hhEdit.getText().toString()),Integer.parseInt(mmEdit.getText().toString()));
-                POI poi=listPOI.get(positionClicked);
-                poi.setTempsOfVisite(temps);
-                POIManager.addPoiToSortedList(MyApplication.listOfCurrentPOIS,poi);
-                updateListViewOfDay();
+                showTimePicker();
+
             }
         });
         adb.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
@@ -172,10 +175,64 @@ public class AddDestinationFragment extends Fragment {
             map.put(TAG_NAME,poi.getName());
             map.put(TAG_TYPE,poi.getType());
             map.put(TAG_TEMPS,poi.getTempsOfVisite().afficher());
-            map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+            map.put("img", String.valueOf(R.drawable.monument_black));//Ici l icone qui va s'afficher
             ProgramFragment.listItem1.add(map);
         }
         ProgramFragment.mSchedule1.notifyDataSetChanged();
+
+    }
+
+    private void showTimePicker() {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final AlertDialog.Builder dialogBuilder =
+                new AlertDialog.Builder(getActivity());
+        View customView = inflater.inflate(R.layout.timepicker, null);
+        dialogBuilder.setView(customView);
+
+        final TimePicker timePicker =
+                (TimePicker) customView.findViewById(R.id.dialog_timepicker);
+        final TextView timeTextView =
+                (TextView) customView.findViewById(R.id.dialog_timeview);
+        // View settings
+        dialogBuilder.setTitle("Choose a time");
+
+        // Buttons
+        dialogBuilder.setNegativeButton(
+                "Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }
+        );
+        dialogBuilder.setPositiveButton(
+                "Choose",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Calendar choosen = Calendar.getInstance();
+                        choosen.set(
+                                1,1,2015,
+                                timePicker.getCurrentHour(),
+                                timePicker.getCurrentMinute()
+                        );
+                        Temps temps=new Temps(choosen.get(Calendar.HOUR_OF_DAY),choosen.get(Calendar.MINUTE));
+                        //dialog.dismiss();
+                        POI poi=listPOI.get(positionClicked);
+                        poi.setTempsOfVisite(temps);
+                        POIManager.addPoiToSortedList(MyApplication.listOfCurrentPOIS,poi);
+                        updateListViewOfDay();
+
+                    }
+                }
+        );
+        final AlertDialog dialog = dialogBuilder.create();
+        // Initialize datepicker in dialog atepicker
+        // Finish
+
+        dialog.show();
+
 
     }
 
