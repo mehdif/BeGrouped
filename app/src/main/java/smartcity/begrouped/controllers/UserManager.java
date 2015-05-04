@@ -1,5 +1,6 @@
 package smartcity.begrouped.controllers;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -70,18 +71,21 @@ public class UserManager {
         }
     }
     // jdid
-    public static void sendAptToServer(Appointment appointment) {
-        TaskSendApt task = new TaskSendApt(appointment);
+    public static void sendAptToServer(Appointment appointment,MapsActivity ac) {
+        TaskSendApt task = new TaskSendApt(appointment,ac);
         task.execute();
     }
 
     public static class TaskSendApt extends AsyncTask {
 
         Appointment apt;
+        private ProgressDialog progressDialog;
+        MapsActivity ac;
 
-        public TaskSendApt(Appointment apt) {
+        public TaskSendApt(Appointment apt,MapsActivity ac) {
             super();
             this.apt = apt;
+            this.ac=ac;
         }
 
         @Override
@@ -101,24 +105,36 @@ public class UserManager {
         }
 
         @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(ac);
+            progressDialog.setMessage("Creating Appointment");
+            progressDialog.show();
+        }
+
+        @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
             MapsActivity.aptEnCreation = false;
+            progressDialog.dismiss();
         }
     }
 
-    public static void sendRemoveApt(String groupName) {
-        TaskSendRemoveApt task = new TaskSendRemoveApt(groupName);
+    public static void sendRemoveApt(String groupName,MapsActivity ac) {
+        TaskSendRemoveApt task = new TaskSendRemoveApt(groupName,ac);
         task.execute();
     }
 
     public static class TaskSendRemoveApt extends AsyncTask {
 
         String groupName;
+        private ProgressDialog progressDialog;
+        MapsActivity ac;
 
-        public TaskSendRemoveApt(String groupName) {
+
+        public TaskSendRemoveApt(String groupName,MapsActivity ac){
             super();
             this.groupName = groupName;
+            this.ac=ac;
         }
 
         @Override
@@ -129,11 +145,18 @@ public class UserManager {
             String jsonFileUrl = getFromUrl(AllUrls.REMOVE_RDV + groupName + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
             return null;
         }
-
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(ac);
+            progressDialog.setMessage("Removing Appointment");
+            progressDialog.show();
+        }
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
             MapsActivity.aptEnCreation = false;
+            progressDialog.dismiss();
+
         }
     }
 

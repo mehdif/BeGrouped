@@ -102,7 +102,7 @@ public class ProgramFragment extends Fragment {
         //Array of data to fill in the list
         listItem1 = new ArrayList<HashMap<String, String>>();
         //LinkedList<Group> mygroups= GroupManager.getGroups();
-        LinkedList<POI> myPOIs= POIManager.sortPOIByTime(POIManager.getDayProgramOfGroupByTask(MyApplication.dateOfCurrentProgram,MyApplication.currentGroup.getName()));
+        LinkedList<POI> myPOIs= POIManager.sortPOIByTime(POIManager.getDayProgramOfGroupByTask(MyApplication.dateOfCurrentProgram,MyApplication.currentGroup.getName(),getActivity()));
         if (myPOIs==null) myPOIs=new LinkedList<>();
         for(int i=0;i<myPOIs.size();i++) {
             POI poi= myPOIs.get(i);

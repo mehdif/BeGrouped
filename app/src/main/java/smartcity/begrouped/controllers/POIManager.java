@@ -1,5 +1,6 @@
 package smartcity.begrouped.controllers;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 
+import smartcity.begrouped.activity.MapsActivity;
 import smartcity.begrouped.model.Date;
 import smartcity.begrouped.model.Location;
 import smartcity.begrouped.model.POI;
@@ -218,8 +220,9 @@ public class POIManager {
         }
         return null;
     }
-    public static LinkedList<POI> getDayProgramOfGroupByTask(Date date,String groupName){
-        TaskGetDayProgramOfGroup  task=new TaskGetDayProgramOfGroup(date,groupName);
+    public static LinkedList<POI> getDayProgramOfGroupByTask(Date date,String groupName,Activity ac){
+        TaskGetDayProgramOfGroup  task=new TaskGetDayProgramOfGroup(date,groupName,ac);
+
         try {
             return (LinkedList<POI>) task.execute().get();
         } catch (InterruptedException e) {
@@ -233,10 +236,12 @@ public class POIManager {
 
         String groupName;
         Date date;
+        Activity ac;
 
-        public TaskGetDayProgramOfGroup (Date date,String groupName){
+        public TaskGetDayProgramOfGroup (Date date,String groupName,Activity ac){
             this.groupName= groupName;
             this.date=date;
+            this.ac=ac;
 
         }
         @Override
@@ -245,6 +250,12 @@ public class POIManager {
            return getDayProgramOfGroup(date,groupName);
         }
 
+        @Override
+        protected void onPostExecute(Object o) {
+            if (ac instanceof MapsActivity){
+                ((MapsActivity) ac).afficherLeProgramme((LinkedList<POI>)o);
+            }
+        }
     }
 
     private static POI getPOIById(int poiId){
