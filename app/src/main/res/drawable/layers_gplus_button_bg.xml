@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >  
-    <item
-        android:drawable="@drawable/button_gplus_bg1"
-        android:id="@+id/t_bg"
-        android:gravity="center_horizontal"/>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" >
+        <shape>
+            <solid
+                android:color="@color/colorAccent" />
+            <stroke
+                android:width="1dp"
+                android:color="@color/colorAccent" />
+            <corners
+                android:radius="1dp" />
 
-</layer-list>
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <gradient
+                android:startColor="@color/colorPrimary"
+                android:endColor="@color/colorPrimaryDark"
+                android:angle="270" />
+            <stroke
+                android:width="1dp"
+                android:color="@color/colorPrimary" />
+            <corners
+                android:radius="1dp" />
 
+        </shape>
+    </item>
+</selector>

@@ -9,7 +9,8 @@ public class MessageUser {
     public final static HashMap<String,String> EnglishMessages=new HashMap<>();
 
     public static void init(){
-        EnglishMessages.put("0000","An error has been encountered");
+        EnglishMessages.put("0000","An unkown error has been encountered");
+        EnglishMessages.put("0001","Network problem ! please ensure that you're connected to internet");
 
         EnglishMessages.put("1101","Please sign in"); //disconnected
         EnglishMessages.put("1102","There is no user using this username");
