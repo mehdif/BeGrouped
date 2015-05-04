@@ -1,11 +1,5 @@
 package smartcity.begrouped.activity;
 
-import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -40,6 +34,7 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
     private Button register;
     private EditText username;
     private EditText password;
+
     private String action="";
 
 
@@ -68,9 +63,10 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
                     String pass = password.getText().toString();
                     if (login.isEmpty() || pass.isEmpty()) Toast.makeText(AuthentificationActivity.this, MessageUser.get("1105"),Toast.LENGTH_SHORT).show();
                     else {
-                        Downloader downloader = new Downloader(AuthentificationActivity.this,AuthentificationActivity.this);
-                        String hashedPass= GlobalMethodes.md5(pass);
                         action="login";
+                        String hashedPass= GlobalMethodes.md5(pass);
+
+                        Downloader downloader = new Downloader(AuthentificationActivity.this,AuthentificationActivity.this);
                         downloader.execute(AllUrls.authenticate_user_url+login+"/"+hashedPass);
                     }
                 }
@@ -110,7 +106,6 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
 
     @Override
     public void executeAfterDownload(String output) {
-        Log.v("aymen",output);
         if (action.equals("login")) {
             if (isNumeric(output.charAt(0))) {
                 Toast.makeText(AuthentificationActivity.this, MessageUser.get(output),Toast.LENGTH_SHORT).show();
