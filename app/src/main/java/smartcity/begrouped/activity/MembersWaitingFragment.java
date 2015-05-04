@@ -71,7 +71,7 @@ public class MembersWaitingFragment extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage("Are you sure you want to accept " + map.get("username") + " ?")
                         .setCancelable(false)
-                        .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Accept", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
                                 boolean result = GroupManager.callTaskAcceptMember(MyApplication.currentGroup.getName(),map.get("username"));
@@ -96,9 +96,27 @@ public class MembersWaitingFragment extends Fragment {
 
                             }
                         })
-                        .setNegativeButton("Ignore", new DialogInterface.OnClickListener() {
+                        .setNeutralButton("Reject",new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        boolean result = GroupManager.callTaskDeleteMember(MyApplication.currentGroup.getName(), map.get("username"));
+                                        if (result) {
+                                            Toast.makeText(getActivity(), "Request rejected", Toast.LENGTH_LONG).show();
+                                            reload();
+                                            SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+                                                    new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
+                                            membersWaitingView.setAdapter(mSchedule);
+
+
+                                        } else
+                                            Toast.makeText(getActivity(), "There is a problem with deleting this member", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+
+                                )
+                        .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
+
                             }
                         });
                 AlertDialog alert = builder.create();
