@@ -429,6 +429,7 @@ public class POIManager {
 
 
     public static LinkedList<POI> sortPOIByTime(LinkedList<POI> poiList){
+        if (poiList==null) return null;
         LinkedList<POI> sortedPOI=new LinkedList<POI>();
         int earLiestPOI=0;
         while (poiList.size()>0){

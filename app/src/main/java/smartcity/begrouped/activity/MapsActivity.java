@@ -152,7 +152,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 "com.authorwjf.MajPositions"), 0);
         am = (AlarmManager) (this.getSystemService(Context.ALARM_SERVICE));
         am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + FIVE_SECONDS , pi);
+                SystemClock.elapsedRealtime() + TWO_SECONDS, pi);
 
     }
     private void initializeMarkers(){
@@ -198,8 +198,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
         if (marker.equals(myPosition))
         {
             //handle click here
-            Toast.makeText(this, "hiho " ,
-                    Toast.LENGTH_SHORT).show();
+
         }
 
         return false;
@@ -333,10 +332,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
             return true;
         }
 
-        //if(id == R.id.action_search){
-        //Toast.makeText(getApplicationContext(), "Search action is selected!", Toast.LENGTH_SHORT).show();
-        //return true;
-        //}
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -389,12 +385,12 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 EditText mm = (EditText)alertDialogView.findViewById(R.id.mmRDV);
                 EditText yy = (EditText)alertDialogView.findViewById(R.id.aaRDV);
                 Date date=new Date(Integer.parseInt(jj.getText().toString()),Integer.parseInt(mm.getText().toString()),Integer.parseInt(yy.getText().toString()));
-                MyApplication.listOfCurrentPOIS=POIManager.sortPOIByTime(POIManager.getDayProgramOfGroupByTask(date,MyApplication.currentGroup.getName()));
+                LinkedList<POI> listPOI= POIManager.sortPOIByTime(POIManager.getDayProgramOfGroupByTask(date,MyApplication.currentGroup.getName()));
                 if (programShown){
                     hideProgram();
                     programShown=false;
                 }
-
+                MyApplication.listOfCurrentPOIS=listPOI;
 
                 if (MyApplication.listOfCurrentPOIS!=null){
                     programShown=true;
@@ -512,7 +508,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
             case 3:
                 title = getString(R.string.title_find_program_itinerary);
                 getSupportActionBar().setTitle(title);
-                Toast.makeText(getApplicationContext(), "Find Program itinirerary !",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Find Program itinirerary !",Toast.LENGTH_LONG).show();
                 if (programShown){
                     if (programPath!=null){
                         for (int j=0;j<programPath.size();j++){
@@ -535,7 +531,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
             case 4:
                 title = getString(R.string.title_show_program);
                 getSupportActionBar().setTitle(title);
-                Toast.makeText(getApplicationContext(), "Show Program !",Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "Show Program !",Toast.LENGTH_LONG).show();
                 afficherDialogChoixDate();
                 break;
             case 5:
