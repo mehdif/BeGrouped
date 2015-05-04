@@ -94,6 +94,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
     private boolean drawingPath1=false;
     private boolean drawingPath2=false;
     public static boolean aptEnCreation=false;
+    private Marker nearestPOIMareker=null;
 
     public MapsActivity(){
 
@@ -184,7 +185,28 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 // setUpMap();
                 mMap.setOnMarkerClickListener(this);
                 mMap.setOnMapClickListener(new MyMapClickListener());
+                if (MyApplication.myPosition!=null){
+
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(MyApplication.myPosition.getLatitude(),MyApplication.myPosition.getLongitude()), 8));
+                        mMap.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
+
+                }
+                afficherNearestPOI();
+
+
             }
+        }
+    }
+
+    private void afficherNearestPOI() {
+        Intent intent=getIntent();
+        String name=intent.getStringExtra("name");
+        String type=intent.getStringExtra("type");
+        double latitude=intent.getDoubleExtra("latitude",-1);
+        double longitude=intent.getDoubleExtra("longitude",-1);
+        if ((latitude!=-1) && (longitude!=-1)&&(name!=null) && (type!=null)){
+            nearestPOIMareker=  mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude))
+                    .title(name).snippet(type));
         }
     }
 
