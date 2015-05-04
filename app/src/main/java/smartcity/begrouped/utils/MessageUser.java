@@ -11,7 +11,7 @@ public class MessageUser {
     public static void init(){
         EnglishMessages.put("0000","An unkown error has been encountered");
         EnglishMessages.put("0001","Network problem ! please ensure that you're connected to internet");
-        EnglishMessages.put("0002","You're not connected to internet ! please connect to internet");
+        EnglishMessages.put("0002","You're not connected to internet !");
 
 
         EnglishMessages.put("1101","Please sign in"); //disconnected
