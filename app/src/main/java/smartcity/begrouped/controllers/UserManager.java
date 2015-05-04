@@ -1,5 +1,6 @@
 package smartcity.begrouped.controllers;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
