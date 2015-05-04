@@ -119,18 +119,22 @@ public class UserManager {
         }
     }
 
-    public static void sendRemoveApt(String groupName) {
-        TaskSendRemoveApt task = new TaskSendRemoveApt(groupName);
+    public static void sendRemoveApt(String groupName,MapsActivity ac) {
+        TaskSendRemoveApt task = new TaskSendRemoveApt(groupName,ac);
         task.execute();
     }
 
     public static class TaskSendRemoveApt extends AsyncTask {
 
         String groupName;
+        private ProgressDialog progressDialog;
+        MapsActivity ac;
 
-        public TaskSendRemoveApt(String groupName) {
+
+        public TaskSendRemoveApt(String groupName,MapsActivity ac){
             super();
             this.groupName = groupName;
+            this.ac=ac;
         }
 
         @Override
@@ -141,11 +145,18 @@ public class UserManager {
             String jsonFileUrl = getFromUrl(AllUrls.REMOVE_RDV + groupName + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
             return null;
         }
-
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(ac);
+            progressDialog.setMessage("Removing Appointment");
+            progressDialog.show();
+        }
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
             MapsActivity.aptEnCreation = false;
+            progressDialog.dismiss();
+
         }
     }
 
