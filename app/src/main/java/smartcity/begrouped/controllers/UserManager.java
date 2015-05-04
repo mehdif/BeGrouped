@@ -1,48 +1,20 @@
 package smartcity.begrouped.controllers;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.spec.ECField;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import smartcity.begrouped.activity.AuthentificationActivity;
 import smartcity.begrouped.activity.MapsActivity;
-import smartcity.begrouped.activity.RegisterActivity;
 import smartcity.begrouped.model.Appointment;
-import smartcity.begrouped.model.Group;
-import smartcity.begrouped.model.Location;
 import smartcity.begrouped.model.User;
 import smartcity.begrouped.utils.AllUrls;
 import smartcity.begrouped.utils.Constants;
-import smartcity.begrouped.utils.GlobalMethodes;
 import smartcity.begrouped.utils.MyApplication;
 
 import static smartcity.begrouped.utils.GlobalMethodes.getFromUrl;
@@ -97,8 +69,6 @@ public class UserManager {
             return null;
         }
     }
-
-
     // jdid
     public static void sendAptToServer(Appointment appointment,MapsActivity ac) {
         TaskSendApt task = new TaskSendApt(appointment,ac);
@@ -178,30 +148,6 @@ public class UserManager {
         }
     }
 
-    public static String insertUser(String userName, String passWord, String firstName, String lastName, String phonenumber) {
-        String jsonFileUrl = "";
-        try {
-            String encodedFirstName = URLEncoder.encode(firstName, "utf-8").replace("+", "%20");
-            String encodedLastName = URLEncoder.encode(lastName, "utf-8").replace("+", "%20");
-            String hashedPassWord = GlobalMethodes.md5(passWord);
-            jsonFileUrl = getFromUrl(AllUrls.register_user_url + userName + "/" + hashedPassWord + "/" + encodedFirstName + "/" + encodedLastName + "/" + phonenumber);
-            Log.v("Jsonfile : ", " " + jsonFileUrl);
-
-            //Json file parser
-            JSONObject jsonObject = new JSONObject(jsonFileUrl);
-
-            String firstname = (String) jsonObject.get(Constants.FIRST_NAME);
-            String lastname = (String) jsonObject.get(Constants.LAST_NAME);
-            String username = (String) jsonObject.get(Constants.USERNAME);
-            String password = (String) jsonObject.get(Constants.PASSWORD);
-            String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
-            MyApplication.myIdentity = new User(firstname, lastname, username, password, phoneNumber);
-        } catch (Exception e) {
-            Log.e("Error : ", e.getMessage());
-        }
-        return jsonFileUrl;
-    }
-
     public static User getUserFromName(String username) {
 
         String jsonFileUrl = getFromUrl(AllUrls.GET_USER_INFO + username + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
@@ -228,18 +174,6 @@ public class UserManager {
         }
     }
 
-
-
-
-    public static void register(String username, String password, String firstname, String lastname, String phonenumber, RegisterActivity activity) {
-
-
-        new TaskRegister(activity).execute(username, password, firstname, lastname, phonenumber, activity);
-
-
-    }
-
-
     public static Object getUserFromUserName(String username) {
         Log.v("getusertask:", username);
 
@@ -254,30 +188,6 @@ public class UserManager {
         }
         return null;
     }
-
-
-    public static class TaskRegister extends AsyncTask {
-
-        RegisterActivity activity;
-
-        public TaskRegister(RegisterActivity activity) {
-            this.activity = activity;
-        }
-
-        @Override
-        protected Object doInBackground(Object[] params) {
-
-            insertUser(params[0].toString(), params[1].toString(), params[2].toString(), params[3].toString(), params[4].toString());
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Object user) {
-            activity.registerUser();
-        }
-
-    }
-
 
     public static class TaskGetUserFromUsername extends AsyncTask {
 
