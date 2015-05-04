@@ -130,7 +130,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             map.put(TAG_GROUP_NAME,group.getName());
             map.put(TAG_REGION,group.getLocationName());
             map.put(TAG_SUPERVISEUR,group.getSupervisor().getUsername());
-            map.put("img", String.valueOf(R.drawable.icon));//Ici l icone qui va s'afficher
+            map.put("img", String.valueOf(R.drawable.group_users));//Ici l icone qui va s'afficher
             listItem.add(map);
         }
 
