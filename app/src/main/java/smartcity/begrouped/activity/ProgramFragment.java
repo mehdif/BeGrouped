@@ -4,10 +4,12 @@ package smartcity.begrouped.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,25 +76,20 @@ public class ProgramFragment extends Fragment {
 
 
 
-                FragmentManager fragmentManager = getFragmentManager();
-
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                GroupHomeFragment fragment = new GroupHomeFragment();
-                fragmentTransaction.replace(R.id.container_body, fragment,"tag");
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                Intent i = new Intent(getActivity().getApplicationContext(), GroupHomeFragment.class);
+                startActivity(i);
+                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                ((ActionBarActivity)getActivity()).getSupportActionBar().setTitle("Home");
 
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                GroupHomeFragment fragment = new GroupHomeFragment();
-                fragmentTransaction.replace(R.id.container_body, fragment,"tag");
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                Intent i = new Intent(getActivity().getApplicationContext(), GroupHomeFragment.class);
+                startActivity(i);
+                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                ((ActionBarActivity)getActivity()).getSupportActionBar().setTitle("Home");
             }
         });
 

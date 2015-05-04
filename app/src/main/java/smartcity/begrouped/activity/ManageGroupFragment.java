@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -164,12 +165,10 @@ public class ManageGroupFragment extends Fragment {
         group.setMembers(group1.getMembers());
 
         MyApplication.currentGroup=group;
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        GroupHomeFragment fragment = new GroupHomeFragment();
-        fragmentTransaction.replace(R.id.container_body, fragment,"tag");
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        Intent i = new Intent(getActivity().getApplicationContext(), GroupHomeFragment.class);
+        startActivity(i);
+        getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        ((ActionBarActivity)getActivity()).getSupportActionBar().setTitle("Home");
 
         hideProgress();
     }

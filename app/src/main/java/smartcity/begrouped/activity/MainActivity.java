@@ -61,9 +61,6 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            // create me statically for test
-            //UserManager.createMeForTest();
-
             mToolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowHomeEnabled(true);

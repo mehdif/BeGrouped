@@ -35,6 +35,38 @@
                 <category android:name="android.intent.category.default" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.MembersFragmentActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.default" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.GroupHomeFragment"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.default" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.ScheduleFragmentActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.default" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".activity.RegisterActivity"
@@ -84,9 +116,9 @@
         </receiver>
         <activity
             android:name=".activity.ChatActivity"
-            android:label="@string/title_activity_chat" 
             android:screenOrientation="portrait">
         </activity>
+
         <service android:name=".utils.MessageService" />
     </application>
 

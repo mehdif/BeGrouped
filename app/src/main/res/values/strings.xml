@@ -60,8 +60,25 @@
     <string name="title_hide_program">Hide Program</string>
 
 
+<!-- Menu Group Home-->
+    <string name="nav_item_home_global">Home</string>
+    <string name="nav_item_home_current_group">Current Group</string>
+    <string name="nav_item_map">Map</string>
+    <string name="nav_item_members">Members</string>
+    <string name="nav_item_chat">Chat</string>
+    <string name="nav_item_schedule">Schedule</string>
+
+    <string-array name="nav_drawer_labels_group_home">
+        <item>@string/nav_item_home_global</item>
+        <item>@string/nav_item_home_current_group</item>
+        <item>@string/nav_item_map</item>
+        <item>@string/nav_item_members</item>
+        <item>@string/nav_item_chat</item>
+        <item>@string/nav_item_schedule</item>
+    </string-array>
 
 
+    <!-- fin menu Group Home -->
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_show_location">ShowLocationActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
