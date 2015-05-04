@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -67,6 +68,24 @@ public class GroupHomeFragment extends Fragment {
                 getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
+        map.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        //map.setImageDrawable(getResources().getDrawable(R.drawable.map_red));
+                        // PRESSED
+                        return true; // if you want to handle the touch event
+                    case MotionEvent.ACTION_UP:
+                       // map.setImageDrawable(getResources().getDrawable(R.drawable.map));
+                        // RELEASED
+                        return true; // if you want to handle the touch event
+                }
+
+                return false;
+            }
+        });
 
         members.setOnClickListener(new View.OnClickListener() {
 
@@ -101,6 +120,26 @@ public class GroupHomeFragment extends Fragment {
             }
         });
 
+        members.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        //members.setImageDrawable(getResources().getDrawable(R.drawable.group_red));
+
+                        // PRESSED
+                        return true; // if you want to handle the touch event
+                    case MotionEvent.ACTION_UP:
+                        //members.setImageDrawable(getResources().getDrawable(R.drawable.group));
+                        // RELEASED
+                        return true; // if you want to handle the touch event
+                }
+
+                return false;
+            }
+        });
+
         chat.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -108,6 +147,24 @@ public class GroupHomeFragment extends Fragment {
                 Intent intent=new Intent(getActivity(),ChatActivity.class);
                 startActivity(intent);
 
+            }
+        });
+        chat.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        //chat.setImageDrawable(getResources().getDrawable(R.drawable.chat_red));
+                        // PRESSED
+                        return true; // if you want to handle the touch event
+                    case MotionEvent.ACTION_UP:
+                        //chat.setImageDrawable(getResources().getDrawable(R.drawable.chat));
+                        // RELEASED
+                        return true; // if you want to handle the touch event
+                }
+
+                return false;
             }
         });
 
@@ -118,6 +175,25 @@ public class GroupHomeFragment extends Fragment {
                 showDatePicker();
             }
         });
+        schedule.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        //schedule.setImageDrawable(getResources().getDrawable(R.drawable.agenda_red));
+                        // PRESSED
+                        return true; // if you want to handle the touch event
+                    case MotionEvent.ACTION_UP:
+                        //schedule.setImageDrawable(getResources().getDrawable(R.drawable.agenda));
+                        // RELEASED
+                        return true; // if you want to handle the touch event
+                }
+
+                return false;
+            }
+        });
+
 
         return rootView;
     }
