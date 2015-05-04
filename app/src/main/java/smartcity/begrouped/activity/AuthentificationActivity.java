@@ -124,7 +124,6 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
                             Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
                             startService(serviceIntent);
                             Log.v("service", "start service");
-
                         }
                     }
                 });
