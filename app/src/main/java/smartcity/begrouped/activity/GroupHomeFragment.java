@@ -172,7 +172,13 @@ public class GroupHomeFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                showDatePicker();
+
+                if (MyApplication.myIdentity.getUsername().equals(MyApplication.currentGroup.getSupervisor().getUsername())) {
+                    showDatePicker();
+                }
+                else {
+                    Toast.makeText(getActivity(), "You're not the supervisor of this group",Toast.LENGTH_LONG).show();
+                }
             }
         });
   /*      schedule.setOnTouchListener(new View.OnTouchListener() {

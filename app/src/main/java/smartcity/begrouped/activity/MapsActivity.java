@@ -368,40 +368,45 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 break;
             case 1:
                 //fragment = new AboutFragment();
-                title = getString(R.string.title_add_appointment);
-                getSupportActionBar().setTitle(title);
-                if (aptMarker==null) {
-                    createAppointment();
-                    Toast.makeText(getApplicationContext(), "Choose a location !", Toast.LENGTH_LONG).show();
+                if (MyApplication.myIdentity.getUsername().equals(MyApplication.currentGroup.getSupervisor().getUsername())) {
+                    title = getString(R.string.title_add_appointment);
+                    getSupportActionBar().setTitle(title);
+                    if (aptMarker == null) {
+                        createAppointment();
+                        Toast.makeText(getApplicationContext(), "Choose a location !", Toast.LENGTH_LONG).show();
+                    } else {
+                        aptEnCreation = true;
+                        new AlertDialog.Builder(this)
+                                .setTitle("Delete Appointment")
+                                .setMessage("Are you sure you want to delete the appointment?")
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // continue with delete
+                                        aptMarker.remove();
+                                        aptMarker = null;
+                                        MyApplication.currentGroup.setAppointment(null);
+                                        UserManager.sendRemoveApt(MyApplication.currentGroup.getName());
+                                        if (pathToApt != null) {
+                                            pathToApt.remove();
+                                            pathToApt = null;
+                                        }
+
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // do nothing
+                                        aptEnCreation = false;
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
                 }
                 else {
-                    aptEnCreation=true;
-                    new AlertDialog.Builder(this)
-                            .setTitle("Delete Appointment")
-                            .setMessage("Are you sure you want to delete the appointment?")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // continue with delete
-                                    aptMarker.remove();
-                                    aptMarker=null;
-                                    MyApplication.currentGroup.setAppointment(null);
-                                    UserManager.sendRemoveApt(MyApplication.currentGroup.getName());
-                                    if (pathToApt!=null){
-                                        pathToApt.remove();
-                                        pathToApt=null;
-                                    }
-
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // do nothing
-                                    aptEnCreation=false;
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+                    Toast.makeText(getApplicationContext(), "You're not the supervisor of this group",Toast.LENGTH_LONG).show();
                 }
+
                 break;
             case 2:
                 //fragment = new HelpFragment();
