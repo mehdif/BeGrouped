@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     tools:context="smartcity.begrouped.activity.ManageGroupFragment"
-    android:background="#999999">
+    android:background="#e6ebee">
 
     <LinearLayout
     android:id="@+id/espace"

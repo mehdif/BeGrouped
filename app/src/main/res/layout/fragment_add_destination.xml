@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="smartcity.begrouped.activity.AddDestinationFragment">
+    tools:context="smartcity.begrouped.activity.AddDestinationFragment"
+    android:background="#e6ebee">
 
     <EditText
         android:id="@+id/search_input"
