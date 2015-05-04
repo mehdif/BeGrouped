@@ -83,6 +83,7 @@ public class GroupHomeFragment extends Fragment {
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         MembersFragmentActivity fragment = new MembersFragmentActivity();
                         fragmentTransaction.replace(R.id.container_body, fragment, "tag");
+                        fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
 
                     }
@@ -93,6 +94,7 @@ public class GroupHomeFragment extends Fragment {
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         MembersOnGroupFragment fragment = new MembersOnGroupFragment();
                         fragmentTransaction.replace(R.id.container_body, fragment, "tag");
+                        fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
                     }
 
@@ -195,6 +197,7 @@ public class GroupHomeFragment extends Fragment {
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         ScheduleFragmentActivity fragment = new ScheduleFragmentActivity();
                         fragmentTransaction.replace(R.id.container_body, fragment,"tag");
+                        fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
                     }
                 }
