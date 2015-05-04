@@ -40,5 +40,9 @@ public class Constants {
     public final static String POI_ID= "poi_id";
     public final static String ID= "id";
 
+    public final static int MANAGE_GROUP_ONCREATE= 0;
+    public final static int MEMBERS_ON_GROUP_ONCREATE= 1;
+    public final static int MEMBERS_ON_GROUP_RELOAD= 2;
+
 
 }

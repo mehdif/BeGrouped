@@ -3,6 +3,7 @@ package smartcity.begrouped.activity;
 import android.app.AlertDialog;
 import android.app.IntentService;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,12 +29,14 @@ import smartcity.begrouped.controllers.GroupManager;
 import smartcity.begrouped.controllers.UserManager;
 import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.User;
+import smartcity.begrouped.utils.Constants;
 import smartcity.begrouped.utils.MessageService;
 import smartcity.begrouped.utils.MyApplication;
 
 
 public class ManageGroupFragment extends Fragment {
 
+    private Fragment context;
     private ListView maListViewPerso;
     private ProgressDialog progressDialog;
     ArrayList<HashMap<String, String>> listItem;//array of items
@@ -49,12 +52,13 @@ public class ManageGroupFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+
+        context = this;
         View rootView = inflater.inflate(R.layout.fragment_manage_group, container, false);
         //Get the listview
         maListViewPerso = (ListView) rootView.findViewById(R.id.listView1);
@@ -67,26 +71,13 @@ public class ManageGroupFragment extends Fragment {
                 HashMap<String, String> map = (HashMap<String, String>) maListViewPerso.getItemAtPosition(position);
                 /// récupérer les infos sur le groupe
                 Log.v("groupname",map.get(TAG_GROUP_NAME));
+
+                showProgress();
+
                 Group group=new Group(null,null,null,map.get(TAG_GROUP_NAME),null);
-                group= GroupManager.callTaskGetGroupInformation(group);
-                Object object= UserManager.getUserFromUserName(group.getSupervisor().getUsername());
-                if ( object instanceof User) {
-                    User user=(User) object;
-                    group.getSupervisor().setFirstname(user.getFirstname());
-                    group.getSupervisor().setLastname(user.getLastname());
-                    group.getSupervisor().setPhoneNumber(user.getPhoneNumber());
-                }
+                GroupManager.callTaskGetGroupInformation(group, context);
 
-                Log.v("super",group.getSupervisor().toString());
-                Group group1=GroupManager.getGroupMembersFromName(group.getName());
-                group.setMembers(group1.getMembers());
 
-                MyApplication.currentGroup=group;
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                GroupHomeFragment fragment = new GroupHomeFragment();
-                fragmentTransaction.replace(R.id.container_body, fragment,"tag");
-                fragmentTransaction.commit();
 
             }
         });
@@ -151,14 +142,45 @@ public class ManageGroupFragment extends Fragment {
         });
 
 
-
-
-
-
         SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
                 new String[] {"img", TAG_GROUP_NAME,TAG_REGION,TAG_SUPERVISEUR}, new int[] {R.id.img, R.id.titre, R.id.description, R.id.superviseur});
         maListViewPerso.setAdapter(mSchedule);
         return rootView;
 
+    }
+
+    public void getGroupInformation(Group group){
+
+        Object object= UserManager.getUserFromUserName(group.getSupervisor().getUsername());
+        if ( object instanceof User) {
+            User user=(User) object;
+            group.getSupervisor().setFirstname(user.getFirstname());
+            group.getSupervisor().setLastname(user.getLastname());
+            group.getSupervisor().setPhoneNumber(user.getPhoneNumber());
+        }
+
+        Log.v("super",group.getSupervisor().toString());
+        Group group1 = GroupManager.getGroupMembersFromName(group.getName());
+        group.setMembers(group1.getMembers());
+
+        MyApplication.currentGroup=group;
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        GroupHomeFragment fragment = new GroupHomeFragment();
+        fragmentTransaction.replace(R.id.container_body, fragment,"tag");
+        fragmentTransaction.commit();
+
+        hideProgress();
+    }
+
+    public void showProgress(){
+        progressDialog = ProgressDialog.show(this.getActivity(), null,
+                "Loading...", true);
+    }
+
+    public void hideProgress(){
+        if(progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
     }
 }

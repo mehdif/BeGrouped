@@ -35,6 +35,7 @@ import smartcity.begrouped.activity.HomeFragment;
 import smartcity.begrouped.activity.JoinGroupFragment;
 import smartcity.begrouped.activity.ManageGroupFragment;
 import smartcity.begrouped.activity.MapsActivity;
+import smartcity.begrouped.activity.MembersOnGroupFragment;
 import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.Location;
 import smartcity.begrouped.model.User;
@@ -413,6 +414,9 @@ public class GroupManager {
     public static boolean leaveGroup(String groupName)
     {
         String jsonFileUrl = getFromUrl(AllUrls.SORTIR_GROUP_USER +groupName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+    public static void getGroupMembersFromName(String groupName, Fragment fragment, int type){
+        new TaskGetJsonMembers(groupName, fragment, type).execute();
+    }
 
         Log.v("Json leave group : ", " " + jsonFileUrl);
 
@@ -427,7 +431,7 @@ public class GroupManager {
 
     public static Group getGroupMembersFromName(String groupName){
         try {
-            return ((Group)new TaskGetJsonMembers(groupName).execute().get());
+            return (Group) new TaskGetJsonMembers(groupName).execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -447,6 +451,9 @@ public class GroupManager {
         }
         return null;
 
+    public static void callTaskGetGroupInformation(Group group, Fragment fragment)
+    {
+        new TaskGroupInformation(fragment).execute(group);
     }
     public static void getGroups(HomeFragment fragment)
     {
@@ -492,15 +499,39 @@ public class GroupManager {
     }
     public static class TaskGetJsonMembers extends AsyncTask {
 
+        int type;
         String groupName;
-        public  TaskGetJsonMembers(String groupName){
+        Fragment fragment;
+
+        public TaskGetJsonMembers(String groupName){
+            this.fragment = null;
             this.groupName = groupName;
+        }
+
+        public  TaskGetJsonMembers(String groupName, Fragment fragment, int type){
+            this.type = type;
+            this.groupName = groupName;
+            this.fragment = fragment;
         }
 
         @Override
         protected Group doInBackground(Object[] params) {
 
             return createMembersFromJson(groupName);
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+
+            if(fragment != null){
+                if(type == Constants.MANAGE_GROUP_ONCREATE){
+                    ((MembersOnGroupFragment) fragment).getGroupMembersOnCreate((Group) o);
+                }
+                else if(type == Constants.MEMBERS_ON_GROUP_ONCREATE){
+                    ((MembersOnGroupFragment) fragment).getGroupMembersReload((Group) o);
+                }
+            }
 
         }
     }
@@ -711,31 +742,34 @@ public class GroupManager {
 
         }
     }
-
     public static class TaskDeleteMember extends AsyncTask {
         @Override
         protected Boolean doInBackground(Object[] params) {
 
-            return  expulseMember(params[0].toString(), params[1].toString());
-
-        }
-    }
-    public static class TaskLeaveGroup extends AsyncTask {
-        @Override
-        protected Boolean doInBackground(Object[] params) {
-
-            return leaveGroup(params[0].toString());
+            return  expulseMember(params[0].toString(),params[1].toString());
 
         }
     }
     public static class TaskGroupInformation extends AsyncTask {
 
+        Fragment fragment;
+        public TaskGroupInformation(Fragment fragment){
+            this.fragment = fragment;
+        }
         @Override
         protected Group doInBackground(Object[] params) {
 
             return getGroupInformation((Group)params[0]);
 
         }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            ((ManageGroupFragment) fragment).getGroupInformation((Group) o);
+
+        }
+
     }
 
 
