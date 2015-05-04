@@ -392,7 +392,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 //fragment = new AboutFragment();
                 if (MyApplication.myIdentity.getUsername().equals(MyApplication.currentGroup.getSupervisor().getUsername())) {
                     title = getString(R.string.title_add_appointment);
-                    getSupportActionBar().setTitle(title);
+                    //getSupportActionBar().setTitle(title);
                     if (aptMarker == null) {
                         createAppointment();
                         Toast.makeText(getApplicationContext(), "Choose a location !", Toast.LENGTH_LONG).show();
@@ -433,7 +433,8 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
             case 2:
                 //fragment = new HelpFragment();
                 title = getString(R.string.title_path_to_appointment);
-                getSupportActionBar().setTitle(title);
+                //getSupportActionBar().setTitle(title);
+                creatingApt=false;
                 if (aptMarker==null)
                 Toast.makeText(getApplicationContext(), "There is no appointment",Toast.LENGTH_LONG).show();
                 else {
@@ -456,8 +457,9 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 break;
             case 3:
                 title = getString(R.string.title_find_program_itinerary);
-                getSupportActionBar().setTitle(title);
+                //getSupportActionBar().setTitle(title);
                 //Toast.makeText(getApplicationContext(), "Find Program itinirerary !",Toast.LENGTH_LONG).show();
+                creatingApt=false;
                 if (programShown){
                     if (programPath!=null){
                         for (int j=0;j<programPath.size();j++){
@@ -479,14 +481,16 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 break;
             case 4:
                 title = getString(R.string.title_show_program);
-                getSupportActionBar().setTitle(title);
+                //getSupportActionBar().setTitle(title);
                // Toast.makeText(getApplicationContext(), "Show Program !",Toast.LENGTH_LONG).show();
                 //afficherDialogChoixDate();
+                creatingApt=false;
                 showDatePicker();
                 break;
             case 5:
                 title = getString(R.string.title_hide_program);
-                getSupportActionBar().setTitle(title);
+                //getSupportActionBar().setTitle(title);
+                creatingApt=false;
 
                 if (programShown) {
                     hideProgram();
