@@ -407,7 +407,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                                         aptMarker.remove();
                                         aptMarker = null;
                                         MyApplication.currentGroup.setAppointment(null);
-                                        UserManager.sendRemoveApt(MyApplication.currentGroup.getName());
+                                        UserManager.sendRemoveApt(MyApplication.currentGroup.getName(),MapsActivity.this);
                                         if (pathToApt != null) {
                                             pathToApt.remove();
                                             pathToApt = null;
@@ -580,21 +580,8 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                         //dialog.dismiss();
                         Date date=new Date(choosen.get(Calendar.DAY_OF_MONTH),choosen.get(Calendar.MONTH)+1,choosen.get(Calendar.YEAR));
                         if (!creatingApt) {
-                            LinkedList<POI> listPOI = POIManager.sortPOIByTime(POIManager.getDayProgramOfGroupByTask(date, MyApplication.currentGroup.getName()));
-                            if (programShown) {
-                                hideProgram();
-                                programShown = false;
-                            }
-                            MyApplication.listOfCurrentPOIS = listPOI;
+                            POIManager.getDayProgramOfGroupByTask(date, MyApplication.currentGroup.getName(),MapsActivity.this);
 
-                            if (MyApplication.listOfCurrentPOIS != null) {
-                                programShown = true;
-                                for (int i = 0; i < MyApplication.listOfCurrentPOIS.size(); i++) {
-                                    Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(MyApplication.listOfCurrentPOIS.get(i).getLocation().getLatitude(), MyApplication.listOfCurrentPOIS.get(i).getLocation().getLongitude()))
-                                            .title(MyApplication.listOfCurrentPOIS.get(i).getName()).snippet(MyApplication.listOfCurrentPOIS.get(i).getTempsOfVisite().afficher()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
-                                    MyApplication.listOfCurrentPOIS.get(i).setMarker(marker);
-                                }
-                            }
                         }else {
                             showTimePicker(date);
                         }
@@ -664,7 +651,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                                 .title("Appointment").snippet(date.afficher()+" at "+temps.afficher()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
                         Appointment appoint=new Appointment(aptMarker,temps.getHh(),temps.getMm(),date.getJj(),date.getMm(),date.getYy());
                         MyApplication.currentGroup.setAppointment(appoint);
-                        UserManager.sendAptToServer(appoint);
+                        UserManager.sendAptToServer(appoint,MapsActivity.this);
                         //dialog.dismiss();
 
                     }
@@ -677,5 +664,22 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
         dialog.show();
         creatingApt=false;
 
+    }
+    public void afficherLeProgramme(LinkedList<POI> listPOI){
+        listPOI=POIManager.sortPOIByTime(listPOI);
+        if (programShown) {
+            hideProgram();
+            programShown = false;
+        }
+        MyApplication.listOfCurrentPOIS = listPOI;
+
+        if (MyApplication.listOfCurrentPOIS != null) {
+            programShown = true;
+            for (int i = 0; i < MyApplication.listOfCurrentPOIS.size(); i++) {
+                Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(MyApplication.listOfCurrentPOIS.get(i).getLocation().getLatitude(), MyApplication.listOfCurrentPOIS.get(i).getLocation().getLongitude()))
+                        .title(MyApplication.listOfCurrentPOIS.get(i).getName()).snippet(MyApplication.listOfCurrentPOIS.get(i).getTempsOfVisite().afficher()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                MyApplication.listOfCurrentPOIS.get(i).setMarker(marker);
+            }
+        }
     }
 }
