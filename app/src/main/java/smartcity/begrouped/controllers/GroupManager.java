@@ -71,42 +71,48 @@ public class GroupManager {
      * @param group
      */
     public static Group updateGroupUserLocations(Group group) {
+        try {
 
-        JSONArray members;
-        LinkedList<User> membersList = group.getMembers();
+            JSONArray members;
+            LinkedList<User> membersList = group.getMembers();
+            String encodedName = URLEncoder.encode(group.getName(), "utf-8").replace("+", "%20");
 
-        String jsonFileUrl = getFromUrl("http://smartpld-001-site1.smarterasp.net/index.php/position_controller/getGroupPosition/algertour/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
-        Log.v("Jsonfile : ", " " + jsonFileUrl);
+            String jsonFileUrl = getFromUrl("http://smartpld-001-site1.smarterasp.net/index.php/position_controller/getGroupPosition/" + encodedName + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
+            Log.v("Jsonfile : ", " " + jsonFileUrl);
 
-        //Json file parser
-        if (jsonFileUrl != null) {
-            try {
-                JSONObject jsonObj = new JSONObject(jsonFileUrl);
+            //Json file parser
+            if (jsonFileUrl != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonFileUrl);
 
-                // Getting JSON Array node
-                members = jsonObj.getJSONArray(Constants.POSITIONS);
+                    // Getting JSON Array node
+                    members = jsonObj.getJSONArray(Constants.POSITIONS);
 
-                // looping through All members
-                for (int i = 0; i < members.length(); i++) {
-                    JSONObject jsonObject = members.getJSONObject(i);
+                    // looping through All members
+                    for (int i = 0; i < members.length(); i++) {
+                        JSONObject jsonObject = members.getJSONObject(i);
 
-                    String username = (String) jsonObject.get(Constants.USERNAME);
-                    String longitude = (String) jsonObject.get(Constants.LONGITUDE);
-                    String latitude = (String) jsonObject.get(Constants.LATITUDE);
+                        String username = (String) jsonObject.get(Constants.USERNAME);
+                        String longitude = (String) jsonObject.get(Constants.LONGITUDE);
+                        String latitude = (String) jsonObject.get(Constants.LATITUDE);
 
-                    User user = findUserByUsername(membersList, username);
-                    if (user != null) {
-                        addLocationToUser(user, Double.parseDouble(longitude), Double.parseDouble(latitude));
+                        User user = findUserByUsername(membersList, username);
+                        if (user != null) {
+                            addLocationToUser(user, Double.parseDouble(longitude), Double.parseDouble(latitude));
+                        }
                     }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } else {
+                Log.e("ServiceHandler", "Couldn't get any data from the url");
             }
-        } else {
-            Log.e("ServiceHandler", "Couldn't get any data from the url");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
+
         return group;
     }
 
@@ -641,7 +647,6 @@ public class GroupManager {
             fragment.getGroup((LinkedList<Group>) o);
         }
     }
-
 
 
     public static class TaskCreateNewGroup extends AsyncTask {
