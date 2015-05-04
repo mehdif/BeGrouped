@@ -16,6 +16,7 @@ public class MessageUser {
         EnglishMessages.put("1102","There is no user using this username");
         EnglishMessages.put("1103","Invalid username or password");
         EnglishMessages.put("1104","Account already exists, please change the username");
+        EnglishMessages.put("1105","Please enter your username and your password");
 
 
         EnglishMessages.put("1201","There is no group");
