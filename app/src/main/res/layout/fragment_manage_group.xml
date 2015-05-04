@@ -4,7 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context="smartcity.begrouped.activity.ManageGroupFragment">
+    tools:context="smartcity.begrouped.activity.ManageGroupFragment"
+    android:background="#999999">
 
     <LinearLayout
     android:id="@+id/espace"
@@ -15,6 +16,8 @@
 
     <ListView android:id="@+id/listView1"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"
+        android:divider="@null"
+        android:dividerHeight="0dp"/>
 
 </LinearLayout>
