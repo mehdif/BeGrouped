@@ -77,9 +77,9 @@ public class MembersOnGroupFragment extends Fragment {
                                     if (result) {
                                         Toast.makeText(getActivity(), "Member deleted with success", Toast.LENGTH_LONG).show();
                                         reload();
-                                       SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+                                        SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
                                                 new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
-                                       membersView.setAdapter(mSchedule);
+                                        membersView.setAdapter(mSchedule);
 
 
                                     } else

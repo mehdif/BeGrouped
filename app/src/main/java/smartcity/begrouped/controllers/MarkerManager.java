@@ -59,7 +59,8 @@ public class MarkerManager {
                         MyApplication.myIdentity.setLocalisation(new Location(user.getMarker().getPosition().latitude, user.getMarker().getPosition().longitude));
                         MyApplication.myIdentity.setMarker(user.getMarker());
                         if (firstTime)
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user.getMarker().getPosition(), 12));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user.getMarker().getPosition(), 8));
+                            mMap.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
                         firstTime = false;
                     }
             /*
