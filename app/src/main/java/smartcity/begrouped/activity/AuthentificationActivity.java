@@ -71,6 +71,7 @@ public class AuthentificationActivity extends ActionBarActivity {
                     else {
                         showProgress();
                         UserManager.authenticate(login, pass, AuthentificationActivity.this);
+
                     }
                 }
             });
