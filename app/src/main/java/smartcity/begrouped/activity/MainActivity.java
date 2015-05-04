@@ -178,8 +178,10 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
                 break;
             case 6:
                 Intent i = new Intent(getApplicationContext(), AuthentificationActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
                 startActivity(i);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
                 break;
             default:
                 break;
