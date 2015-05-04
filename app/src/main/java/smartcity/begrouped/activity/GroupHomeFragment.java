@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,13 +34,15 @@ import smartcity.begrouped.R;
 import smartcity.begrouped.utils.MyApplication;
 
 
-public class GroupHomeFragment extends Fragment {
+public class GroupHomeFragment extends ActionBarActivity implements FragmentDrawerGroup.FragmentDrawerListener {
 
     private ImageButton map;
     private ImageButton members;
     private ImageButton chat;
     private ImageButton schedule;
     private ProgressDialog progressDialog;
+    private Toolbar mToolbar;
+    private FragmentDrawerGroup drawerFragment;
 
     public GroupHomeFragment() {
 
@@ -46,46 +51,34 @@ public class GroupHomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.fragment_group_home);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_group_home, container, false);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        map = (ImageButton) rootView.findViewById(R.id.imageButton2);
-        members = (ImageButton) rootView.findViewById(R.id.imageButtonMembers);
-        chat = (ImageButton) rootView.findViewById(R.id.imageButtonChat);
-        schedule = (ImageButton) rootView.findViewById(R.id.imageButtonSched);
+        drawerFragment = (FragmentDrawerGroup) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer_home_group);
+        drawerFragment.setUp(R.id.fragment_navigation_drawer_home_group, (DrawerLayout) findViewById(R.id.drawer_layout_group), mToolbar);
+        drawerFragment.setDrawerListener(this);
+        getSupportActionBar().setTitle("Home");
+
+
+
+        map = (ImageButton) findViewById(R.id.imageButton2);
+        members = (ImageButton) findViewById(R.id.imageButtonMembers);
+        chat = (ImageButton) findViewById(R.id.imageButtonChat);
+        schedule = (ImageButton) findViewById(R.id.imageButtonSched);
 
         map.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                 startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                getSupportActionBar().setTitle("Map");
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
-    /*    map.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        //map.setImageDrawable(getResources().getDrawable(R.drawable.map_red));
-                        // PRESSED
-                        return true; // if you want to handle the touch event
-                    case MotionEvent.ACTION_UP:
-                       // map.setImageDrawable(getResources().getDrawable(R.drawable.map));
-                        // RELEASED
-                        return true; // if you want to handle the touch event
-                }
-
-                return false;
-            }
-        });*/
 
         members.setOnClickListener(new View.OnClickListener() {
 
@@ -95,79 +88,37 @@ public class GroupHomeFragment extends Fragment {
                 Log.v("supervisor:",MyApplication.currentGroup.getName());
 
 
-                   if ( MyApplication.currentGroup.getSupervisor().getUsername().equals(MyApplication.myIdentity.getUsername()))
-                    {
-                        Log.v("TAG","I'm the supervisor of current group");
-                        FragmentManager fragmentManager = getFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        MembersFragmentActivity fragment = new MembersFragmentActivity();
-                        fragmentTransaction.replace(R.id.container_body, fragment, "tag");
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
+                if ( MyApplication.currentGroup.getSupervisor().getUsername().equals(MyApplication.myIdentity.getUsername()))
+                {
+                    Intent i = new Intent(getApplicationContext(), MembersFragmentActivity.class);
+                    startActivity(i);
+                    getSupportActionBar().setTitle("Members");
 
-                    }
+                }
                 else
-                    {
-                        Log.v("TAG","I'm not the supervisor of current group");
-                        FragmentManager fragmentManager = getFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        MembersOnGroupFragment fragment = new MembersOnGroupFragment();
-                        fragmentTransaction.replace(R.id.container_body, fragment, "tag");
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                    }
-
-            }
-        });
-/*
-        members.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        members.setImageDrawable(getResources().getDrawable(R.drawable.group_red));
-
-                        // PRESSED
-                        return true; // if you want to handle the touch event
-                    case MotionEvent.ACTION_UP:
-                        members.setImageDrawable(getResources().getDrawable(R.drawable.group));
-                        // RELEASED
-                        return true; // if you want to handle the touch event
+                {
+                    Log.v("TAG","I'm not the supervisor of current group");
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    MembersOnGroupFragment fragment = new MembersOnGroupFragment();
+                    fragmentTransaction.replace(R.id.container_body, fragment, "tag");
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
                 }
 
-                return false;
             }
         });
-*/
+
         chat.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(),ChatActivity.class);
+                Intent intent=new Intent(getApplicationContext(),ChatActivity.class);
                 startActivity(intent);
+                getSupportActionBar().setTitle("Chat");
 
             }
         });
- /*       chat.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        //chat.setImageDrawable(getResources().getDrawable(R.drawable.chat_red));
-                        // PRESSED
-                        return true; // if you want to handle the touch event
-                    case MotionEvent.ACTION_UP:
-                        //chat.setImageDrawable(getResources().getDrawable(R.drawable.chat));
-                        // RELEASED
-                        return true; // if you want to handle the touch event
-                }
-
-                return false;
-            }
-        });
-*/
         schedule.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -177,39 +128,18 @@ public class GroupHomeFragment extends Fragment {
                     showDatePicker();
                 }
                 else {
-                    Toast.makeText(getActivity(), "You're not the supervisor of this group",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "You're not the supervisor of this group",Toast.LENGTH_LONG).show();
                 }
             }
         });
-  /*      schedule.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
 
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        //schedule.setImageDrawable(getResources().getDrawable(R.drawable.agenda_red));
-                        // PRESSED
-                        return true; // if you want to handle the touch event
-                    case MotionEvent.ACTION_UP:
-                        //schedule.setImageDrawable(getResources().getDrawable(R.drawable.agenda));
-                        // RELEASED
-                        return true; // if you want to handle the touch event
-                }
-
-                return false;
-            }
-        });
-*/
-
-        return rootView;
     }
 
 
     public void showDatePicker() {
         // Initializiation
-        LayoutInflater inflater = (LayoutInflater) getActivity().getLayoutInflater();
-        final AlertDialog.Builder dialogBuilder =
-                new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = this.getLayoutInflater();
+        final AlertDialog.Builder dialogBuilder =new AlertDialog.Builder(this);
         View customView = inflater.inflate(R.layout.date_picker, null);
         dialogBuilder.setView(customView);
         final Calendar now = Calendar.getInstance();
@@ -272,15 +202,13 @@ public class GroupHomeFragment extends Fragment {
                                 datePicker.getDayOfMonth()
                         );
 
-                        Toast.makeText(getActivity(), dateViewFormatter.format(choosen.getTime()),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), dateViewFormatter.format(choosen.getTime()),Toast.LENGTH_LONG).show();
                         MyApplication.dateOfCurrentProgram=new smartcity.begrouped.model.Date(choosen.get(Calendar.DAY_OF_MONTH),choosen.get(Calendar.MONTH)+1,choosen.get(Calendar.YEAR));
                         dialog.dismiss();
-                        FragmentManager fragmentManager = getFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        ScheduleFragmentActivity fragment = new ScheduleFragmentActivity();
-                        fragmentTransaction.replace(R.id.container_body, fragment,"tag");
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
+                        Intent i = new Intent(getApplicationContext(), ScheduleFragmentActivity.class);
+                        startActivity(i);
+                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        getSupportActionBar().setTitle("Schedule");
                     }
                 }
         );
@@ -302,6 +230,68 @@ public class GroupHomeFragment extends Fragment {
                 }
         );
         // Finish
-        dialog.show();
+        if(dialog==null)
+            Log.i("Hakkan","error !!");
+        else dialog.show();
     }
+
+    @Override
+    public void onDrawerItemSelected(View view, int position) {
+        displayView(position);
+    }
+
+    private void displayView(int position) {
+        Intent i = null;
+        String title = "Home";
+        switch (position) {
+            case 0:
+                title = "Home";
+                i = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                getSupportActionBar().setTitle(title);
+                break;
+            case 1:
+                title = "Current Group";
+                i = new Intent(getApplicationContext(), GroupHomeFragment.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                getSupportActionBar().setTitle(title);
+
+                break;
+            case 2:
+                title = "Map";
+                i = new Intent(getApplicationContext(), MapsActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                getSupportActionBar().setTitle(title);
+                break;
+            case 3:
+                title = "Members";
+                i = new Intent(getApplicationContext(), MembersFragmentActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                getSupportActionBar().setTitle(title);
+                break;
+            case 4:
+                title = "Chat";
+                i = new Intent(getApplicationContext(), ChatActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                getSupportActionBar().setTitle(title);
+
+                break;
+            case 5:
+                title = "Schedule";
+                i = new Intent(getApplicationContext(), ScheduleFragmentActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                getSupportActionBar().setTitle(title);
+                break;
+            default:
+                break;
+        }
+    }
+
+
 }

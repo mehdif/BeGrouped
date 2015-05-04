@@ -16,6 +16,10 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +40,7 @@ import com.sinch.android.rtc.messaging.MessageClientListener;
 import com.sinch.android.rtc.messaging.MessageDeliveryInfo;
 import com.sinch.android.rtc.messaging.MessageFailureInfo;
 import com.sinch.android.rtc.messaging.WritableMessage;
+import com.viewpagerindicator.TitlePageIndicator;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -49,6 +54,7 @@ import java.util.List;
 import java.util.Set;
 
 import smartcity.begrouped.R;
+import smartcity.begrouped.adapter.MembersAdapter;
 import smartcity.begrouped.controllers.GroupManager;
 import smartcity.begrouped.model.User;
 import smartcity.begrouped.utils.MessageAdapter;
@@ -56,7 +62,7 @@ import smartcity.begrouped.utils.MessageService;
 import smartcity.begrouped.utils.Msg;
 import smartcity.begrouped.utils.MyApplication;
 
-public class ChatActivity extends Activity {
+public class ChatActivity extends ActionBarActivity implements FragmentDrawerGroup.FragmentDrawerListener {
     private List<String> recipientsIds=new ArrayList<String>();
     private EditText messageBodyField;
     private String messageBody;
@@ -71,12 +77,25 @@ public class ChatActivity extends Activity {
     private boolean sent=false;
     private List<Msg> messages=new ArrayList<Msg>();
 
+    private Toolbar mToolbar;
+    private FragmentDrawerGroup drawerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_chat);
+
+            mToolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+            drawerFragment = (FragmentDrawerGroup) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer_home_group);
+            drawerFragment.setUp(R.id.fragment_navigation_drawer_home_group, (DrawerLayout) findViewById(R.id.drawer_layout_group), mToolbar);
+            drawerFragment.setDrawerListener(this);
+            getSupportActionBar().setTitle("Chat");
+
+
             bindService(new Intent(this, MessageService.class), serviceConnection, BIND_AUTO_CREATE);
             currentUserId = ParseUser.getCurrentUser().getObjectId();
             Log.v("currentuserid", currentUserId);
@@ -225,8 +244,7 @@ public class ChatActivity extends Activity {
 
     @Override
     public void onDestroy() {
-        messageService.removeMessageClientListener(messageClientListener);
-        unbindService(serviceConnection);
+
         super.onDestroy();
     }
 
@@ -333,5 +351,62 @@ public class ChatActivity extends Activity {
         public void onShouldSendPushData(MessageClient client, Message message, List<PushPair> pushPairs) {}
     }
 
+    @Override
+    public void onDrawerItemSelected(View view, int position) {
+        displayView(position);
+    }
+
+    private void displayView(int position) {
+        Intent i = null;
+        String title = "Home";
+        switch (position) {
+            case 0:
+                title = "Home";
+                i = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                getSupportActionBar().setTitle(title);
+                break;
+            case 1:
+                title = "Current Group";
+                i = new Intent(getApplicationContext(), GroupHomeFragment.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                getSupportActionBar().setTitle(title);
+
+                break;
+            case 2:
+                title = "Map";
+                i = new Intent(getApplicationContext(), MapsActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                getSupportActionBar().setTitle(title);
+                break;
+            case 3:
+                title = "Members";
+                i = new Intent(getApplicationContext(), MembersFragmentActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                getSupportActionBar().setTitle(title);
+                break;
+            case 4:
+                title = "Chat";
+                i = new Intent(getApplicationContext(), ChatActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                getSupportActionBar().setTitle(title);
+
+                break;
+            case 5:
+                title = "Schedule";
+                i = new Intent(getApplicationContext(), ScheduleFragmentActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                getSupportActionBar().setTitle(title);
+                break;
+            default:
+                break;
+        }
+    }
 
 }
