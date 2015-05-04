@@ -424,7 +424,7 @@ public class GroupManager {
         return false;
     }
 
-        public static void getGroupMembersFromName(String groupName, Fragment fragment, int type){
+    public static void getGroupMembersFromName(String groupName, Fragment fragment, int type){
         new TaskGetJsonMembers(groupName, fragment, type).execute();
 
     }
