@@ -528,18 +528,6 @@ public class GroupManager {
 
     }
 
-    public static String callTaskJoinGroup(String groupName, JoinGroupFragment fragment) {
-
-        try {
-            return (String) new TaskJoinGroup(groupName, fragment).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return "0000";
-
-    }
 
     public static Boolean callTaskAcceptMember(String groupName, String memberUsername) {
 
@@ -654,27 +642,7 @@ public class GroupManager {
         }
     }
 
-    public static class TaskJoinGroup extends AsyncTask {
 
-        private String groupName;
-        private JoinGroupFragment fragment;
-
-        public TaskJoinGroup(String groupName, JoinGroupFragment fragment) {
-            this.groupName = groupName;
-            this.fragment = fragment;
-        }
-
-        @Override
-        protected String doInBackground(Object[] params) {
-            return joinGroup(groupName);
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
-            fragment.joinGroup((String) o);
-        }
-    }
 
     public static class TaskCreateNewGroup extends AsyncTask {
 
