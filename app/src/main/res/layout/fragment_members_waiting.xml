@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="smartcity.begrouped.activity.MembersWaitingFragment">
+    tools:context="smartcity.begrouped.activity.MembersWaitingFragment"
+    android:background="#e6ebee">
 
 
     <ListView android:id="@+id/listView1"
