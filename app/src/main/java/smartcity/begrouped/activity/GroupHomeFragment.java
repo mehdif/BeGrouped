@@ -37,6 +37,12 @@ public class GroupHomeFragment extends Fragment {
     private ImageButton members;
     private ImageButton chat;
     private ImageButton schedule;
+
+    private TextView textViewMembers;
+    private TextView textViewChat;
+    private TextView textViewSchedule;
+    private TextView textViewMap;
+
     private ProgressDialog progressDialog;
 
     public GroupHomeFragment() {
@@ -59,147 +65,144 @@ public class GroupHomeFragment extends Fragment {
         chat = (ImageButton) rootView.findViewById(R.id.imageButtonChat);
         schedule = (ImageButton) rootView.findViewById(R.id.imageButtonSched);
 
-        map.setOnClickListener(new View.OnClickListener() {
+        textViewChat = (TextView) rootView.findViewById(R.id.textViewChat);
+        textViewMap = (TextView) rootView.findViewById(R.id.textViewMap);
+        textViewMembers = (TextView) rootView.findViewById(R.id.textViewMembers);
+        textViewSchedule = (TextView) rootView.findViewById(R.id.textViewSchedule);
 
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MapsActivity.class);
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
-            }
-        });
-    /*    map.setOnTouchListener(new View.OnTouchListener() {
+
+        map.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        //map.setImageDrawable(getResources().getDrawable(R.drawable.map_red));
+
+                        textViewMap.setTextColor(getResources().getColor(R.color.colorPrimary));
                         // PRESSED
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
-                       // map.setImageDrawable(getResources().getDrawable(R.drawable.map));
-                        // RELEASED
+
+                        textViewMap.setTextColor(getResources().getColor(R.color.black));
+
+                        Intent intent = new Intent(getActivity(), MapsActivity.class);
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+
                         return true; // if you want to handle the touch event
                 }
 
                 return false;
             }
-        });*/
-
-        members.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-
-                Log.v("supervisor:",MyApplication.currentGroup.getName());
-
-
-                   if ( MyApplication.currentGroup.getSupervisor().getUsername().equals(MyApplication.myIdentity.getUsername()))
-                    {
-                        Log.v("TAG","I'm the supervisor of current group");
-                        FragmentManager fragmentManager = getFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        MembersFragmentActivity fragment = new MembersFragmentActivity();
-                        fragmentTransaction.replace(R.id.container_body, fragment, "tag");
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-
-                    }
-                else
-                    {
-                        Log.v("TAG","I'm not the supervisor of current group");
-                        FragmentManager fragmentManager = getFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        MembersOnGroupFragment fragment = new MembersOnGroupFragment();
-                        fragmentTransaction.replace(R.id.container_body, fragment, "tag");
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                    }
-
-            }
         });
-/*
+
         members.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        members.setImageDrawable(getResources().getDrawable(R.drawable.group_red));
 
-                        // PRESSED
+                        textViewMembers.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
-                        members.setImageDrawable(getResources().getDrawable(R.drawable.group));
-                        // RELEASED
+
+                        textViewMembers.setTextColor(getResources().getColor(R.color.black));
+
+                        Log.v("supervisor:",MyApplication.currentGroup.getName());
+
+
+                        if ( MyApplication.currentGroup.getSupervisor().getUsername().equals(MyApplication.myIdentity.getUsername()))
+                        {
+                            Log.v("TAG","I'm the supervisor of current group");
+                            FragmentManager fragmentManager = getFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            MembersFragmentActivity fragment = new MembersFragmentActivity();
+                            fragmentTransaction.replace(R.id.container_body, fragment, "tag");
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
+
+                        }
+                        else
+                        {
+                            Log.v("TAG","I'm not the supervisor of current group");
+                            FragmentManager fragmentManager = getFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            MembersOnGroupFragment fragment = new MembersOnGroupFragment();
+                            fragmentTransaction.replace(R.id.container_body, fragment, "tag");
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
+                        }
+
                         return true; // if you want to handle the touch event
                 }
 
                 return false;
             }
         });
-*/
-        chat.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(getActivity(),ChatActivity.class);
-                startActivity(intent);
-
-            }
-        });
- /*       chat.setOnTouchListener(new View.OnTouchListener() {
+        chat.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        //chat.setImageDrawable(getResources().getDrawable(R.drawable.chat_red));
+                        textViewChat.setTextColor(getResources().getColor(R.color.colorPrimary));
+
                         // PRESSED
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
-                        //chat.setImageDrawable(getResources().getDrawable(R.drawable.chat));
-                        // RELEASED
+
+                        textViewChat.setTextColor(getResources().getColor(R.color.black));
+
+                        Intent intent=new Intent(getActivity(),ChatActivity.class);
+                        startActivity(intent);
+
                         return true; // if you want to handle the touch event
                 }
 
                 return false;
             }
         });
-*/
+
         schedule.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
-                if (MyApplication.myIdentity.getUsername().equals(MyApplication.currentGroup.getSupervisor().getUsername())) {
-                    showDatePicker();
-                }
-                else {
-                    Toast.makeText(getActivity(), "You're not the supervisor of this group",Toast.LENGTH_LONG).show();
-                }
+
             }
         });
-  /*      schedule.setOnTouchListener(new View.OnTouchListener() {
+
+        schedule.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        //schedule.setImageDrawable(getResources().getDrawable(R.drawable.agenda_red));
-                        // PRESSED
+
+                        textViewSchedule.setTextColor(getResources().getColor(R.color.colorPrimary));
+                                               // PRESSED
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
-                        //schedule.setImageDrawable(getResources().getDrawable(R.drawable.agenda));
-                        // RELEASED
+
+                        textViewSchedule.setTextColor(getResources().getColor(R.color.black));
+                                               // RELEASED
+                    if (MyApplication.myIdentity.getUsername().equals(MyApplication.currentGroup.getSupervisor().getUsername())) {
+                        showDatePicker();
+                    }
+                    else {
+                        Toast.makeText(getActivity(), "You're not the supervisor of this group",Toast.LENGTH_LONG).show();
+                    }
+
                         return true; // if you want to handle the touch event
                 }
 
                 return false;
             }
         });
-*/
 
         return rootView;
     }
