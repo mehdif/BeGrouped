@@ -7,10 +7,12 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
@@ -35,6 +37,7 @@ import com.sinch.android.rtc.messaging.MessageDeliveryInfo;
 import com.sinch.android.rtc.messaging.MessageFailureInfo;
 import com.sinch.android.rtc.messaging.WritableMessage;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -134,10 +137,9 @@ public class ChatActivity extends Activity {
                 populateMessageHistory();
             }
         });
-       //populateMessageHistory();
     }
     private final void createNotification(String sender, String content){
-       /* NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+       NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         Intent intent = new Intent(this,ChatActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
         Notification n  = new Notification.Builder(this)
@@ -147,8 +149,9 @@ public class ChatActivity extends Activity {
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)
                 .build();
-        n.defaults |= Notification.DEFAULT_SOUND;
-        notificationManager.notify(0, n);*/
+        n.sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
+                + "://" + getPackageName() + "/raw/notificationbegrouped");
+        notificationManager.notify(0, n);
     }
     //get previous messages from parse & display
     private void populateMessageHistory() {
@@ -282,9 +285,7 @@ public class ChatActivity extends Activity {
                 WritableMessage writableMessage = new WritableMessage(message.getRecipientIds(), message.getTextBody());
                 messageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING);
            // }
-            ParseUser currentUser = ParseUser.getCurrentUser();
-            String username= currentUser.getUsername();
-            //createNotification(username,message.getTextBody());
+            createNotification(message.getSenderId(),message.getTextBody());
         }
 
 
