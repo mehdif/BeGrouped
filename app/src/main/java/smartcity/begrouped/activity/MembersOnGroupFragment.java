@@ -3,6 +3,7 @@ package smartcity.begrouped.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,7 @@ import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.GroupManager;
 import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.User;
+import smartcity.begrouped.utils.Constants;
 import smartcity.begrouped.utils.MyApplication;
 
 
@@ -30,6 +32,7 @@ public class MembersOnGroupFragment extends Fragment {
 
     ListView membersView;
     ArrayList<HashMap<String, String>> listItem;//array of items
+    private ProgressDialog progressDialog;
 
 
     public MembersOnGroupFragment() {
@@ -49,24 +52,11 @@ public class MembersOnGroupFragment extends Fragment {
 
         membersView = (ListView) rootView.findViewById(R.id.listView1);
         listItem = new ArrayList<HashMap<String, String>>();
+
+        showProgress();
+
         String groupname=MyApplication.currentGroup.getName();
-        Group group=GroupManager.getGroupMembersFromName(groupname);
-        final LinkedList<User> members=group.getMembers();
-        Log.v("ongroup",String.valueOf(members.size()));
-        for(int i=0; i<members.size();i++)
-        {
-            HashMap map=new HashMap<String,String>();
-            map.put("username",members.get(i).getUsername());
-            map.put("telephone",members.get(i).getPhoneNumber());
-            map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
-            map.put("flname",members.get(i).getLastname()+" "+ members.get(i).getFirstname() );//Ici l icone qui va s'afficher
-            listItem.add(map);
-        }
-
-        SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
-        new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
-        membersView.setAdapter(mSchedule);
-
+        GroupManager.getGroupMembersFromName(groupname, this, Constants.MEMBERS_ON_GROUP_ONCREATE);
 
 
         membersView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -112,6 +102,8 @@ public class MembersOnGroupFragment extends Fragment {
         return rootView;
     }
 
+
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -127,8 +119,16 @@ public class MembersOnGroupFragment extends Fragment {
     public   void reload()
     {
         listItem = new ArrayList<HashMap<String, String>>();
+
+        showProgress();
         String groupname=MyApplication.currentGroup.getName();
-        Group group=GroupManager.getGroupMembersFromName(groupname);
+        GroupManager.getGroupMembersFromName(groupname, this, Constants.MEMBERS_ON_GROUP_RELOAD);
+
+
+    }
+
+    public void getGroupMembersOnCreate(Group group){
+
         final LinkedList<User> members=group.getMembers();
         Log.v("ongroup",String.valueOf(members.size()));
         for(int i=0; i<members.size();i++)
@@ -141,5 +141,37 @@ public class MembersOnGroupFragment extends Fragment {
             listItem.add(map);
         }
 
+        SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+                new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
+        membersView.setAdapter(mSchedule);
+
+        hideProgress();
+    }
+
+    public void getGroupMembersReload(Group group){
+        final LinkedList<User> members=group.getMembers();
+        Log.v("ongroup",String.valueOf(members.size()));
+        for(int i=0; i<members.size();i++)
+        {
+            HashMap map=new HashMap<String,String>();
+            map.put("username",members.get(i).getUsername());
+            map.put("telephone",members.get(i).getPhoneNumber());
+            map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+            map.put("flname",members.get(i).getLastname()+" "+ members.get(i).getFirstname() );//Ici l icone qui va s'afficher
+            listItem.add(map);
+        }
+
+        hideProgress();
+    }
+
+    public void showProgress(){
+        progressDialog = ProgressDialog.show(this.getActivity(), null,
+                "Loading...", true);
+    }
+
+    public void hideProgress(){
+        if(progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
     }
 }

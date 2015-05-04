@@ -2,6 +2,7 @@ package smartcity.begrouped.activity;
 
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -35,6 +36,7 @@ public class GroupHomeFragment extends Fragment {
     private ImageButton members;
     private ImageButton chat;
     private ImageButton schedule;
+    private ProgressDialog progressDialog;
 
     public GroupHomeFragment() {
 
@@ -72,6 +74,7 @@ public class GroupHomeFragment extends Fragment {
             public void onClick(View view) {
 
                 Log.v("supervisor:",MyApplication.currentGroup.getName());
+
 
                    if ( MyApplication.currentGroup.getSupervisor().getUsername().equals(MyApplication.myIdentity.getUsername()))
                     {
@@ -215,5 +218,4 @@ public class GroupHomeFragment extends Fragment {
         // Finish
         dialog.show();
     }
-
 }
