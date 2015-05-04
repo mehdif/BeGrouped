@@ -44,6 +44,8 @@ import smartcity.begrouped.utils.Constants;
 import smartcity.begrouped.utils.GlobalMethodes;
 import smartcity.begrouped.utils.MyApplication;
 
+import static smartcity.begrouped.utils.GlobalMethodes.getFromUrl;
+
 /**
  * Created by a on 27/04/2015.
  */
@@ -79,41 +81,6 @@ public class UserManager {
         return myIdentity;
     }
 */
-    public static String getFromUrl(String url) {
-        try {
-
-            chaine = null;
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(url);
-            HttpResponse httpResponse = httpClient.execute(httpPost);
-            HttpEntity httpEntity = httpResponse.getEntity();
-            is = httpEntity.getContent();
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    is, "utf-8"), 8);
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line);
-            }
-            is.close();
-            chaine = sb.toString();
-        } catch (Exception e) {
-            Log.e("Buffer Error", "Error converting result " + e.toString());
-        }
-        return chaine;
-    }
-
 
  //public static void createTask(){
        // new TaskGetJson().execute();
@@ -216,7 +183,7 @@ public class UserManager {
         String jsonFileUrl = getFromUrl(AllUrls.authenticate_user_url+userName+"/"+hashedPassWord);
 
 
-        Log.v("Jsonfile : " , " " + jsonFileUrl);
+        Log.v("Aymen : " , " " + jsonFileUrl);
 
 
         //Json file parser

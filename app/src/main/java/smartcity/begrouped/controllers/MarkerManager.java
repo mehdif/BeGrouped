@@ -22,6 +22,8 @@ import smartcity.begrouped.utils.AllUrls;
 import smartcity.begrouped.utils.Constants;
 import smartcity.begrouped.utils.MyApplication;
 
+import static smartcity.begrouped.utils.GlobalMethodes.getFromUrl;
+
 
 /**
  * Created by Anes on 28/04/2015.
@@ -89,7 +91,7 @@ public class MarkerManager {
     public Appointment getAptOfMyGroup() {
         // on recupere a partir de la bdd avec getURL
         ///return aptOfMyGroup;
-        String jsonReponse=GroupManager.getFromUrl(AllUrls.GET_RDV+"/"+MyApplication.currentGroup.getName()+"/"+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        String jsonReponse=getFromUrl(AllUrls.GET_RDV+"/"+MyApplication.currentGroup.getName()+"/"+ MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
         Log.v("Json group info : ", jsonReponse);
 
         //Json file parser
