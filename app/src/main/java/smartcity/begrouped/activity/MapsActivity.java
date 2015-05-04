@@ -664,7 +664,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                                 .title("Appointment").snippet(date.afficher()+" at "+temps.afficher()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
                         Appointment appoint=new Appointment(aptMarker,temps.getHh(),temps.getMm(),date.getJj(),date.getMm(),date.getYy());
                         MyApplication.currentGroup.setAppointment(appoint);
-                        UserManager.sendAptToServer(appoint);
+                        UserManager.sendAptToServer(appoint,MapsActivity.this);
                         //dialog.dismiss();
 
                     }
