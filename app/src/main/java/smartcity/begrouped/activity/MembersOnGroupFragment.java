@@ -138,7 +138,7 @@ public class MembersOnGroupFragment extends Fragment {
             map.put("username",members.get(i).getUsername());
             map.put("telephone",members.get(i).getPhoneNumber());
             //map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
-            map.put("img", String.valueOf(R.drawable.icon));
+            map.put("img", String.valueOf(R.drawable.user));
             map.put("flname",members.get(i).getLastname()+" "+ members.get(i).getFirstname() );//Ici l icone qui va s'afficher
             listItem.add(map);
         }
