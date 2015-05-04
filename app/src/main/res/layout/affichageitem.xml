@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e6ebee"
+    android:orientation="vertical" >
+<RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/list_selector"
+    android:background="@drawable/list_item_selector"
     android:orientation="horizontal"
-    android:padding="5dip" >
+    android:padding="5dip"
+    android:layout_margin="5dp"
+
+    >
  
  
  <!--  ListRow Left sied Thumbnail image -->
@@ -13,7 +21,7 @@
         android:layout_height="wrap_content"
         android:padding="3dip"
         android:layout_alignParentLeft="true"
-        android:background="@color/color1"
+
         android:layout_marginRight="5dip">
 
 
@@ -21,6 +29,7 @@
             android:id="@+id/img"
             android:layout_width="50dip"
             android:layout_height="50dip"
+            android:src="@drawable/icon"
          />
     </LinearLayout>
  
@@ -34,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
-        android:textColor="@color/background_holo_light"
+        android:textColor="#424242"
         android:typeface="sans"
         android:textSize="17dip"
         android:textStyle="bold"/>
@@ -46,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/titre"
         android:text="Region"
-        android:textColor="@color/background_holo_light"
+        android:textColor="#424242"
         android:textSize="14dip"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/thumbnail"
@@ -63,7 +72,7 @@
         android:text="Hassan"
         android:layout_marginRight="5dip"
         android:textSize="12dip"
-        android:textColor="@color/background_holo_light"
+        android:textColor="#424242"
         android:textStyle="bold"/>
     
      <!-- Rightend Arrow -->
@@ -73,4 +82,5 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"/>
  
-</RelativeLayout>  
+</RelativeLayout>
+    </LinearLayout>
