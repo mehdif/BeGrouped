@@ -40,7 +40,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:id="@+id/imageButtonMembers"
-                android:background="@drawable/group44"
+                android:background="@drawable/group2"
                 android:layout_gravity="center" />
 
             <TextView
@@ -72,7 +72,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:id="@+id/imageButton2"
-                android:background="@drawable/international12"
+                android:background="@drawable/map2"
                 android:layout_gravity="center"
                 />
 
@@ -120,7 +120,7 @@
                 android:layout_height="100dp"
                 android:id="@+id/imageButtonChat"
                 android:layout_weight="30"
-                android:background="@drawable/social12"
+                android:background="@drawable/chat2"
                 android:layout_gravity="center" />
 
             <TextView
@@ -153,7 +153,7 @@
                 android:layout_height="100dp"
                 android:id="@+id/imageButtonSched"
                 android:layout_weight="30"
-                android:background="@drawable/square58"
+                android:background="@drawable/agenda2"
                 android:layout_gravity="center" />
 
             <TextView
