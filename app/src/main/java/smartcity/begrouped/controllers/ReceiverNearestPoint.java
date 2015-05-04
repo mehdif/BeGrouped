@@ -57,6 +57,11 @@ public class ReceiverNearestPoint extends BroadcastReceiver {
                 LinkedList<POI> listPOI = POIManager.getNearestPoiByTask(MyApplication.myPosition.getLatitude(), MyApplication.myPosition.getLongitude());
 
                 if (listPOI != null) {
+                    intent1.putExtra("name",listPOI.get(0).getName());
+                    intent1.putExtra("type",listPOI.get(0).getType());
+                    intent1.putExtra("latitude",listPOI.get(0).getLocation().getLatitude());
+                    intent1.putExtra("longitude",listPOI.get(0).getLocation().getLongitude());
+
                     Notification noti = new Notification.Builder(context)
                             .setContentTitle("You are near " + listPOI.get(0).getName())
                             .setContentText(listPOI.get(0).getType().replace("_"," ")).setSmallIcon(R.drawable.monument)
