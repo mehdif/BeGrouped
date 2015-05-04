@@ -4,11 +4,13 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.Parse;
@@ -25,6 +27,7 @@ public class RegisterActivity extends ActionBarActivity {
     private Button accept;
     private Button cancel;
 
+    private TextView textView;
     private EditText usernameField;
     private EditText passwordField;
     private EditText confirmpasswordField;
@@ -45,6 +48,8 @@ public class RegisterActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        textView.setText(Html.fromHtml("<font color=#c62828>Be</font> <font color=#ffffff>Grouped</font>"));
 
         accept = (Button) findViewById(R.id.button_validate);
         cancel = (Button) findViewById(R.id.button_cancel);

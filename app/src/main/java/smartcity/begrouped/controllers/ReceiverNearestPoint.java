@@ -59,8 +59,8 @@ public class ReceiverNearestPoint extends BroadcastReceiver {
                 if (listPOI != null) {
                     Notification noti = new Notification.Builder(context)
                             .setContentTitle("You are near " + listPOI.get(0).getName())
-                            .setContentText(listPOI.get(0).getType()).setSmallIcon(R.drawable.monument)
-                            .setContentIntent(pIntent).build();
+                            .setContentText(listPOI.get(0).getType().replace("_"," ")).setSmallIcon(R.drawable.monument)
+                            .setContentIntent(pIntent).getNotification();
                     NotificationManager notificationManager = (NotificationManager) context.getSystemService(Activity.NOTIFICATION_SERVICE);
                     // hide the notification after its selected
                     noti.flags |= Notification.FLAG_AUTO_CANCEL;
