@@ -100,18 +100,21 @@ public class UserManager {
 
 
     // jdid
-    public static void sendAptToServer(Appointment appointment) {
-        TaskSendApt task = new TaskSendApt(appointment);
+    public static void sendAptToServer(Appointment appointment,MapsActivity ac) {
+        TaskSendApt task = new TaskSendApt(appointment,ac);
         task.execute();
     }
 
     public static class TaskSendApt extends AsyncTask {
 
         Appointment apt;
+        private ProgressDialog progressDialog;
+        MapsActivity ac;
 
-        public TaskSendApt(Appointment apt) {
+        public TaskSendApt(Appointment apt,MapsActivity ac) {
             super();
             this.apt = apt;
+            this.ac=ac;
         }
 
         @Override
@@ -131,9 +134,17 @@ public class UserManager {
         }
 
         @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(ac);
+            progressDialog.setMessage("Creating Appointment");
+            progressDialog.show();
+        }
+
+        @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
             MapsActivity.aptEnCreation = false;
+            progressDialog.dismiss();
         }
     }
 
