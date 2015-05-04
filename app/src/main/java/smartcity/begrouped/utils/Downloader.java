@@ -24,7 +24,13 @@ import java.io.UnsupportedEncodingException;
  */
 public class Downloader extends AsyncTask{
     private Context context;
+    private AsyncResponse asyncResponse;
     private ProgressDialog progressDialog;
+
+    private static boolean isNumeric(char n) {
+        return (n=='0' || n=='1'|| n=='2'|| n=='3'|| n=='4'|| n=='5'|| n=='6'|| n=='7'|| n=='8'|| n=='9');
+
+    }
 
     public boolean isOnline(){
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -41,15 +47,17 @@ public class Downloader extends AsyncTask{
         return false;
     }
 
-    public Downloader(Context context) {
+    public Downloader(Context context,AsyncResponse asyncResponse) {
         this.context=context;
+        this.asyncResponse=asyncResponse;
+        this.progressDialog = new ProgressDialog(context);
     }
 
     private static String getFromUrl(String url) {
         String chaine="0000";
-        InputStream is = null;
+        boolean start=true;
+        InputStream is;
         try {
-            chaine = null;
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
             HttpResponse httpResponse = httpClient.execute(httpPost);
@@ -61,12 +69,15 @@ public class Downloader extends AsyncTask{
                 StringBuilder sb = new StringBuilder();
                 String line = null;
                 while ((line = reader.readLine()) != null) {
+                    if (start) {
+                        if (!isNumeric(line.charAt(0)) && line.charAt(0)=='{') return "0000";
+                        start = false;
+                    }
                     sb.append(line);
                 }
                 is.close();
                 chaine = sb.toString();
             } catch (Exception e) {
-                Log.e("Buffer Error", "Error converting result " + e.getMessage());
             }
         } catch (UnsupportedEncodingException e) {
 
@@ -84,7 +95,6 @@ public class Downloader extends AsyncTask{
     }
 
     private void show() {
-        progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
     }
@@ -104,7 +114,6 @@ public class Downloader extends AsyncTask{
     @Override
     protected String doInBackground(Object[] params) {
         String url=params[0].toString();
-        Log.v("Aymen",url);
         return download(url);
     }
 
@@ -112,5 +121,7 @@ public class Downloader extends AsyncTask{
     protected void onPostExecute(Object object)
     {
         hide();
+        String serverResponse=(String) object;
+        asyncResponse.executeAfterDownload(serverResponse);
     }
 }
