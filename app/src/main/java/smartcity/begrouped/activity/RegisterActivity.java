@@ -92,7 +92,9 @@ public class RegisterActivity extends ActionBarActivity {
             public void onClick(View view) {
 
                 Intent i = new Intent(getApplicationContext(), AuthentificationActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
                 startActivity(i);
+                finish();
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
             }
