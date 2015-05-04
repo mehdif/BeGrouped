@@ -119,19 +119,19 @@ public class GroupHomeFragment extends Fragment {
 
             }
         });
-
+/*
         members.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        //members.setImageDrawable(getResources().getDrawable(R.drawable.group_red));
+                        members.setImageDrawable(getResources().getDrawable(R.drawable.group_red));
 
                         // PRESSED
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
-                        //members.setImageDrawable(getResources().getDrawable(R.drawable.group));
+                        members.setImageDrawable(getResources().getDrawable(R.drawable.group));
                         // RELEASED
                         return true; // if you want to handle the touch event
                 }
@@ -139,7 +139,7 @@ public class GroupHomeFragment extends Fragment {
                 return false;
             }
         });
-
+*/
         chat.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -149,7 +149,7 @@ public class GroupHomeFragment extends Fragment {
 
             }
         });
-        chat.setOnTouchListener(new View.OnTouchListener() {
+ /*       chat.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
@@ -167,7 +167,7 @@ public class GroupHomeFragment extends Fragment {
                 return false;
             }
         });
-
+*/
         schedule.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -175,7 +175,7 @@ public class GroupHomeFragment extends Fragment {
                 showDatePicker();
             }
         });
-        schedule.setOnTouchListener(new View.OnTouchListener() {
+  /*      schedule.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
@@ -193,7 +193,7 @@ public class GroupHomeFragment extends Fragment {
                 return false;
             }
         });
-
+*/
 
         return rootView;
     }
