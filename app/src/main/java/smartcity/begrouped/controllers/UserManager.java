@@ -104,8 +104,12 @@ public class UserManager {
         protected Object doInBackground(Object[] params) {
 
             Log.i("send position", "send position to server" );
-            String jsonFileUrl = getFromUrl("http://smartpld-001-site1.smarterasp.net/index.php/position_controller/sendmyposition/"+location.latitude+"/"+location.longitude+"/"+MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
-            return null;
+            try {
+                String jsonFileUrl = getFromUrl("http://smartpld-001-site1.smarterasp.net/index.php/position_controller/sendmyposition/" + location.latitude + "/" + location.longitude + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
+            }catch(NullPointerException e){
+                Log.e("update position",e.getMessage());
+            }
+                return null;
         }
     }
 
