@@ -94,6 +94,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
     private boolean drawingPath1=false;
     private boolean drawingPath2=false;
     public static boolean aptEnCreation=false;
+    private Marker nearestPOIMareker=null;
 
     public MapsActivity(){
 
@@ -184,7 +185,28 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 // setUpMap();
                 mMap.setOnMarkerClickListener(this);
                 mMap.setOnMapClickListener(new MyMapClickListener());
+                if (MyApplication.myPosition!=null){
+
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(MyApplication.myPosition.getLatitude(),MyApplication.myPosition.getLongitude()), 8));
+                        mMap.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
+
+                }
+                afficherNearestPOI();
+
+
             }
+        }
+    }
+
+    private void afficherNearestPOI() {
+        Intent intent=getIntent();
+        String name=intent.getStringExtra("name");
+        String type=intent.getStringExtra("type");
+        double latitude=intent.getDoubleExtra("latitude",-1);
+        double longitude=intent.getDoubleExtra("longitude",-1);
+        if ((latitude!=-1) && (longitude!=-1)&&(name!=null) && (type!=null)){
+            nearestPOIMareker=  mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude))
+                    .title(name).snippet(type));
         }
     }
 
@@ -370,7 +392,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 //fragment = new AboutFragment();
                 if (MyApplication.myIdentity.getUsername().equals(MyApplication.currentGroup.getSupervisor().getUsername())) {
                     title = getString(R.string.title_add_appointment);
-                    getSupportActionBar().setTitle(title);
+                    //getSupportActionBar().setTitle(title);
                     if (aptMarker == null) {
                         createAppointment();
                         Toast.makeText(getApplicationContext(), "Choose a location !", Toast.LENGTH_LONG).show();
@@ -385,7 +407,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                                         aptMarker.remove();
                                         aptMarker = null;
                                         MyApplication.currentGroup.setAppointment(null);
-                                        UserManager.sendRemoveApt(MyApplication.currentGroup.getName());
+                                        UserManager.sendRemoveApt(MyApplication.currentGroup.getName(),MapsActivity.this);
                                         if (pathToApt != null) {
                                             pathToApt.remove();
                                             pathToApt = null;
@@ -411,7 +433,8 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
             case 2:
                 //fragment = new HelpFragment();
                 title = getString(R.string.title_path_to_appointment);
-                getSupportActionBar().setTitle(title);
+                //getSupportActionBar().setTitle(title);
+                creatingApt=false;
                 if (aptMarker==null)
                 Toast.makeText(getApplicationContext(), "There is no appointment",Toast.LENGTH_LONG).show();
                 else {
@@ -434,8 +457,9 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 break;
             case 3:
                 title = getString(R.string.title_find_program_itinerary);
-                getSupportActionBar().setTitle(title);
+                //getSupportActionBar().setTitle(title);
                 //Toast.makeText(getApplicationContext(), "Find Program itinirerary !",Toast.LENGTH_LONG).show();
+                creatingApt=false;
                 if (programShown){
                     if (programPath!=null){
                         for (int j=0;j<programPath.size();j++){
@@ -457,14 +481,16 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 break;
             case 4:
                 title = getString(R.string.title_show_program);
-                getSupportActionBar().setTitle(title);
+                //getSupportActionBar().setTitle(title);
                // Toast.makeText(getApplicationContext(), "Show Program !",Toast.LENGTH_LONG).show();
                 //afficherDialogChoixDate();
+                creatingApt=false;
                 showDatePicker();
                 break;
             case 5:
                 title = getString(R.string.title_hide_program);
-                getSupportActionBar().setTitle(title);
+                //getSupportActionBar().setTitle(title);
+                creatingApt=false;
 
                 if (programShown) {
                     hideProgram();
@@ -554,21 +580,8 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                         //dialog.dismiss();
                         Date date=new Date(choosen.get(Calendar.DAY_OF_MONTH),choosen.get(Calendar.MONTH)+1,choosen.get(Calendar.YEAR));
                         if (!creatingApt) {
-                            LinkedList<POI> listPOI = POIManager.sortPOIByTime(POIManager.getDayProgramOfGroupByTask(date, MyApplication.currentGroup.getName()));
-                            if (programShown) {
-                                hideProgram();
-                                programShown = false;
-                            }
-                            MyApplication.listOfCurrentPOIS = listPOI;
+                            POIManager.getDayProgramOfGroupByTask(date, MyApplication.currentGroup.getName(),MapsActivity.this);
 
-                            if (MyApplication.listOfCurrentPOIS != null) {
-                                programShown = true;
-                                for (int i = 0; i < MyApplication.listOfCurrentPOIS.size(); i++) {
-                                    Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(MyApplication.listOfCurrentPOIS.get(i).getLocation().getLatitude(), MyApplication.listOfCurrentPOIS.get(i).getLocation().getLongitude()))
-                                            .title(MyApplication.listOfCurrentPOIS.get(i).getName()).snippet(MyApplication.listOfCurrentPOIS.get(i).getTempsOfVisite().afficher()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
-                                    MyApplication.listOfCurrentPOIS.get(i).setMarker(marker);
-                                }
-                            }
                         }else {
                             showTimePicker(date);
                         }
@@ -638,7 +651,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                                 .title("Appointment").snippet(date.afficher()+" at "+temps.afficher()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
                         Appointment appoint=new Appointment(aptMarker,temps.getHh(),temps.getMm(),date.getJj(),date.getMm(),date.getYy());
                         MyApplication.currentGroup.setAppointment(appoint);
-                        UserManager.sendAptToServer(appoint);
+                        UserManager.sendAptToServer(appoint,MapsActivity.this);
                         //dialog.dismiss();
 
                     }
@@ -651,5 +664,22 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
         dialog.show();
         creatingApt=false;
 
+    }
+    public void afficherLeProgramme(LinkedList<POI> listPOI){
+        listPOI=POIManager.sortPOIByTime(listPOI);
+        if (programShown) {
+            hideProgram();
+            programShown = false;
+        }
+        MyApplication.listOfCurrentPOIS = listPOI;
+
+        if (MyApplication.listOfCurrentPOIS != null) {
+            programShown = true;
+            for (int i = 0; i < MyApplication.listOfCurrentPOIS.size(); i++) {
+                Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(MyApplication.listOfCurrentPOIS.get(i).getLocation().getLatitude(), MyApplication.listOfCurrentPOIS.get(i).getLocation().getLongitude()))
+                        .title(MyApplication.listOfCurrentPOIS.get(i).getName()).snippet(MyApplication.listOfCurrentPOIS.get(i).getTempsOfVisite().afficher()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                MyApplication.listOfCurrentPOIS.get(i).setMarker(marker);
+            }
+        }
     }
 }

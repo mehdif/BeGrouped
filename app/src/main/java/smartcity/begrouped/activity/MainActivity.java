@@ -17,12 +17,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.ParseInstallation;
+import com.parse.ParseUser;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.UserManager;
@@ -51,8 +54,6 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
 
 
     public MainActivity(){
-
-
     }
 
     @Override
