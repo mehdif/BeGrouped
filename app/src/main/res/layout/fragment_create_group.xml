@@ -48,7 +48,7 @@
                 android:textColor="@color/navigationBarColor"
                 android:layout_gravity="center"
                 android:minWidth="200dp"
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "/>
+                android:digits="_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"/>
         </RelativeLayout>
 
         <RelativeLayout

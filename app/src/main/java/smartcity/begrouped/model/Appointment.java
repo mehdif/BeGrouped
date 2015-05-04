@@ -14,10 +14,10 @@ public class Appointment {
     private Temps temps;
     private Location location;
 
-    public Appointment(Marker aptMarker, String hh,String min, String jj, String mm,String yy) {
+    public Appointment(Marker aptMarker, int hh,int min, int jj, int mm,int yy) {
         this.aptMarker = aptMarker;
-        temps=new Temps(Integer.parseInt(hh),Integer.parseInt(min));
-        date=new Date(Integer.parseInt(jj),Integer.parseInt(mm),Integer.parseInt(yy));
+        temps=new Temps(hh,min);
+        date=new Date(jj,mm,yy);
         location=new Location(aptMarker.getPosition().latitude,aptMarker.getPosition().longitude);
 
 

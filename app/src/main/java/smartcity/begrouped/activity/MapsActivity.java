@@ -24,8 +24,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,9 +40,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Map;
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.GroupManager;
@@ -51,6 +58,7 @@ import smartcity.begrouped.drawpathclasses.GetDirectionsAsyncTask;
 import smartcity.begrouped.model.Appointment;
 import smartcity.begrouped.model.Date;
 import smartcity.begrouped.model.POI;
+import smartcity.begrouped.model.Temps;
 import smartcity.begrouped.utils.MyApplication;
 
 public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap.FragmentDrawerListener,GoogleMap.OnMarkerClickListener {
@@ -180,19 +188,6 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
         }
     }
 
-    private void majPosition(double lat, double lng) {
-        if (myPosition==null){
-            myPosition = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lng))
-                    .title("myPosition").snippet("gawri"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 12));
-            // findDirections(lat,lng,lat+1,lng+2,GMapV2Direction.MODE_DRIVING);
-        }
-
-        else{
-            myPosition.setPosition(new LatLng(lat,lng));
-
-        }
-    }
     @Override
     public boolean onMarkerClick(Marker marker) {
         if (marker.equals(myPosition))
@@ -266,8 +261,8 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
         public void onMapClick(LatLng latLng) {
             if (creatingApt){
                 latLngForApt=latLng;
-                afficherDialogRDV();
-                creatingApt=false;
+                showDatePicker();
+
             }
             else if (drawingPath1){
                 beginPath=  mMap.addMarker(new MarkerOptions().position(latLng)
@@ -337,79 +332,6 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
         return super.onOptionsItemSelected(item);
     }
 
-    public void afficherDialogRDV(){
-        LayoutInflater factory = LayoutInflater.from(this);
-        final View alertDialogView = factory.inflate(R.layout.alertdialogperso, null);
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        adb.setView(alertDialogView);
-        adb.setTitle("Add an appointment");
-        adb.setIcon(android.R.drawable.ic_dialog_info);
-        adb.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-
-                //Lorsque l'on cliquera sur le bouton "OK", on récupère l'EditText correspondant à notre vue personnalisée (cad à alertDialogView)
-                MapsActivity.aptEnCreation=true;
-                EditText hh = (EditText)alertDialogView.findViewById(R.id.hhRDV);
-                EditText min = (EditText)alertDialogView.findViewById(R.id.minRDV);
-                EditText jj = (EditText)alertDialogView.findViewById(R.id.jjRDV);
-                EditText mm = (EditText)alertDialogView.findViewById(R.id.mmRDV);
-                EditText yy = (EditText)alertDialogView.findViewById(R.id.aaRDV);
-                if (aptMarker!=null) aptMarker.remove();
-                aptMarker = mMap.addMarker(new MarkerOptions().position(latLngForApt)
-                        .title("Appointment").snippet(jj.getText().toString()+"-"+mm.getText().toString()+"-"+yy.getText().toString()+" at "+hh.getText().toString()+":"+min.getText().toString()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-                Appointment appoint=new Appointment(aptMarker,hh.getText().toString(),min.getText().toString(),jj.getText().toString(),mm.getText().toString(),yy.getText().toString());
-                MyApplication.currentGroup.setAppointment(appoint);
-                UserManager.sendAptToServer(appoint);
-
-            } });
-        adb.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                //Lorsque l'on cliquera sur annuler on quittera l'application
-
-            } });
-        adb.show();
-
-    }
-    public void afficherDialogChoixDate(){
-        LayoutInflater factory = LayoutInflater.from(this);
-        final View alertDialogView = factory.inflate(R.layout.alertdialog_date, null);
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        adb.setView(alertDialogView);
-        adb.setTitle("Choose the program date");
-        adb.setIcon(android.R.drawable.ic_dialog_info);
-        adb.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-
-                //Lorsque l'on cliquera sur le bouton "OK", on récupère l'EditText correspondant à notre vue personnalisée (cad à alertDialogView)
-                EditText jj = (EditText)alertDialogView.findViewById(R.id.jjRDV);
-                EditText mm = (EditText)alertDialogView.findViewById(R.id.mmRDV);
-                EditText yy = (EditText)alertDialogView.findViewById(R.id.aaRDV);
-                Date date=new Date(Integer.parseInt(jj.getText().toString()),Integer.parseInt(mm.getText().toString()),Integer.parseInt(yy.getText().toString()));
-                LinkedList<POI> listPOI= POIManager.sortPOIByTime(POIManager.getDayProgramOfGroupByTask(date,MyApplication.currentGroup.getName()));
-                if (programShown){
-                    hideProgram();
-                    programShown=false;
-                }
-                MyApplication.listOfCurrentPOIS=listPOI;
-
-                if (MyApplication.listOfCurrentPOIS!=null){
-                    programShown=true;
-                    for (int i=0;i<MyApplication.listOfCurrentPOIS.size();i++){
-                        Marker marker= mMap.addMarker(new MarkerOptions().position(new LatLng(MyApplication.listOfCurrentPOIS.get(i).getLocation().getLatitude(), MyApplication.listOfCurrentPOIS.get(i).getLocation().getLongitude()))
-                                .title(MyApplication.listOfCurrentPOIS.get(i).getName()).snippet(MyApplication.listOfCurrentPOIS.get(i).getTempsOfVisite().afficher()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
-                        MyApplication.listOfCurrentPOIS.get(i).setMarker(marker);
-                    }
-                }
-            } });
-        adb.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                //Lorsque l'on cliquera sur annuler on quittera l'application
-
-            } });
-        adb.show();
-
-    }
-
     public void hideProgram(){
         if (MyApplication.listOfCurrentPOIS!=null){
             for (int i=0;i<MyApplication.listOfCurrentPOIS.size();i++){
@@ -446,40 +368,45 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 break;
             case 1:
                 //fragment = new AboutFragment();
-                title = getString(R.string.title_add_appointment);
-                getSupportActionBar().setTitle(title);
-                if (aptMarker==null) {
-                    createAppointment();
-                    Toast.makeText(getApplicationContext(), "Choose a location !", Toast.LENGTH_LONG).show();
+                if (MyApplication.myIdentity.getUsername().equals(MyApplication.currentGroup.getSupervisor().getUsername())) {
+                    title = getString(R.string.title_add_appointment);
+                    getSupportActionBar().setTitle(title);
+                    if (aptMarker == null) {
+                        createAppointment();
+                        Toast.makeText(getApplicationContext(), "Choose a location !", Toast.LENGTH_LONG).show();
+                    } else {
+                        aptEnCreation = true;
+                        new AlertDialog.Builder(this)
+                                .setTitle("Delete Appointment")
+                                .setMessage("Are you sure you want to delete the appointment?")
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // continue with delete
+                                        aptMarker.remove();
+                                        aptMarker = null;
+                                        MyApplication.currentGroup.setAppointment(null);
+                                        UserManager.sendRemoveApt(MyApplication.currentGroup.getName());
+                                        if (pathToApt != null) {
+                                            pathToApt.remove();
+                                            pathToApt = null;
+                                        }
+
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // do nothing
+                                        aptEnCreation = false;
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
                 }
                 else {
-                    aptEnCreation=true;
-                    new AlertDialog.Builder(this)
-                            .setTitle("Delete Appointment")
-                            .setMessage("Are you sure you want to delete the appointment?")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // continue with delete
-                                    aptMarker.remove();
-                                    aptMarker=null;
-                                    MyApplication.currentGroup.setAppointment(null);
-                                    UserManager.sendRemoveApt(MyApplication.currentGroup.getName());
-                                    if (pathToApt!=null){
-                                        pathToApt.remove();
-                                        pathToApt=null;
-                                    }
-
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // do nothing
-                                    aptEnCreation=false;
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+                    Toast.makeText(getApplicationContext(), "You're not the supervisor of this group",Toast.LENGTH_LONG).show();
                 }
+
                 break;
             case 2:
                 //fragment = new HelpFragment();
@@ -532,7 +459,8 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 title = getString(R.string.title_show_program);
                 getSupportActionBar().setTitle(title);
                // Toast.makeText(getApplicationContext(), "Show Program !",Toast.LENGTH_LONG).show();
-                afficherDialogChoixDate();
+                //afficherDialogChoixDate();
+                showDatePicker();
                 break;
             case 5:
                 title = getString(R.string.title_hide_program);
@@ -553,4 +481,175 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
     }
 
 
+
+
+    public void showDatePicker() {
+        // Initializiation
+        LayoutInflater inflater = this.getLayoutInflater();
+        final AlertDialog.Builder dialogBuilder =
+                new AlertDialog.Builder(this);
+        View customView = inflater.inflate(R.layout.date_picker, null);
+        dialogBuilder.setView(customView);
+        final Calendar now = Calendar.getInstance();
+        final DatePicker datePicker =
+                (DatePicker) customView.findViewById(R.id.dialog_datepicker);
+        final TextView dateTextView =
+                (TextView) customView.findViewById(R.id.dialog_dateview);
+        final SimpleDateFormat dateViewFormatter =
+                new SimpleDateFormat("EEEE, dd.MM.yyyy", Locale.FRANCE);
+        final SimpleDateFormat formatter =
+                new SimpleDateFormat("dd.MM.yyyy", Locale.FRANCE);
+        // Minimum date
+        Calendar minDate = Calendar.getInstance();
+        try {
+            minDate.setTime(formatter.parse("12.12.2010"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        datePicker.setMinDate(minDate.getTimeInMillis());
+        // View settings
+        dialogBuilder.setTitle("Choose a date");
+        Calendar choosenDate = Calendar.getInstance();
+        int year = choosenDate.get(Calendar.YEAR);
+        int month = choosenDate.get(Calendar.MONTH);
+        int day = choosenDate.get(Calendar.DAY_OF_MONTH);
+        try {
+            // Date choosenDateFromUI = formatter.parse(datePickerShowDialogButton.getText().toString());
+
+            //choosenDate.setTime(choosenDateFromUI);
+            year = choosenDate.get(Calendar.YEAR);
+            month = choosenDate.get(Calendar.MONTH);
+            day = choosenDate.get(Calendar.DAY_OF_MONTH);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Calendar dateToDisplay = Calendar.getInstance();
+        dateToDisplay.set(year, month, day);
+        dateTextView.setText(
+                dateViewFormatter.format(dateToDisplay.getTime())
+        );
+        // Buttons
+        dialogBuilder.setNegativeButton(
+                "Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        creatingApt=false;
+                    }
+                }
+        );
+        dialogBuilder.setPositiveButton(
+                "Choose",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Calendar choosen = Calendar.getInstance();
+                        choosen.set(
+                                datePicker.getYear(),
+                                datePicker.getMonth(),
+                                datePicker.getDayOfMonth()
+                        );
+
+                        //dialog.dismiss();
+                        Date date=new Date(choosen.get(Calendar.DAY_OF_MONTH),choosen.get(Calendar.MONTH)+1,choosen.get(Calendar.YEAR));
+                        if (!creatingApt) {
+                            LinkedList<POI> listPOI = POIManager.sortPOIByTime(POIManager.getDayProgramOfGroupByTask(date, MyApplication.currentGroup.getName()));
+                            if (programShown) {
+                                hideProgram();
+                                programShown = false;
+                            }
+                            MyApplication.listOfCurrentPOIS = listPOI;
+
+                            if (MyApplication.listOfCurrentPOIS != null) {
+                                programShown = true;
+                                for (int i = 0; i < MyApplication.listOfCurrentPOIS.size(); i++) {
+                                    Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(MyApplication.listOfCurrentPOIS.get(i).getLocation().getLatitude(), MyApplication.listOfCurrentPOIS.get(i).getLocation().getLongitude()))
+                                            .title(MyApplication.listOfCurrentPOIS.get(i).getName()).snippet(MyApplication.listOfCurrentPOIS.get(i).getTempsOfVisite().afficher()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                                    MyApplication.listOfCurrentPOIS.get(i).setMarker(marker);
+                                }
+                            }
+                        }else {
+                            showTimePicker(date);
+                        }
+                    }
+                }
+        );
+        final AlertDialog dialog = dialogBuilder.create();
+        // Initialize datepicker in dialog atepicker
+        datePicker.init(
+                year,
+                month,
+                day,
+                new DatePicker.OnDateChangedListener() {
+                    public void onDateChanged(DatePicker view, int year,
+                                              int monthOfYear, int dayOfMonth) {
+                        Calendar choosenDate = Calendar.getInstance();
+                        choosenDate.set(year, monthOfYear, dayOfMonth);
+                        dateTextView.setText( dateViewFormatter.format(choosenDate.getTime()));
+                        dateTextView.setTextColor(Color.parseColor("#ff0000"));
+                        ((Button) dialog.getButton(AlertDialog.BUTTON_POSITIVE)).setEnabled(true);
+                    }
+                }
+        );
+        // Finish
+        dialog.show();
+    }
+
+    private void showTimePicker(final Date date) {
+        LayoutInflater inflater = this.getLayoutInflater();
+        final AlertDialog.Builder dialogBuilder =
+                new AlertDialog.Builder(this);
+        View customView = inflater.inflate(R.layout.timepicker, null);
+        dialogBuilder.setView(customView);
+
+        final TimePicker timePicker =
+                (TimePicker) customView.findViewById(R.id.dialog_timepicker);
+        final TextView timeTextView =
+                (TextView) customView.findViewById(R.id.dialog_timeview);
+        // View settings
+        dialogBuilder.setTitle("Choose a time");
+
+        // Buttons
+        dialogBuilder.setNegativeButton(
+                "Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }
+        );
+        dialogBuilder.setPositiveButton(
+                "Choose",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Calendar choosen = Calendar.getInstance();
+                        choosen.set(
+                                1,1,2015,
+                                timePicker.getCurrentHour(),
+                                timePicker.getCurrentMinute()
+                        );
+                        Temps temps=new Temps(choosen.get(Calendar.HOUR_OF_DAY),choosen.get(Calendar.MINUTE));
+                        MapsActivity.aptEnCreation=true;
+                        if (aptMarker!=null) aptMarker.remove();
+                        aptMarker = mMap.addMarker(new MarkerOptions().position(latLngForApt)
+                                .title("Appointment").snippet(date.afficher()+" at "+temps.afficher()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                        Appointment appoint=new Appointment(aptMarker,temps.getHh(),temps.getMm(),date.getJj(),date.getMm(),date.getYy());
+                        MyApplication.currentGroup.setAppointment(appoint);
+                        UserManager.sendAptToServer(appoint);
+                        //dialog.dismiss();
+
+                    }
+                }
+        );
+        final AlertDialog dialog = dialogBuilder.create();
+        // Initialize datepicker in dialog atepicker
+        // Finish
+
+        dialog.show();
+        creatingApt=false;
+
+    }
 }
