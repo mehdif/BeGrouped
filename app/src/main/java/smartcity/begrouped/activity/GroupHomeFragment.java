@@ -68,7 +68,7 @@ public class GroupHomeFragment extends Fragment {
                 getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
-        map.setOnTouchListener(new View.OnTouchListener() {
+    /*    map.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
@@ -85,7 +85,7 @@ public class GroupHomeFragment extends Fragment {
 
                 return false;
             }
-        });
+        });*/
 
         members.setOnClickListener(new View.OnClickListener() {
 
