@@ -6,6 +6,8 @@ import android.location.LocationManager;
 import android.util.Log;
 
 import com.parse.Parse;
+import com.parse.ParseInstallation;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,5 +37,9 @@ public final class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+
+
+
     }
 }
