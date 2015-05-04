@@ -434,6 +434,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 //fragment = new HelpFragment();
                 title = getString(R.string.title_path_to_appointment);
                 //getSupportActionBar().setTitle(title);
+                creatingApt=false;
                 if (aptMarker==null)
                 Toast.makeText(getApplicationContext(), "There is no appointment",Toast.LENGTH_LONG).show();
                 else {
@@ -458,6 +459,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 title = getString(R.string.title_find_program_itinerary);
                 //getSupportActionBar().setTitle(title);
                 //Toast.makeText(getApplicationContext(), "Find Program itinirerary !",Toast.LENGTH_LONG).show();
+                creatingApt=false;
                 if (programShown){
                     if (programPath!=null){
                         for (int j=0;j<programPath.size();j++){
@@ -482,11 +484,13 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 //getSupportActionBar().setTitle(title);
                // Toast.makeText(getApplicationContext(), "Show Program !",Toast.LENGTH_LONG).show();
                 //afficherDialogChoixDate();
+                creatingApt=false;
                 showDatePicker();
                 break;
             case 5:
                 title = getString(R.string.title_hide_program);
                 //getSupportActionBar().setTitle(title);
+                creatingApt=false;
 
                 if (programShown) {
                     hideProgram();
