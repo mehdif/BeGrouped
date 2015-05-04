@@ -18,7 +18,7 @@ public class MembersFragmentActivity extends Fragment {
     MembersAdapter mAdapter;
     ViewPager mPager;
     PageIndicator mIndicator;
-    View rootView;
+    //View rootView;
     //private FragmentActivity myContext;
 
     public MembersFragmentActivity(){

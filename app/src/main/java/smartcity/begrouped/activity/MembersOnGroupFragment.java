@@ -31,7 +31,8 @@ import smartcity.begrouped.utils.MyApplication;
 public class MembersOnGroupFragment extends Fragment {
 
     ListView membersView;
-    ArrayList<HashMap<String, String>> listItem;//array of items
+    public static ArrayList<HashMap<String, String>> listItem;//array of items
+    public static SimpleAdapter mSchedule;
     private ProgressDialog progressDialog;
 
 
@@ -77,7 +78,7 @@ public class MembersOnGroupFragment extends Fragment {
                                     if (result) {
                                         Toast.makeText(getActivity(), "Member deleted with success", Toast.LENGTH_LONG).show();
                                         reload();
-                                        SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+                                       mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
                                                 new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
                                         membersView.setAdapter(mSchedule);
 
