@@ -69,6 +69,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 JoinGroupFragment fragment = new JoinGroupFragment();
                 fragmentTransaction.replace(R.id.container_body, fragment,"tag");
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
             }
@@ -84,6 +85,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 CreateGroupFragment fragment = new CreateGroupFragment();
                 fragmentTransaction.replace(R.id.container_body, fragment,"tag");
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
                 //fragmentTransaction.addToBackStack(null);
@@ -141,6 +143,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         ManageGroupFragment fragment = new ManageGroupFragment();
         fragmentTransaction.replace(R.id.container_body, fragment,"tag");
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
 

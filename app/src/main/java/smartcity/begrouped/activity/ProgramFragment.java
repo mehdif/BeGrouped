@@ -79,6 +79,7 @@ public class ProgramFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 GroupHomeFragment fragment = new GroupHomeFragment();
                 fragmentTransaction.replace(R.id.container_body, fragment,"tag");
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
             }
@@ -90,6 +91,7 @@ public class ProgramFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 GroupHomeFragment fragment = new GroupHomeFragment();
                 fragmentTransaction.replace(R.id.container_body, fragment,"tag");
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
