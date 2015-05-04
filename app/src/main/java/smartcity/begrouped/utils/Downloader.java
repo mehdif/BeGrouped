@@ -24,7 +24,9 @@ import java.io.UnsupportedEncodingException;
  */
 public class Downloader extends AsyncTask{
     private Context context;
+    private AsyncResponse asyncResponse;
     private ProgressDialog progressDialog;
+
 
     public boolean isOnline(){
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -41,8 +43,10 @@ public class Downloader extends AsyncTask{
         return false;
     }
 
-    public Downloader(Context context) {
+    public Downloader(Context context,AsyncResponse asyncResponse) {
         this.context=context;
+        this.asyncResponse=asyncResponse;
+        this.progressDialog = new ProgressDialog(context);
     }
 
     private static String getFromUrl(String url) {
@@ -84,7 +88,6 @@ public class Downloader extends AsyncTask{
     }
 
     private void show() {
-        progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
     }
@@ -104,7 +107,6 @@ public class Downloader extends AsyncTask{
     @Override
     protected String doInBackground(Object[] params) {
         String url=params[0].toString();
-        Log.v("Aymen",url);
         return download(url);
     }
 
@@ -112,5 +114,7 @@ public class Downloader extends AsyncTask{
     protected void onPostExecute(Object object)
     {
         hide();
+        String serverResponse=(String) object;
+        asyncResponse.executeAfterDownload(serverResponse);
     }
 }
