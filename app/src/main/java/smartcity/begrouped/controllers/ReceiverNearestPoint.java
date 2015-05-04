@@ -47,7 +47,7 @@ public class ReceiverNearestPoint extends BroadcastReceiver {
 
             // Prepare intent which is triggered if the
             // notification is selected
-            Intent intent1 = new Intent(context, AuthentificationActivity.class);
+            Intent intent1 = new Intent(context, MapsActivity.class);
             PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent1, 0);
 
             // Build notification

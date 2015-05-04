@@ -33,7 +33,7 @@ public class ReceiverUpdatePositions extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (MapsActivity.markerManager!=null){
             if (MyApplication.requestingMemberPositions) {
-                MapsActivity.markerManager.updateLocations();
+                if (MyApplication.currentGroup!=null) MapsActivity.markerManager.updateLocations();
                 pi = PendingIntent.getBroadcast(context, 0, new Intent(
                         "com.authorwjf.MajPositions"), 0);
                 am = (AlarmManager) (context.getSystemService(Context.ALARM_SERVICE));
