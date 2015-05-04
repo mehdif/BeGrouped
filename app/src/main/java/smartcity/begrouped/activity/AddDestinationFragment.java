@@ -92,7 +92,8 @@ public class AddDestinationFragment extends Fragment {
                         map.put(TAG_NAME,poi.getName());
                         map.put(TAG_TYPE,poi.getType());
                         map.put(TAG_TEMPS,"");
-                        map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+                        //map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+                        map.put("img", String.valueOf(R.drawable.icon));
                         listItem.add(map);
                     }
                     mSchedule.notifyDataSetChanged();

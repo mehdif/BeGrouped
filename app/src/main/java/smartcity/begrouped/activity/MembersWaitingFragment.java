@@ -151,7 +151,8 @@ public class MembersWaitingFragment extends Fragment {
             HashMap map=new HashMap<String,String>();
             map.put("username",membersWaiting.get(i).getUsername());
             map.put("telephone",membersWaiting.get(i).getPhoneNumber());
-            map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+           // map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+            map.put("img", String.valueOf(R.drawable.icon));
             map.put("flname",membersWaiting.get(i).getLastname()+" "+ membersWaiting.get(i).getFirstname() );//Ici l icone qui va s'afficher
             listItem.add(map);
         }
