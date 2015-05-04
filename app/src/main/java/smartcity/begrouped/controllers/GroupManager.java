@@ -244,7 +244,7 @@ public class GroupManager {
         Group group=new Group(null,membersList,null,null,null);
 
         return group;
-       // return //getGroupInformation(group);
+        // return //getGroupInformation(group);
     }
 
     public static LinkedList<Group> getMyGroups() {
@@ -396,29 +396,11 @@ public class GroupManager {
 
     }
 
-      public static boolean expulseMember(String groupName,String userName)
-      {
-          String jsonFileUrl = getFromUrl(AllUrls.EXPULSER_GROUP_SUPERVISOR +groupName+"/"+ userName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
-
-          Log.v("Json delete member : ", " " + jsonFileUrl);
-
-          if(jsonFileUrl != null && jsonFileUrl.equals("FAILED")){
-              return false;
-          }
-          else if(jsonFileUrl != null && jsonFileUrl.equals("SUCCEED")){
-              return true;
-          }
-          return false;
-      }
-
-    public static boolean leaveGroup(String groupName)
+    public static boolean expulseMember(String groupName,String userName)
     {
-        String jsonFileUrl = getFromUrl(AllUrls.SORTIR_GROUP_USER +groupName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
-    public static void getGroupMembersFromName(String groupName, Fragment fragment, int type){
-        new TaskGetJsonMembers(groupName, fragment, type).execute();
-    }
+        String jsonFileUrl = getFromUrl(AllUrls.EXPULSER_GROUP_SUPERVISOR +groupName+"/"+ userName +"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
 
-        Log.v("Json leave group : ", " " + jsonFileUrl);
+        Log.v("Json delete member : ", " " + jsonFileUrl);
 
         if(jsonFileUrl != null && jsonFileUrl.equals("FAILED")){
             return false;
@@ -427,6 +409,24 @@ public class GroupManager {
             return true;
         }
         return false;
+    }
+
+    public static boolean leaveGroup(String groupName) {
+        String jsonFileUrl = getFromUrl(AllUrls.SORTIR_GROUP_USER + groupName + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
+
+        Log.v("Json leave group : ", " " + jsonFileUrl);
+
+        if (jsonFileUrl != null && jsonFileUrl.equals("FAILED")) {
+            return false;
+        } else if (jsonFileUrl != null && jsonFileUrl.equals("SUCCEED")) {
+            return true;
+        }
+        return false;
+    }
+
+        public static void getGroupMembersFromName(String groupName, Fragment fragment, int type){
+        new TaskGetJsonMembers(groupName, fragment, type).execute();
+
     }
 
     public static Group getGroupMembersFromName(String groupName){
@@ -440,16 +440,6 @@ public class GroupManager {
         return null;
     }
 
-    public static Group callTaskGetGroupInformation(Group group)
-    {
-        try {
-            return (Group)new TaskGroupInformation().execute(group).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
 
     public static void callTaskGetGroupInformation(Group group, Fragment fragment)
     {
@@ -516,7 +506,6 @@ public class GroupManager {
 
         @Override
         protected Group doInBackground(Object[] params) {
-
             return createMembersFromJson(groupName);
         }
 
@@ -555,7 +544,7 @@ public class GroupManager {
     public static void callTaskUpdateGroupMemberLocations(Group group){
         TaskGetMemberPositions task=new TaskGetMemberPositions(group);
 
-            task.execute();
+        task.execute();
 
     }
 
@@ -664,9 +653,9 @@ public class GroupManager {
 
         HomeFragment fragment;
 
-       public TaskGetMyGroups(HomeFragment fragment){
-           this.fragment = fragment;
-       }
+        public TaskGetMyGroups(HomeFragment fragment){
+            this.fragment = fragment;
+        }
 
 
         @Override
@@ -729,7 +718,7 @@ public class GroupManager {
 
     public static class TaskDeleteGroup extends AsyncTask {
 
-       String groupName;
+        String groupName;
 
         public TaskDeleteGroup(String groupName){ this.groupName=groupName;
 
@@ -742,11 +731,20 @@ public class GroupManager {
 
         }
     }
+
     public static class TaskDeleteMember extends AsyncTask {
         @Override
         protected Boolean doInBackground(Object[] params) {
 
-            return  expulseMember(params[0].toString(),params[1].toString());
+            return  expulseMember(params[0].toString(), params[1].toString());
+
+        }
+    }
+    public static class TaskLeaveGroup extends AsyncTask {
+        @Override
+        protected Boolean doInBackground(Object[] params) {
+
+            return leaveGroup(params[0].toString());
 
         }
     }
