@@ -24,6 +24,7 @@ import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.UserManager;
 import smartcity.begrouped.model.User;
 import smartcity.begrouped.utils.MessageService;
+import smartcity.begrouped.utils.MessageUser;
 import smartcity.begrouped.utils.MyApplication;
 
 
@@ -38,6 +39,7 @@ public class AuthentificationActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MessageUser.init();
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_authentification);
@@ -116,7 +118,7 @@ public class AuthentificationActivity extends ActionBarActivity {
 
             startActivity(i);
         } else {
-            Toast.makeText(getApplicationContext(), "NO ACCOUNT AT THIS NAME", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), MessageUser.EnglishMessages.get("1103"), Toast.LENGTH_LONG).show();
         }
 
         hideProgress();

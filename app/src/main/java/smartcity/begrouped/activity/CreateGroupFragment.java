@@ -15,6 +15,7 @@ import android.widget.Toast;
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.GroupManager;
 import smartcity.begrouped.model.Group;
+import smartcity.begrouped.utils.MessageUser;
 
 
 public class CreateGroupFragment extends Fragment {
@@ -52,13 +53,16 @@ public class CreateGroupFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-
-            showProgress();
-            GroupManager.callTaskCreateNewGroup(groupName.getText().toString(), regionName.getText().toString(), CreateGroupFragment.this);
-
-            getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            if (groupName.getText().toString().isEmpty() || regionName.getText().toString().isEmpty()) {
+                Toast.makeText(getActivity(), MessageUser.get("1210"), Toast.LENGTH_SHORT).show();
             }
-            });
+            else {
+                showProgress();
+                GroupManager.callTaskCreateNewGroup(groupName.getText().toString(), regionName.getText().toString(), CreateGroupFragment.this);
+                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+        }
+        });
 
         cancel.setOnClickListener(new View.OnClickListener() {
 
@@ -76,17 +80,20 @@ public class CreateGroupFragment extends Fragment {
 
     public void createGroup(Group group){
 
-        if(groupName.getText().toString().matches("")){
+        /*if(groupName.getText().toString().matches("")){
             Toast.makeText(getActivity().getBaseContext(), "Please enter a group name !", Toast.LENGTH_SHORT).show();
         }
         else if(regionName.getText().toString().matches("")){
             Toast.makeText(getActivity().getBaseContext(), "Please enter a region name !", Toast.LENGTH_SHORT).show();
         }
-        else {
-            if(group == null){
-                Toast.makeText(getActivity().getBaseContext(), "This group already exists !", Toast.LENGTH_SHORT).show();
-            }
+        else {*/
+        if(group == null){
+            Toast.makeText(getActivity().getBaseContext(), MessageUser.get("1208"), Toast.LENGTH_SHORT).show();
+        } else
+        {
+            Toast.makeText(getActivity().getBaseContext(), MessageUser.get("2202"), Toast.LENGTH_SHORT).show();
         }
+        //}
 
         hideProgress();
         Intent intent = new Intent(getActivity(), MainActivity.class);//HAVE TO REDIRECT TO ManageGroupFragment

@@ -29,8 +29,8 @@ import smartcity.begrouped.utils.MyApplication;
 public class MembersOnGroupFragment extends Fragment {
 
     ListView membersView;
-    ArrayList<HashMap<String, String>> listItem;//array of items
-
+    public static ArrayList<HashMap<String, String>> listItem;//array of items
+    public static SimpleAdapter mSchedule;
 
     public MembersOnGroupFragment() {
         // Required empty public constructor
@@ -63,7 +63,7 @@ public class MembersOnGroupFragment extends Fragment {
             listItem.add(map);
         }
 
-        SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+        mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
         new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
         membersView.setAdapter(mSchedule);
 
