@@ -108,7 +108,7 @@ public class RegisterActivity extends ActionBarActivity implements AsyncResponse
                         Downloader downloader = new Downloader(RegisterActivity.this, RegisterActivity.this);
                         downloader.execute(AllUrls.register_user_url + username + "/" + hashedPassWord + "/" + encodedFirstName + "/" + encodedLastName + "/" + phonenumber);
                     } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
+                        Toast.makeText(RegisterActivity.this, MessageUser.get("0000"),Toast.LENGTH_SHORT).show();
                     }
 
                 }
