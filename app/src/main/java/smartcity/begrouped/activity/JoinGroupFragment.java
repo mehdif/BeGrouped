@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.GroupManager;
+import smartcity.begrouped.utils.MessageUser;
 
 
 public class JoinGroupFragment extends Fragment {
@@ -45,16 +46,15 @@ public class JoinGroupFragment extends Fragment {
 
          @Override
         public void onClick(View view) {
+             getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
-
-
-            getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
-
-             showProgress();
-             GroupManager.callTaskJoinGroup(groupName.getText().toString(), JoinGroupFragment.this);
-
-
-
+             if (groupName.getText().toString().isEmpty()) {
+                 Toast.makeText(getActivity(), MessageUser.get("1209"), Toast.LENGTH_SHORT).show();
+             }
+             else {
+                 showProgress();
+                 GroupManager.callTaskJoinGroup(groupName.getText().toString(), JoinGroupFragment.this);
+             }
         }
          });
 
@@ -72,14 +72,9 @@ public class JoinGroupFragment extends Fragment {
 
     }
 
-    public void joinGroup(Boolean b){
+    public void joinGroup(String message){
 
-        if(b){
-            Toast.makeText(getActivity(), "You have successfully been added to the group !",Toast.LENGTH_LONG).show();
-        }else{
-            Toast.makeText(getActivity(), "Error, you haven't been added to the group !",Toast.LENGTH_LONG).show();
-        }
-
+        Toast.makeText(getActivity(), MessageUser.get(message),Toast.LENGTH_LONG).show();
         hideProgress();
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
