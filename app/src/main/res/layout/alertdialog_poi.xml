@@ -97,43 +97,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="8"
-                android:layout_height="wrap_content"
-                android:text="time of visit"
-                android:textColor="#000000"/>
-
-
-            <EditText
-                android:id="@+id/hhRDV"
-                android:layout_width="0dp"
-                android:layout_weight="3"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:maxLength="2"
-                android:textColor="#000000"
-                />
-            <EditText
-                android:id="@+id/minRDV"
-                android:layout_width="0dp"
-                android:layout_weight="3"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:maxLength="2"
-                android:textColor="#000000"
-                />
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content">
-            </LinearLayout>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
 
                 android:layout_width="0dp"
                 android:layout_weight="1"
