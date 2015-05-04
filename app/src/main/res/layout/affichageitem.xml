@@ -76,11 +76,12 @@
         android:textStyle="bold"/>
     
      <!-- Rightend Arrow -->
-     <ImageView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+     <ImageView android:layout_width="20dp"
+        android:layout_height="20dp"
         android:src="@drawable/arrow"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"/>
+         android:layout_alignTop="@+id/description"
+         android:layout_alignParentRight="true"
+         android:layout_alignParentEnd="true" />
  
 </RelativeLayout>
     </LinearLayout>

@@ -73,7 +73,7 @@ public class FragmentDrawer extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
         userName = (TextView)layout.findViewById(R.id.user_name_label);
-        userName.setText(MyApplication.myIdentity.getUsername());
+        if (MyApplication.myIdentity!=null) userName.setText(MyApplication.myIdentity.getUsername());
 
         adapter = new NavigationDrawerAdapter(getActivity(), getData());
         recyclerView.setAdapter(adapter);

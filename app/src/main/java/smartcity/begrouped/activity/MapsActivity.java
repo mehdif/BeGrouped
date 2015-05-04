@@ -94,6 +94,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
     private boolean drawingPath1=false;
     private boolean drawingPath2=false;
     public static boolean aptEnCreation=false;
+    private Marker nearestPOIMareker=null;
 
     public MapsActivity(){
 
@@ -184,7 +185,28 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 // setUpMap();
                 mMap.setOnMarkerClickListener(this);
                 mMap.setOnMapClickListener(new MyMapClickListener());
+                if (MyApplication.myPosition!=null){
+
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(MyApplication.myPosition.getLatitude(),MyApplication.myPosition.getLongitude()), 8));
+                        mMap.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
+
+                }
+                afficherNearestPOI();
+
+
             }
+        }
+    }
+
+    private void afficherNearestPOI() {
+        Intent intent=getIntent();
+        String name=intent.getStringExtra("name");
+        String type=intent.getStringExtra("type");
+        double latitude=intent.getDoubleExtra("latitude",-1);
+        double longitude=intent.getDoubleExtra("longitude",-1);
+        if ((latitude!=-1) && (longitude!=-1)&&(name!=null) && (type!=null)){
+            nearestPOIMareker=  mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude))
+                    .title(name).snippet(type));
         }
     }
 
@@ -368,45 +390,50 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 break;
             case 1:
                 //fragment = new AboutFragment();
-                title = getString(R.string.title_add_appointment);
-                getSupportActionBar().setTitle(title);
-                if (aptMarker==null) {
-                    createAppointment();
-                    Toast.makeText(getApplicationContext(), "Choose a location !", Toast.LENGTH_LONG).show();
+                if (MyApplication.myIdentity.getUsername().equals(MyApplication.currentGroup.getSupervisor().getUsername())) {
+                    title = getString(R.string.title_add_appointment);
+                    //getSupportActionBar().setTitle(title);
+                    if (aptMarker == null) {
+                        createAppointment();
+                        Toast.makeText(getApplicationContext(), "Choose a location !", Toast.LENGTH_LONG).show();
+                    } else {
+                        aptEnCreation = true;
+                        new AlertDialog.Builder(this)
+                                .setTitle("Delete Appointment")
+                                .setMessage("Are you sure you want to delete the appointment?")
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // continue with delete
+                                        aptMarker.remove();
+                                        aptMarker = null;
+                                        MyApplication.currentGroup.setAppointment(null);
+                                        UserManager.sendRemoveApt(MyApplication.currentGroup.getName());
+                                        if (pathToApt != null) {
+                                            pathToApt.remove();
+                                            pathToApt = null;
+                                        }
+
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // do nothing
+                                        aptEnCreation = false;
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
                 }
                 else {
-                    aptEnCreation=true;
-                    new AlertDialog.Builder(this)
-                            .setTitle("Delete Appointment")
-                            .setMessage("Are you sure you want to delete the appointment?")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // continue with delete
-                                    aptMarker.remove();
-                                    aptMarker=null;
-                                    MyApplication.currentGroup.setAppointment(null);
-                                    UserManager.sendRemoveApt(MyApplication.currentGroup.getName());
-                                    if (pathToApt!=null){
-                                        pathToApt.remove();
-                                        pathToApt=null;
-                                    }
-
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // do nothing
-                                    aptEnCreation=false;
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+                    Toast.makeText(getApplicationContext(), "You're not the supervisor of this group",Toast.LENGTH_LONG).show();
                 }
+
                 break;
             case 2:
                 //fragment = new HelpFragment();
                 title = getString(R.string.title_path_to_appointment);
-                getSupportActionBar().setTitle(title);
+                //getSupportActionBar().setTitle(title);
                 if (aptMarker==null)
                 Toast.makeText(getApplicationContext(), "There is no appointment",Toast.LENGTH_LONG).show();
                 else {
@@ -429,7 +456,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 break;
             case 3:
                 title = getString(R.string.title_find_program_itinerary);
-                getSupportActionBar().setTitle(title);
+                //getSupportActionBar().setTitle(title);
                 //Toast.makeText(getApplicationContext(), "Find Program itinirerary !",Toast.LENGTH_LONG).show();
                 if (programShown){
                     if (programPath!=null){
@@ -452,14 +479,14 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 break;
             case 4:
                 title = getString(R.string.title_show_program);
-                getSupportActionBar().setTitle(title);
+                //getSupportActionBar().setTitle(title);
                // Toast.makeText(getApplicationContext(), "Show Program !",Toast.LENGTH_LONG).show();
                 //afficherDialogChoixDate();
                 showDatePicker();
                 break;
             case 5:
                 title = getString(R.string.title_hide_program);
-                getSupportActionBar().setTitle(title);
+                //getSupportActionBar().setTitle(title);
 
                 if (programShown) {
                     hideProgram();
