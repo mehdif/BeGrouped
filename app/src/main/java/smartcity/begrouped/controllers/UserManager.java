@@ -60,7 +60,7 @@ public class UserManager {
     public final static int POST = 2;
 
 
-    //public static User myIdentity;
+    //public static User myuser myIdentity;
 
 
 
