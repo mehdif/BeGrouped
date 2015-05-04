@@ -123,6 +123,29 @@ public class ManageGroupFragment extends Fragment {
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
+                else if ( ! MyApplication.myIdentity.getUsername().equals(map.get(TAG_SUPERVISEUR))) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Are you sure you want to leave " + map.get(TAG_GROUP_NAME) + " ?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                    boolean result = GroupManager.callTaskLeaveGroup(map.get(TAG_GROUP_NAME));
+                                    if (result) {
+                                        Toast.makeText(getActivity(), "Group left successfully", Toast.LENGTH_LONG).show();
+                                        getActivity().recreate();
+                                    } else
+                                        Toast.makeText(getActivity(), "There is a problem with leaving this group", Toast.LENGTH_LONG).show();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
                 return false;
             }
         });
