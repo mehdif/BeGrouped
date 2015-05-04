@@ -27,6 +27,10 @@ public class Downloader extends AsyncTask{
     private AsyncResponse asyncResponse;
     private ProgressDialog progressDialog;
 
+    private static boolean isNumeric(char n) {
+        return (n=='0' || n=='1'|| n=='2'|| n=='3'|| n=='4'|| n=='5'|| n=='6'|| n=='7'|| n=='8'|| n=='9');
+
+    }
 
     public boolean isOnline(){
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -51,9 +55,9 @@ public class Downloader extends AsyncTask{
 
     private static String getFromUrl(String url) {
         String chaine="0000";
-        InputStream is = null;
+        boolean start=true;
+        InputStream is;
         try {
-            chaine = null;
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
             HttpResponse httpResponse = httpClient.execute(httpPost);
@@ -65,12 +69,15 @@ public class Downloader extends AsyncTask{
                 StringBuilder sb = new StringBuilder();
                 String line = null;
                 while ((line = reader.readLine()) != null) {
+                    if (start) {
+                        if (!isNumeric(line.charAt(0)) && line.charAt(0)=='{') return "0000";
+                        start = false;
+                    }
                     sb.append(line);
                 }
                 is.close();
                 chaine = sb.toString();
             } catch (Exception e) {
-                Log.e("Buffer Error", "Error converting result " + e.getMessage());
             }
         } catch (UnsupportedEncodingException e) {
 
