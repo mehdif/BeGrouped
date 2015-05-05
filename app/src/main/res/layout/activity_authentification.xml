@@ -12,12 +12,13 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center"
-        android:touchscreenBlocksFocus="false">
+        android:touchscreenBlocksFocus="false"
+        android:weightSum="100">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="20"
+            android:layout_weight="30"
             android:layout_gravity="center">
 
             <TextView
@@ -35,8 +36,8 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="80"
-            android:gravity="center">
+            android:layout_weight="40"
+            android:gravity="center_horizontal|top">
 
             <EditText
                 android:layout_width="wrap_content"
@@ -77,43 +78,49 @@
                 android:layout_gravity="right"
                 android:layout_marginTop="10dp" />
 
-            <LinearLayout
+        </LinearLayout>
 
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="40dp">
+        <LinearLayout
 
-                   <Button
-                    android:id="@+id/buttonLogin"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="3dp"
-                    android:text="Sign In"
-                    android:background="@drawable/layers_gplus_button_bg"
-                    android:textAppearance="?android:attr/textAppearanceLargeInverse" />
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_weight="10">
 
-
-                 <Button
-                    android:id="@+id/buttonRegister"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:background="@drawable/layers_gplus_button_bg"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="3dp"
-                    android:text="Sign Up"
-                    android:textAppearance="?android:attr/textAppearanceLargeInverse" />
+               <Button
+                android:id="@+id/buttonLogin"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="3dp"
+                android:text="Sign In"
+                android:background="@drawable/layers_gplus_button_bg"
+                android:textAppearance="?android:attr/textAppearanceLargeInverse" />
 
 
+             <Button
+                android:id="@+id/buttonRegister"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/layers_gplus_button_bg"
+                android:paddingBottom="10dp"
+                android:paddingTop="3dp"
+                android:text="Sign Up"
+                android:textAppearance="?android:attr/textAppearanceLargeInverse" />
 
-            </LinearLayout>
+
 
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"></LinearLayout>
 
 
     </LinearLayout>

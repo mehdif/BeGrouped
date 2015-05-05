@@ -22,13 +22,13 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:weightSum="100"
-                android:id="@+id/">
+                android:id="@+id/label">
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="40"
+                    android:layout_weight="30"
                     android:layout_gravity="center"
                     android:gravity="center">
 
@@ -45,7 +45,7 @@
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="10"
+                    android:layout_weight="20"
                     android:layout_marginLeft="50dp"
                     android:layout_marginRight="50dp">
 
