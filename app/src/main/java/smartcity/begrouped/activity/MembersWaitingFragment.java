@@ -57,7 +57,7 @@ public class MembersWaitingFragment extends Fragment {
             HashMap map=new HashMap<String,String>();
             map.put("username",membersWaiting.get(i).getUsername());
             map.put("telephone",membersWaiting.get(i).getPhoneNumber());
-            map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+            map.put("img", String.valueOf(R.drawable.user));//Ici l icone qui va s'afficher
             map.put("flname",membersWaiting.get(i).getLastname()+" "+ membersWaiting.get(i).getFirstname() );//Ici l icone qui va s'afficher
             listItem.add(map);
         }
@@ -87,7 +87,7 @@ public class MembersWaitingFragment extends Fragment {
                                     HashMap map2=new HashMap<String,String>();
                                     map2.put("username",map.get("username"));
                                     map2.put("telephone",map.get("username"));
-                                    map2.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+                                    map2.put("img", String.valueOf(R.drawable.user));//Ici l icone qui va s'afficher
                                     map2.put("flname",map.get("flname"));//Ici l icone qui va s'afficher
                                     MembersOnGroupFragment.listItem.add(map2);
                                     MembersOnGroupFragment.mSchedule.notifyDataSetChanged();
@@ -151,7 +151,7 @@ public class MembersWaitingFragment extends Fragment {
             HashMap map=new HashMap<String,String>();
             map.put("username",membersWaiting.get(i).getUsername());
             map.put("telephone",membersWaiting.get(i).getPhoneNumber());
-           // map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+           // map.put("img", String.valueOf(R.drawable.user));//Ici l icone qui va s'afficher
             map.put("img", String.valueOf(R.drawable.user));
             map.put("flname",membersWaiting.get(i).getLastname()+" "+ membersWaiting.get(i).getFirstname() );//Ici l icone qui va s'afficher
             listItem.add(map);
