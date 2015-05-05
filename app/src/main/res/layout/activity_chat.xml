@@ -78,11 +78,12 @@
 
             <Button
                 android:id="@+id/sendButton"
-                android:layout_width="72dp"
-                android:layout_height="match_parent"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/button_send"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:layout_margin="4dp"
-                android:background="@drawable/button_send" />
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
     </RelativeLayout>
 
