@@ -98,12 +98,9 @@ public class GroupHomeFragment extends ActionBarActivity implements FragmentDraw
                 else
                 {
                     Log.v("TAG","I'm not the supervisor of current group");
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    MembersOnGroupFragment fragment = new MembersOnGroupFragment();
-                    fragmentTransaction.replace(R.id.container_body, fragment, "tag");
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+                    Intent i = new Intent(getApplicationContext(), MmeberOnlyActivity.class);
+                    startActivity(i);
+                    getSupportActionBar().setTitle("Members");
                 }
 
             }
