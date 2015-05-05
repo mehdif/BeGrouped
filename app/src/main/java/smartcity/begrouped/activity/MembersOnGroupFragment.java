@@ -80,7 +80,7 @@ public class MembersOnGroupFragment extends Fragment {
                                     if (result) {
                                         Toast.makeText(getActivity(), "Member deleted with success", Toast.LENGTH_LONG).show();
                                         reload();
-                                       mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+                                        mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
                                                 new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
                                         membersView.setAdapter(mSchedule);
 
@@ -146,7 +146,7 @@ public class MembersOnGroupFragment extends Fragment {
         if (mSchedule==null){
             mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
                     new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
-             membersView.setAdapter(mSchedule);
+            membersView.setAdapter(mSchedule);
         }
 
         mSchedule.notifyDataSetChanged();
@@ -167,18 +167,17 @@ public class MembersOnGroupFragment extends Fragment {
             listItem.add(map);
         }
 
-        if (mSchedule==null){
-            mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
-                    new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
-            membersView.setAdapter(mSchedule);
-        }
+
+        mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+                new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
+        membersView.setAdapter(mSchedule);
+
         mSchedule.notifyDataSetChanged();
         hideProgress();
     }
 
     public void showProgress(){
-        progressDialog = ProgressDialog.show(this.getActivity(), null,
-                "Loading...", true);
+        progressDialog = ProgressDialog.show(this.getActivity(), null,"Loading...", true);
     }
 
     public void hideProgress(){
