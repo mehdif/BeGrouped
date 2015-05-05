@@ -17,7 +17,7 @@
         android:gravity="center">
 
         <TextView
-            android:id="@+id/label"
+            android:id="@+id/textViewNewGroup"
             android:layout_alignParentTop="true"
             android:layout_width="fill_parent"
 

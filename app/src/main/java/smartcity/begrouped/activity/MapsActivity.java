@@ -511,6 +511,11 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                     Toast.makeText(getApplicationContext(), "There is no shown program",Toast.LENGTH_LONG).show();
                 }
                 break;
+            case 6:
+                Intent ii = new Intent(getApplicationContext(), GroupHomeFragment.class);
+                startActivity(ii);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                break;
             default:
                 break;
         }

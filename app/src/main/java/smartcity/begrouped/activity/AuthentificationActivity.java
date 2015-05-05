@@ -3,11 +3,13 @@ package smartcity.begrouped.activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
@@ -34,6 +36,7 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
     private Button register;
     private EditText username;
     private EditText password;
+    private TextView textViewBeGrouped;
 
     private String action="";
 
@@ -54,6 +57,9 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
             register = (Button) findViewById(R.id.buttonRegister);
             username = (EditText) findViewById(R.id.editTextId);
             password = (EditText) findViewById(R.id.editTextPassword);
+            textViewBeGrouped = (TextView) findViewById(R.id.textViewBeGrouped);
+
+            textViewBeGrouped.setText(Html.fromHtml("<font color=#c62828>Be</font><font color=#ffffff>Grouped</font>"));
 
             login.setOnClickListener(new View.OnClickListener() {
                 @Override
