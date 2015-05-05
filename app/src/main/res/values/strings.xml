@@ -43,6 +43,7 @@
     <string name="nav_item_find_program_itinerary">Show/hide Program Itinerary</string>
     <string name="nav_item_show_program">Show Progam</string>
     <string name="nav_item_hide_program">Hide Progam</string>
+    <string name="nav_item_current_group">Current Group</string>
 
     <string-array name="nav_drawer_labels_map">
         <item>@string/nav_item_home_map</item>
@@ -51,6 +52,7 @@
         <item>@string/nav_item_find_program_itinerary</item>
         <item>@string/nav_item_show_program</item>
         <item>@string/nav_item_hide_program</item>
+        <item>@string/nav_item_current_group</item>
     </string-array>
 
     <string name="title_home_map">Map</string>
@@ -59,6 +61,7 @@
     <string name="title_find_program_itinerary">Show/hide Program Itinerary</string>
     <string name="title_show_program">Show Program</string>
     <string name="title_hide_program">Hide Program</string>
+    <string name="title_current_group">Current Group</string>
 
 
 <!-- Menu Group Home-->
