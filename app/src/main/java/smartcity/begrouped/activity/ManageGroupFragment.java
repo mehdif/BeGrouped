@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -30,12 +32,18 @@ import smartcity.begrouped.controllers.GroupManager;
 import smartcity.begrouped.controllers.UserManager;
 import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.User;
+import smartcity.begrouped.utils.AllUrls;
+import smartcity.begrouped.utils.AsyncResponse;
 import smartcity.begrouped.utils.Constants;
+import smartcity.begrouped.utils.Downloader;
 import smartcity.begrouped.utils.MessageService;
+import smartcity.begrouped.utils.MessageUser;
 import smartcity.begrouped.utils.MyApplication;
 
+import static smartcity.begrouped.utils.GlobalMethodes.isNumeric;
 
-public class ManageGroupFragment extends Fragment {
+
+public class ManageGroupFragment extends Fragment implements AsyncResponse {
 
     private Fragment context;
     private ListView maListViewPerso;
@@ -45,6 +53,8 @@ public class ManageGroupFragment extends Fragment {
     private static final String TAG_GROUP_NAME = "Tassarkolat";
     private static final String TAG_REGION = "Lyon";
     private static final String TAG_SUPERVISEUR = "Hassan";
+
+    String action = "";
 
     public ManageGroupFragment() {
         // Required empty public constructor
@@ -69,16 +79,15 @@ public class ManageGroupFragment extends Fragment {
         maListViewPerso.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                action = "groupInformation";
                 HashMap<String, String> map = (HashMap<String, String>) maListViewPerso.getItemAtPosition(position);
-                /// récupérer les infos sur le groupe
-                Log.v("groupname",map.get(TAG_GROUP_NAME));
-
-                showProgress();
-
-                Group group=new Group(null,null,null,map.get(TAG_GROUP_NAME),null);
-                GroupManager.callTaskGetGroupInformation(group, context);
-
-
+                try {
+                    String encodedName = URLEncoder.encode(map.get(TAG_GROUP_NAME), "utf-8").replace("+", "%20");
+                    Downloader downloader = new Downloader(getActivity(), ManageGroupFragment.this);
+                    downloader.execute(AllUrls.GET_GROUP_ALL_INFORMATIONS + encodedName + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
+                } catch (UnsupportedEncodingException e) {
+                    Toast.makeText(getActivity(), MessageUser.get("0000"), Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -92,7 +101,7 @@ public class ManageGroupFragment extends Fragment {
 
                 final HashMap<String, String> map = (HashMap<String, String>) maListViewPerso.getItemAtPosition(position);
 
-                if ( MyApplication.myIdentity.getUsername().equals(map.get(TAG_SUPERVISEUR))) {
+                if (MyApplication.myIdentity.getUsername().equals(map.get(TAG_SUPERVISEUR))) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setMessage("Are you sure you want to delete " + map.get(TAG_GROUP_NAME) + " ?")
                             .setCancelable(false)
@@ -114,8 +123,7 @@ public class ManageGroupFragment extends Fragment {
                             });
                     AlertDialog alert = builder.create();
                     alert.show();
-                }
-                else if ( ! MyApplication.myIdentity.getUsername().equals(map.get(TAG_SUPERVISEUR))) {
+                } else if (!MyApplication.myIdentity.getUsername().equals(map.get(TAG_SUPERVISEUR))) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setMessage("Are you sure you want to leave " + map.get(TAG_GROUP_NAME) + " ?")
                             .setCancelable(false)
@@ -144,43 +152,26 @@ public class ManageGroupFragment extends Fragment {
 
 
         SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
-                new String[] {"img", TAG_GROUP_NAME,TAG_REGION,TAG_SUPERVISEUR}, new int[] {R.id.img, R.id.titre, R.id.description, R.id.superviseur});
+                new String[]{"img", TAG_GROUP_NAME, TAG_REGION, TAG_SUPERVISEUR}, new int[]{R.id.img, R.id.titre, R.id.description, R.id.superviseur});
         maListViewPerso.setAdapter(mSchedule);
         return rootView;
 
     }
 
-    public void getGroupInformation(Group group){
-
-        Object object= UserManager.getUserFromUserName(group.getSupervisor().getUsername());
-        if ( object instanceof User) {
-            User user=(User) object;
-            group.getSupervisor().setFirstname(user.getFirstname());
-            group.getSupervisor().setLastname(user.getLastname());
-            group.getSupervisor().setPhoneNumber(user.getPhoneNumber());
+    @Override
+    public void executeAfterDownload(String output) {
+        Log.v("adnane",output);
+        if (action.equals("groupInformation")) {
+            if (isNumeric(output.charAt(0))) {
+                Toast.makeText(getActivity(), MessageUser.get(output), Toast.LENGTH_SHORT).show();
+            } else {
+                Group group=GroupManager.parseGroupAllInfo(output);
+                Intent i = new Intent(getActivity().getApplicationContext(), GroupHomeFragment.class);
+                startActivity(i);
+                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("Home");
+            }
         }
-
-        Log.v("super",group.getSupervisor().toString());
-        Group group1 = GroupManager.getGroupMembersFromName(group.getName());
-        group.setMembers(group1.getMembers());
-
-        MyApplication.currentGroup=group;
-        Intent i = new Intent(getActivity().getApplicationContext(), GroupHomeFragment.class);
-        startActivity(i);
-        getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
-        ((ActionBarActivity)getActivity()).getSupportActionBar().setTitle("Home");
-
-        hideProgress();
-    }
-
-    public void showProgress(){
-        progressDialog = ProgressDialog.show(this.getActivity(), null,
-                "Loading...", true);
-    }
-
-    public void hideProgress(){
-        if(progressDialog.isShowing()){
-            progressDialog.dismiss();
-        }
+        action = "";
     }
 }

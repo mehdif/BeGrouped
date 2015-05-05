@@ -51,19 +51,63 @@ import static smartcity.begrouped.utils.GlobalMethodes.getFromUrl;
 public class GroupManager {
 
 
-    static InputStream is = null;
-    static String chaine = "";
-
-
-    public static Group getGroupByName(String groupName) {
-        return null;
+    public static Group parseGroup(JSONObject jsonGroup) {
+        Group group = null;
+        try {
+            String groupName = (String) jsonGroup.get(Constants.GROUP_NAME);
+            String regionName = (String) jsonGroup.get(Constants.REGION_NAME);
+            String expirationDate = (String) jsonGroup.get(Constants.EXPIRATION_DATE);
+            String supervisorName = (String) jsonGroup.get(Constants.SUPERVISOR_NAME);
+            User supervisor = new User("", "", supervisorName, "", "");
+            group = new Group(supervisor, groupName, regionName, expirationDate);
+        } catch (Exception e) {
+            Log.e("Error : ", e.getMessage());
+        }
+        return group;
     }
 
-    //updated
-    public static LinkedList<Group> getGroupsOfUser(String username) {
-        return null;
+    public static LinkedList<User> parseGroupMembers(JSONArray jsonArrayMembers) {
+
+        LinkedList<User> membersList = new LinkedList<>();
+
+        //Json file parser
+        try {
+            // looping through All members
+            for (int i = 0; i < jsonArrayMembers.length(); i++) {
+                JSONObject jsonObject = jsonArrayMembers.getJSONObject(i);
+                String firstname = (String) jsonObject.get(Constants.FIRST_NAME);
+                String lastname = (String) jsonObject.get(Constants.LAST_NAME);
+                String username = (String) jsonObject.get(Constants.USERNAME);
+                String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
+
+                membersList.add(new User(firstname, lastname, username, null, phoneNumber));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return membersList;
     }
 
+
+    public static Group parseGroupAllInfo(String json) {
+        Group group = null;
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONObject jsonAllInfo = jsonObject.getJSONObject(Constants.GROUP_ALL_INFO);
+            JSONObject jsonGroup = jsonAllInfo.getJSONObject(Constants.GROUP_INFO);
+            JSONObject jsonSupervisor = jsonAllInfo.getJSONObject(Constants.SUPERVISER_INFO);
+            JSONArray members = jsonAllInfo.getJSONArray(Constants.MEMBERS_INFO);
+
+            group = parseGroup(jsonGroup);
+            group.setSupervisor(UserManager.parseUser(jsonSupervisor));
+            group.setMembers(parseGroupMembers(members));
+
+            MyApplication.currentGroup = group;
+        } catch (Exception e) {
+            Log.e("Error : ", e.getMessage());
+        }
+        return group;
+    }
 
     /**
      * Method that request the server and updates the locations of the group members
@@ -293,22 +337,6 @@ public class GroupManager {
         }
     }
 
-    /**
-     * Method that adds the supervisor to a group
-     *
-     * @param group
-     * @param supervisorName
-     * @return
-     */
-    public static Group addSupervisorGroup(Group group, String supervisorName) {
-        for (int i = 0; i < group.getMembers().size(); i++) {
-            if (group.getMembers().get(i).getUsername().equals(supervisorName)) {
-                group.setSupervisor(group.getMembers().get(i));
-            }
-        }
-        return group;
-    }
-
     public static boolean deleteGroup(String groupName) {
         Log.v("TAG", groupName);
         String jsonFileUrl = getFromUrl(AllUrls.DELETE_GROUP + groupName + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
@@ -400,42 +428,10 @@ public class GroupManager {
 
     }
 
-    public static Group getGroupMembersFromName(String groupName) {
-        try {
-            return (Group) new TaskGetJsonMembers(groupName).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    public static void callTaskGetGroupInformation(Group group, Fragment fragment) {
-        new TaskGroupInformation(fragment).execute(group);
-    }
-
     public static void getGroups(HomeFragment fragment) {
         new TaskGetMyGroups(fragment).execute();
     }
 
-    public static String joinGroup(String groupName) {
-        String encodedName = null;
-        try {
-            encodedName = URLEncoder.encode(groupName, "utf-8").replace("+", "%20");
-
-            String message = getFromUrl(AllUrls.ASK_JOIN_GROUP + encodedName + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
-
-            Log.v("Json join group : ", " " + message);
-
-            return message;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return "0001";
-        }
-
-    }
 
     public static Boolean acceptMember(String groupName, String memberUsername) {
         String encodedName = null;
@@ -706,36 +702,6 @@ public class GroupManager {
             return leaveGroup(params[0].toString());
 
         }
-    }
-
-    public static class TaskGroupInformation extends AsyncTask {
-
-        Fragment fragment;
-
-        public TaskGroupInformation(Fragment fragment) {
-            this.fragment = fragment;
-        }
-
-        @Override
-        protected Group doInBackground(Object[] params) {
-
-            return getGroupInformation((Group) params[0]);
-
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
-            ((ManageGroupFragment) fragment).getGroupInformation((Group) o);
-
-        }
-
-    }
-
-
-    // new methode
-    public static boolean addMeToThisGroup(String groupName) {
-        return false;
     }
 
 
