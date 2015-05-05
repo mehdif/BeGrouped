@@ -14,6 +14,7 @@
     <color name="holo_red_light">#ffff4444</color>
     <color name="background_holo_light">#fff3f3f3</color>
 
+    <color name="black">#000000</color>
 
 
     <item name="blue" type="color">#FF33B5E5</item>
