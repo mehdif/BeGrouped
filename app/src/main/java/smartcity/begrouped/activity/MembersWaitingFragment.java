@@ -165,7 +165,7 @@ public class MembersWaitingFragment extends Fragment implements AsyncResponse {
             if (action.equals("acceptMember")) {
                 HashMap map2 = new HashMap<String, String>();
                 map2.put("username", actualMap.get("username"));
-                map2.put("telephone", actualMap.get("username"));
+                map2.put("telephone", actualMap.get("telephone"));
                 map2.put("img", String.valueOf(R.drawable.user));//Ici l icone qui va s'afficher
                 map2.put("flname", actualMap.get("flname"));//Ici l icone qui va s'afficher
                 MembersOnGroupFragment.listItem.add(map2);

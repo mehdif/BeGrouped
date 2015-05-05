@@ -14,13 +14,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.GroupManager;
 import smartcity.begrouped.model.Group;
+import smartcity.begrouped.utils.AllUrls;
+import smartcity.begrouped.utils.AsyncResponse;
+import smartcity.begrouped.utils.Downloader;
 import smartcity.begrouped.utils.MessageUser;
+import smartcity.begrouped.utils.MyApplication;
+
+import static smartcity.begrouped.utils.GlobalMethodes.isNumeric;
 
 
-public class CreateGroupFragment extends Fragment {
+public class CreateGroupFragment extends Fragment implements AsyncResponse {
 
     private Button create;
     private Button cancel;
@@ -28,6 +37,8 @@ public class CreateGroupFragment extends Fragment {
     private EditText regionName;
     private ProgressDialog progressDialog;
     private TextView textViewNewGroup;
+
+    String action = "";
 
 
     public CreateGroupFragment() {
@@ -46,8 +57,8 @@ public class CreateGroupFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_create_group, container, false);
 
-        groupName=(EditText) rootView.findViewById(R.id.editTextGroupName);
-        regionName=(EditText) rootView.findViewById(R.id.editTextRegionName);
+        groupName = (EditText) rootView.findViewById(R.id.editTextGroupName);
+        regionName = (EditText) rootView.findViewById(R.id.editTextRegionName);
 
         create = (Button) rootView.findViewById(R.id.buttonAddGroup);
         cancel = (Button) rootView.findViewById(R.id.buttonCancel);
@@ -57,64 +68,52 @@ public class CreateGroupFragment extends Fragment {
 
         create.setOnClickListener(new View.OnClickListener() {
 
-        @Override
-        public void onClick(View view) {
-            if (groupName.getText().toString().isEmpty() || regionName.getText().toString().isEmpty()) {
-                Toast.makeText(getActivity(), MessageUser.get("1210"), Toast.LENGTH_SHORT).show();
+            @Override
+            public void onClick(View view) {
+                if (groupName.getText().toString().isEmpty() || regionName.getText().toString().isEmpty()) {
+                    Toast.makeText(getActivity(), MessageUser.get("1210"), Toast.LENGTH_SHORT).show();
+                } else {
+                    action = "create";
+                    //showProgress();
+                    try {
+                        String encodedName = URLEncoder.encode(groupName.getText().toString(), "utf-8").replace("+", "%20");
+                        String encodedRegion = URLEncoder.encode(regionName.getText().toString(), "utf-8").replace("+", "%20");
+                        Downloader downloader = new Downloader(getActivity(), CreateGroupFragment.this);
+                        downloader.execute(AllUrls.CREATE_GROUP + encodedName + "/" + encodedRegion + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
+                    } catch (UnsupportedEncodingException e) {
+                        Toast.makeText(getActivity(), MessageUser.get("0000"), Toast.LENGTH_SHORT).show();
+                    }
+                    getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                }
             }
-            else {
-                showProgress();
-                GroupManager.callTaskCreateNewGroup(groupName.getText().toString(), regionName.getText().toString(), CreateGroupFragment.this);
-                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
-            }
-        }
         });
 
         cancel.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-               Intent intent = new Intent(getActivity(), MainActivity.class);
+                Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
-            });
+        });
 
 
         return rootView;
     }
 
-    public void createGroup(Group group){
 
-        /*if(groupName.getText().toString().matches("")){
-            Toast.makeText(getActivity().getBaseContext(), "Please enter a group name !", Toast.LENGTH_SHORT).show();
+    @Override
+    public void executeAfterDownload(String output) {
+        if (isNumeric(output.charAt(0))) {
+            Toast.makeText(getActivity(), MessageUser.get(output), Toast.LENGTH_SHORT).show();
+        } else {
+            Group group = GroupManager.parseGroup(output);
+            Toast.makeText(getActivity(), MessageUser.get("2202"), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), MainActivity.class);//HAVE TO REDIRECT TO ManageGroupFragment
+            startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }
-        else if(regionName.getText().toString().matches("")){
-            Toast.makeText(getActivity().getBaseContext(), "Please enter a region name !", Toast.LENGTH_SHORT).show();
-        }
-        else {*/
-        if(group == null){
-            Toast.makeText(getActivity().getBaseContext(), MessageUser.get("1208"), Toast.LENGTH_SHORT).show();
-        } else
-        {
-            Toast.makeText(getActivity().getBaseContext(), MessageUser.get("2202"), Toast.LENGTH_SHORT).show();
-        }
-        //}
-
-        hideProgress();
-        Intent intent = new Intent(getActivity(), MainActivity.class);//HAVE TO REDIRECT TO ManageGroupFragment
-        startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
-    }
-
-    public void showProgress(){
-        progressDialog = ProgressDialog.show(this.getActivity(), null,
-                "Loading...", true);
-    }
-
-    public void hideProgress(){
-        if(progressDialog.isShowing()){
-            progressDialog.dismiss();
-        }
+        action = "";
     }
 }

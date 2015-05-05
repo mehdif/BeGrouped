@@ -190,6 +190,7 @@ public class MembersOnGroupFragment extends Fragment implements AsyncResponse {
             Toast.makeText(getActivity(), MessageUser.get(output), Toast.LENGTH_SHORT).show();
         } else {
             LinkedList<User> members = GroupManager.parseGroupMembers(output);
+            MyApplication.currentGroup.setMembers(members);
             listItem=new ArrayList<>();
             for(int i=0; i<members.size();i++)
             {
