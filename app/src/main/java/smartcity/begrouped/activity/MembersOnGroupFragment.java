@@ -118,16 +118,9 @@ public class MembersOnGroupFragment extends Fragment {
         super.onDetach();
     }
 
-    public   void reload()
+    public void reload()
     {
-        //listItem = new ArrayList<HashMap<String, String>>();
-
-       // showProgress();
-        //String groupname=MyApplication.currentGroup.getName();
-       // GroupManager.getGroupMembersFromName(groupname, this, Constants.MEMBERS_ON_GROUP_RELOAD);
-        //hideProgress();
         getGroupMembersOnCreate(MyApplication.currentGroup);
-
     }
 
     public void getGroupMembersOnCreate(Group group){

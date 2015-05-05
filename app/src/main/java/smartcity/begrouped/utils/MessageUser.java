@@ -35,6 +35,7 @@ public class MessageUser {
         EnglishMessages.put("1208","Group already exists, please change the groupname");
         EnglishMessages.put("1209","Please enter the group name");
         EnglishMessages.put("1210","All feilds must be completed");
+        EnglishMessages.put("1211","No demand from this user");
 
         EnglishMessages.put("2101","Your registration was successuful");
 
