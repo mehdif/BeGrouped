@@ -109,6 +109,25 @@ public class GroupManager {
         return group;
     }
 
+    public static LinkedList<User> parsePendingDemands(String json) {
+        LinkedList<User> waitingMembers = new LinkedList<>();
+        try {
+            JSONObject jsonObj = new JSONObject(json);
+            JSONArray members = jsonObj.getJSONArray(Constants.PENDING_DEMANDS);
+            for (int i = 0; i < members.length(); i++) {
+                JSONObject jsonObject = members.getJSONObject(i);
+                String firstname = (String) jsonObject.get(Constants.FIRST_NAME);
+                String lastname = (String) jsonObject.get(Constants.LAST_NAME);
+                String username = (String) jsonObject.get(Constants.USERNAME);
+                String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
+                waitingMembers.add(new User(firstname, lastname, username, null, phoneNumber));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return waitingMembers;
+    }
+
     /**
      * Method that request the server and updates the locations of the group members
      *
@@ -121,7 +140,7 @@ public class GroupManager {
             LinkedList<User> membersList = group.getMembers();
             String encodedName = URLEncoder.encode(group.getName(), "utf-8").replace("+", "%20");
 
-            String jsonFileUrl = getFromUrl(AllUrls.GET_GROUP_POSITION + encodedName +"/"+ MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
+            String jsonFileUrl = getFromUrl(AllUrls.GET_GROUP_POSITION + encodedName + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
             Log.v("Jsonfile : ", " " + jsonFileUrl);
 
             //Json file parser
