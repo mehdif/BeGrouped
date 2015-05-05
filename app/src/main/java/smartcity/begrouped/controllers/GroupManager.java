@@ -451,5 +451,21 @@ public class GroupManager {
         }
     }
 
+    public static User getUserByUsernameFromListAndRemove(String username, LinkedList<User> listUser){
+        if (username==null) return null;
+        if (listUser==null) return null;
+        User usr;
+        int i=0;
+        while (i<listUser.size()){
+            if (listUser.get(i).getUsername().equals(username)){
+                usr=listUser.get(i);
+                listUser.remove(i);
+                return usr;
+            }
+            i++;
+        }
+        return null;
+    }
+
 
 }
