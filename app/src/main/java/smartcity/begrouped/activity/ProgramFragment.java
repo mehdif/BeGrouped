@@ -184,7 +184,7 @@ public class ProgramFragment extends Fragment {
         TextView phone = (TextView)alertDialogView.findViewById(R.id.phone);
         TextView temps = (TextView)alertDialogView.findViewById(R.id.timeVisit);
         name.setText(MyApplication.listOfCurrentPOIS.get(position).getName());
-        type .setText(MyApplication.listOfCurrentPOIS.get(position).getType());
+        type .setText(MyApplication.listOfCurrentPOIS.get(position).getType().replace("_", " "));
         detailType .setText(MyApplication.listOfCurrentPOIS.get(position).getTypeDetail());
         address .setText(MyApplication.listOfCurrentPOIS.get(position).getAddres());
         phone .setText(MyApplication.listOfCurrentPOIS.get(position).getPhone());
