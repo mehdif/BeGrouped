@@ -44,6 +44,21 @@ public class UserManager {
         }
     }
 
+    public static User parseUser(JSONObject jsonUser) {
+        User user=null;
+        try {
+            String firstname = (String) jsonUser.get(Constants.FIRST_NAME);
+            String lastname = (String) jsonUser.get(Constants.LAST_NAME);
+            String username = (String) jsonUser.get(Constants.USERNAME);
+            String phoneNumber = (String) jsonUser.get(Constants.PHONE_NUMBER);
+            user=new User(firstname,lastname,username,null,phoneNumber);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     public static void updateMyLocationToServer(LatLng location) {
         TaskUpdateMyLocation task = new TaskUpdateMyLocation(location);
         task.execute();
@@ -157,58 +172,6 @@ public class UserManager {
             MapsActivity.aptEnCreation = false;
             progressDialog.dismiss();
 
-        }
-    }
-
-    public static User getUserFromName(String username) {
-
-        String jsonFileUrl = getFromUrl(AllUrls.GET_USER_INFO + username + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
-
-        Log.v("getuser: ", AllUrls.GET_USER_INFO + username + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
-        Log.v("getuser : ", " " + jsonFileUrl);
-
-        //Json file parser
-        try {
-
-            JSONObject jsonObject = new JSONObject(jsonFileUrl);
-            String firstname = (String) jsonObject.get(Constants.FIRST_NAME);
-            String lastname = (String) jsonObject.get(Constants.LAST_NAME);
-            String userName = (String) jsonObject.get(Constants.USERNAME);
-            String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
-
-            User user = new User(firstname, lastname, userName, "", phoneNumber);
-            Log.v("getuser: ", user.toString());
-            return user;
-        } catch (Exception e) {
-            Log.e("Error : ", e.getMessage());
-            return null;
-
-        }
-    }
-
-    public static Object getUserFromUserName(String username) {
-        Log.v("getusertask:", username);
-
-        try {
-            Log.v("getusertask1:", username);
-            return new TaskGetUserFromUsername().execute(username).get();
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static class TaskGetUserFromUsername extends AsyncTask {
-
-        @Override
-        protected Object doInBackground(Object[] params) {
-            getUserFromName(params[0].toString());
-            Log.v("getuser", "inbackground");
-            Log.v("getuser", params[0].toString());
-            return null;
         }
     }
 }
