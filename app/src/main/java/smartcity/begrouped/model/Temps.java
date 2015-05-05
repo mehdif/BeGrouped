@@ -66,4 +66,11 @@ public class Temps implements  Comparable{
     public String toString() {
         return hh+":"+mm;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Temps other=(Temps)o;
+        if (other==null) return false;
+        return ((hh==other.getHh()) && (mm==other.getMm()));
+    }
 }

@@ -1,6 +1,7 @@
 package smartcity.begrouped.controllers;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -14,6 +15,8 @@ import java.net.URLEncoder;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 
+import smartcity.begrouped.activity.AddDestinationFragment;
+import smartcity.begrouped.activity.GroupHomeFragment;
 import smartcity.begrouped.activity.MapsActivity;
 import smartcity.begrouped.model.Date;
 import smartcity.begrouped.model.Location;
@@ -75,24 +78,19 @@ public class POIManager {
         return null;
     }
 
-    public static LinkedList<POI> searchPOIByNameByTask(String searchName){
-        TaskSearchPOIByName task=new TaskSearchPOIByName(searchName);
-        try {
-                return (LinkedList<POI>) task.execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public static void searchPOIByNameByTask(String searchName,AddDestinationFragment fr){
+        TaskSearchPOIByName task=new TaskSearchPOIByName(searchName,fr);
+        task.execute();
     }
     private static class TaskSearchPOIByName extends AsyncTask {
 
         String searchName;
+        AddDestinationFragment fr;
+        private ProgressDialog progressDialog;
 
-
-        public TaskSearchPOIByName(String searchName){
+        public TaskSearchPOIByName(String searchName,AddDestinationFragment fr){
             this.searchName= searchName;
+            this.fr=fr;
         }
         @Override
         protected LinkedList<POI> doInBackground(Object[] params)
@@ -100,6 +98,18 @@ public class POIManager {
             return searchPOIByName(searchName);
         }
 
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(fr.getActivity());
+            progressDialog.setMessage("Downloading");
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            progressDialog.dismiss();
+            fr.afficherResultat((LinkedList<POI>)o);
+        }
     }
 
 
@@ -222,23 +232,16 @@ public class POIManager {
         }
         return null;
     }
-    public static LinkedList<POI> getDayProgramOfGroupByTask(Date date,String groupName,Activity ac){
+    public static void getDayProgramOfGroupByTask(Date date,String groupName,Activity ac){
         TaskGetDayProgramOfGroup  task=new TaskGetDayProgramOfGroup(date,groupName,ac);
-
-        try {
-            return (LinkedList<POI>) task.execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
+            task.execute();
     }
     public  static class TaskGetDayProgramOfGroup extends AsyncTask {
 
         String groupName;
         Date date;
         Activity ac;
+        private ProgressDialog progressDialog;
 
         public TaskGetDayProgramOfGroup (Date date,String groupName,Activity ac){
             this.groupName= groupName;
@@ -254,9 +257,21 @@ public class POIManager {
 
         @Override
         protected void onPostExecute(Object o) {
+            progressDialog.dismiss();
             if (ac instanceof MapsActivity){
                 ((MapsActivity) ac).afficherLeProgramme((LinkedList<POI>)o);
             }
+            else if (ac instanceof GroupHomeFragment){
+
+                ((GroupHomeFragment) ac).loadSchedule((LinkedList<POI>)o);
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(ac);
+            progressDialog.setMessage("Downloading");
+            progressDialog.show();
         }
     }
 
