@@ -68,6 +68,7 @@ public class ShowLocationActivity extends Activity implements LocationListener {
 
     public void afficherMap(View v){
         startActivity(new Intent(getApplicationContext(), MapsActivity.class));
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
         finish();
     }
 

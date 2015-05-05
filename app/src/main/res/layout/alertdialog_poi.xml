@@ -23,8 +23,9 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="name"
-            android:textColor="#000000"/>
+            android:text="Name"
+            android:textColor="#000000"
+            android:textStyle="bold" />
         <TextView
             android:id="@+id/name"
             android:layout_width="0dp"
@@ -42,8 +43,9 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="type"
-            android:textColor="#000000"/>
+            android:text="Type"
+            android:textColor="#000000"
+            android:textStyle="bold" />
         <TextView
             android:id="@+id/type"
             android:layout_width="0dp"
@@ -62,8 +64,9 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="type detail"
-            android:textColor="#000000"/>
+            android:text="Type detail"
+            android:textColor="#000000"
+            android:textStyle="bold" />
         <TextView
             android:id="@+id/typedetail"
             android:layout_width="0dp"
@@ -82,8 +85,9 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="phone"
-            android:textColor="#000000"/>
+            android:text="Phone"
+            android:textColor="#000000"
+            android:textStyle="bold" />
         <TextView
             android:id="@+id/phone"
             android:layout_width="0dp"
@@ -101,8 +105,9 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="address"
-                android:textColor="#000000"/>
+                android:text="Address"
+                android:textColor="#000000"
+                android:textStyle="bold" />
             <TextView
                 android:id="@+id/address"
                 android:layout_width="0dp"

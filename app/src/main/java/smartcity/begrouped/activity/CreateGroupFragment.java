@@ -4,11 +4,13 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -25,6 +27,7 @@ public class CreateGroupFragment extends Fragment {
     private EditText groupName;
     private EditText regionName;
     private ProgressDialog progressDialog;
+    private TextView textViewNewGroup;
 
 
     public CreateGroupFragment() {
@@ -48,6 +51,9 @@ public class CreateGroupFragment extends Fragment {
 
         create = (Button) rootView.findViewById(R.id.buttonAddGroup);
         cancel = (Button) rootView.findViewById(R.id.buttonCancel);
+
+        textViewNewGroup = (TextView) rootView.findViewById(R.id.textViewNewGroup);
+        textViewNewGroup.setText(Html.fromHtml("<font color=#c62828>New</font> <font color=#000000>Group</font>"));
 
         create.setOnClickListener(new View.OnClickListener() {
 
@@ -98,6 +104,7 @@ public class CreateGroupFragment extends Fragment {
         hideProgress();
         Intent intent = new Intent(getActivity(), MainActivity.class);//HAVE TO REDIRECT TO ManageGroupFragment
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 
     public void showProgress(){

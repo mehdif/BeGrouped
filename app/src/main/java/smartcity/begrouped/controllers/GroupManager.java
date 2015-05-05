@@ -121,7 +121,7 @@ public class GroupManager {
             LinkedList<User> membersList = group.getMembers();
             String encodedName = URLEncoder.encode(group.getName(), "utf-8").replace("+", "%20");
 
-            String jsonFileUrl = getFromUrl("http://smartpld-001-site1.smarterasp.net/index.php/position_controller/getGroupPosition/" + encodedName + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
+            String jsonFileUrl = getFromUrl("http://smartpld-001-site1.smarterasp.net/index.php/position_controller/getGroupPosition/" + encodedName +"/"+ MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
             Log.v("Jsonfile : ", " " + jsonFileUrl);
 
             //Json file parser

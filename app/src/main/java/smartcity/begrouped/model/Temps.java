@@ -44,7 +44,12 @@ public class Temps implements  Comparable{
         return new Temps(Integer.parseInt(hh),Integer.parseInt(min));
     }
     public String afficher(){
-        return hh+":"+mm;
+        String chaine="";
+        if (hh>9) chaine=chaine+hh+":";
+        else chaine=chaine+"0"+hh+":";
+        if (mm>9) chaine=chaine+mm;
+        else chaine=chaine+"0"+mm;
+        return chaine;
     }
 
     @Override

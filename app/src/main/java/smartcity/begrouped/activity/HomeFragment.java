@@ -9,11 +9,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +40,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private static final String TAG_REGION = "Lyon";
     private static final String TAG_SUPERVISEUR = "Hassan";
     private ProgressDialog progressDialog;
+    private TextView textViewBeGrouped;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -58,6 +61,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         join = (Button) rootView.findViewById(R.id.join);
         create = (Button) rootView.findViewById(R.id.nouveau);
         manage = (Button) rootView.findViewById(R.id.manage);
+
+        textViewBeGrouped = (TextView) rootView.findViewById(R.id.textViewBeGrouped);
+        textViewBeGrouped.setText(Html.fromHtml("<font color=#c62828>Be</font><font color=#000000>Grouped</font>"));
 
         join.setOnClickListener(new View.OnClickListener() {
 
