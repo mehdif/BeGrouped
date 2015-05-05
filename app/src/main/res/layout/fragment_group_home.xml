@@ -61,7 +61,7 @@
                 android:text="Members"
                 android:id="@+id/textViewMembers"
                 android:layout_weight="30"
-                android:textColor="@color/color2"
+                android:textColor="#ff000000"
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:textStyle="bold"/>
@@ -96,7 +96,7 @@
                 android:textStyle="bold"
                 android:layout_weight="30"
                 android:gravity="center"
-                android:textColor="@color/color2"
+                android:textColor="#ff000000"
                 android:layout_gravity="center" />
         </LinearLayout>
 
@@ -128,7 +128,7 @@
 
             <ImageButton
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:id="@+id/imageButtonChat"
                 android:layout_weight="30"
                 android:background="@drawable/chat2"
@@ -143,7 +143,7 @@
                 android:textStyle="bold"
                 android:layout_weight="30"
                 android:gravity="center"
-                android:textColor="@color/color2"
+                android:textColor="#ff000000"
                 android:layout_gravity="center" />
         </LinearLayout>
 
@@ -161,7 +161,7 @@
 
             <ImageButton
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:id="@+id/imageButtonSched"
                 android:layout_weight="30"
                 android:background="@drawable/agenda2"
@@ -176,7 +176,7 @@
                 android:layout_weight="30"
                 android:layout_gravity="center"
                 android:textStyle="bold"
-                android:textColor="@color/color2"
+                android:textColor="#ff000000"
                 android:gravity="center" />
         </LinearLayout>
 

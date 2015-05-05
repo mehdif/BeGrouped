@@ -11,11 +11,18 @@ public class MessageUser {
     public static void init(){
         EnglishMessages.put("0000","An unkown error has been encountered");
         EnglishMessages.put("0001","Network problem ! please ensure that you're connected to internet");
+        EnglishMessages.put("0002","You're not connected to internet !");
+
 
         EnglishMessages.put("1101","Please sign in"); //disconnected
         EnglishMessages.put("1102","There is no user using this username");
         EnglishMessages.put("1103","Invalid username or password");
         EnglishMessages.put("1104","Account already exists, please change the username");
+        EnglishMessages.put("1105","Please enter your username and your password");
+        EnglishMessages.put("1106","All fields should be completed");
+        EnglishMessages.put("1107","Please confirm your password correctly");
+        EnglishMessages.put("1108","Please accept the terms and conditions of use");
+
 
 
         EnglishMessages.put("1201","There is no group");
@@ -28,6 +35,8 @@ public class MessageUser {
         EnglishMessages.put("1208","Group already exists, please change the groupname");
         EnglishMessages.put("1209","Please enter the group name");
         EnglishMessages.put("1210","All feilds must be completed");
+
+        EnglishMessages.put("2101","Your registration was successuful");
 
         EnglishMessages.put("2201","Your demand has been sent");
         EnglishMessages.put("2202","The group has been successfully created");

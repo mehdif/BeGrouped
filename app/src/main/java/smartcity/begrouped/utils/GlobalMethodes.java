@@ -23,22 +23,13 @@ import java.security.NoSuchAlgorithmException;
  * Created by Anes on 01/05/2015.
  */
 public class GlobalMethodes {
-    /*
-    public boolean isOnline(Context context){
-        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity != null)
-        {
-            NetworkInfo[] info = connectivity.getAllNetworkInfo();
-            if (info != null)
-                for (int i = 0; i < info.length; i++)
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED)
-                    {
-                        return true;
-                    }
-        }
-        return false;
+
+    public static boolean isNumeric(char n) {
+        return (n=='0' || n=='1'|| n=='2'|| n=='3'|| n=='4'|| n=='5'|| n=='6'|| n=='7'|| n=='8'|| n=='9');
+
     }
-    */
+
+
     public static String getFromUrl(String url) {
         String chaine="";
         InputStream is = null;

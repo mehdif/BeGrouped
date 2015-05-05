@@ -8,7 +8,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.sinch.android.rtc.ClientRegistration;
 import com.sinch.android.rtc.Sinch;
 import com.sinch.android.rtc.SinchClient;
@@ -34,9 +37,12 @@ public class MessageService extends Service implements SinchClientListener {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.v("service","on start command");
         currentUserId = ParseUser.getCurrentUser().getObjectId();
-
         if (currentUserId != null && !isSinchClientStarted()) {
             Log.v("service","currentuserid is not null and client is not started");
+            Log.v("service",currentUserId);
+            ParseInstallation parseInstallation =ParseInstallation.getCurrentInstallation();
+            parseInstallation.put("userName",currentUserId);
+            parseInstallation.saveInBackground();
             startSinchClient(currentUserId);
         }
         return super.onStartCommand(intent, flags, startId);
@@ -51,7 +57,11 @@ public class MessageService extends Service implements SinchClientListener {
         sinchClient.setSupportMessaging(true);
         sinchClient.setSupportActiveConnectionInBackground(true);
 
+        sinchClient.setSupportPushNotifications(true);
+
+        String project_id="426691860129";
         sinchClient.checkManifest();
+        sinchClient.registerPushNotificationData(project_id.getBytes());
         sinchClient.start();
         Log.v("service","Sinchclient has started");
     }

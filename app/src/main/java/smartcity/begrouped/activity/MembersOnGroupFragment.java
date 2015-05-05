@@ -34,7 +34,7 @@ public class MembersOnGroupFragment extends Fragment {
 
     ListView membersView;
     public static ArrayList<HashMap<String, String>> listItem;//array of items
-    public static SimpleAdapter mSchedule;
+    public static SimpleAdapter mSchedule=null;
     private ProgressDialog progressDialog;
 
 
@@ -131,38 +131,48 @@ public class MembersOnGroupFragment extends Fragment {
     public void getGroupMembersOnCreate(Group group){
 
         final LinkedList<User> members=group.getMembers();
+        listItem=new ArrayList<>();
         Log.v("ongroup",String.valueOf(members.size()));
         for(int i=0; i<members.size();i++)
         {
             HashMap map=new HashMap<String,String>();
             map.put("username",members.get(i).getUsername());
             map.put("telephone",members.get(i).getPhoneNumber());
-            //map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+            //map.put("img", String.valueOf(R.drawable.user));//Ici l icone qui va s'afficher
             map.put("img", String.valueOf(R.drawable.user));
             map.put("flname",members.get(i).getLastname()+" "+ members.get(i).getFirstname() );//Ici l icone qui va s'afficher
             listItem.add(map);
         }
+        if (mSchedule==null){
+            mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+                    new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
+             membersView.setAdapter(mSchedule);
+        }
 
-        SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
-                new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
-        membersView.setAdapter(mSchedule);
-
+        mSchedule.notifyDataSetChanged();
         hideProgress();
     }
 
     public void getGroupMembersReload(Group group){
         final LinkedList<User> members=group.getMembers();
+        listItem=new ArrayList<>();
         Log.v("ongroup",String.valueOf(members.size()));
         for(int i=0; i<members.size();i++)
         {
             HashMap map=new HashMap<String,String>();
             map.put("username",members.get(i).getUsername());
             map.put("telephone",members.get(i).getPhoneNumber());
-            map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+            map.put("img", String.valueOf(R.drawable.user));//Ici l icone qui va s'afficher
             map.put("flname",members.get(i).getLastname()+" "+ members.get(i).getFirstname() );//Ici l icone qui va s'afficher
             listItem.add(map);
         }
 
+        if (mSchedule==null){
+            mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+                    new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
+            membersView.setAdapter(mSchedule);
+        }
+        mSchedule.notifyDataSetChanged();
         hideProgress();
     }
 
