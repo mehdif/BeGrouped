@@ -217,8 +217,8 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
         double lat = location.getLatitude();
         double lng = location.getLongitude();
 
-        Toast.makeText(this, "MAJ " + i+ "lat: "+lat+ " long: "+lng,
-                Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "MAJ " + i+ "lat: "+lat+ " long: "+lng,
+        //        Toast.LENGTH_SHORT).show();
         i++;
         UserManager.updateMyLocationToServer(new LatLng(lat,lng));
         if (MyApplication.myPosition==null){
@@ -239,14 +239,14 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
 
     @Override
     public void onProviderEnabled(String provider) {
-        Toast.makeText(this, "Enabled new provider " + provider,
-                Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Enabled new provider " + provider,
+        //        Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-        Toast.makeText(this, "Disabled provider " + provider,
-                Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Disabled provider " + provider,
+        //        Toast.LENGTH_SHORT).show();
     }
 }
