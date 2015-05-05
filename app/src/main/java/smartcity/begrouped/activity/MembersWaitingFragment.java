@@ -146,6 +146,7 @@ public class MembersWaitingFragment extends Fragment implements AsyncResponse {
             Toast.makeText(getActivity(), MessageUser.get(output), Toast.LENGTH_SHORT).show();
         } else {
             listItem = new ArrayList<>();
+            LinkedList<User> ancientMembersWaiting = membersWaiting;
             membersWaiting = GroupManager.parsePendingDemands(output);
             listItem = new ArrayList<>();
 
@@ -160,12 +161,14 @@ public class MembersWaitingFragment extends Fragment implements AsyncResponse {
             }
             mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
                     new String[]{"img", "username", "telephone", "flname"}, new int[]{R.id.img, R.id.titre, R.id.description, R.id.superviseur});
+
+
             membersWaitingView.setAdapter(mSchedule);
             mSchedule.notifyDataSetChanged();
 
 
             if (action.equals("acceptMember")) {
-                User user = GroupManager.getUserByUsernameFromListAndRemove(actualMap.get("username"),membersWaiting);
+                User user = GroupManager.getUserByUsernameFromListAndRemove(actualMap.get("username"),ancientMembersWaiting);
                 MyApplication.currentGroup.getMembers().add(user);
                 HashMap map2 = new HashMap<String, String>();
                 map2.put("username", actualMap.get("username"));
