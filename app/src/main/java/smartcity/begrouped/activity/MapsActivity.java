@@ -242,6 +242,17 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
         MyApplication.requestingMemberPositions=false;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        pi = PendingIntent.getBroadcast(this, 0, new Intent(
+                "com.authorwjf.MajPositions"), 0);
+        am = (AlarmManager) (this.getSystemService(Context.ALARM_SERVICE));
+        am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + TWO_SECONDS, pi);
+        MyApplication.requestingMemberPositions=true;
+    }
+
     public void handleGetDirectionsResult(ArrayList directionPoints)
     {
         Polyline newPolyline;
