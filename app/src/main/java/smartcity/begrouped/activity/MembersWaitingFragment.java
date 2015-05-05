@@ -41,9 +41,10 @@ import static smartcity.begrouped.utils.GlobalMethodes.isNumeric;
 public class MembersWaitingFragment extends Fragment implements AsyncResponse {
     ListView membersWaitingView;
     ArrayList<HashMap<String, String>> listItem;//array of items
+    public static SimpleAdapter mSchedule=null;
 
     String username = "";
-    String action = "waitingList";
+    String action = "";
     HashMap<String, String> actualMap;
 
 
@@ -62,6 +63,9 @@ public class MembersWaitingFragment extends Fragment implements AsyncResponse {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_members_waiting, container, false);
         membersWaitingView = (ListView) rootView.findViewById(R.id.listView1);
+
+        listItem = new ArrayList<>();
+
         action = "members";
         launch();
         membersWaitingView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -112,7 +116,6 @@ public class MembersWaitingFragment extends Fragment implements AsyncResponse {
 
     public void launch() {
         try {
-            listItem = new ArrayList<>();
             String encodedName = URLEncoder.encode(MyApplication.currentGroup.getName(), "utf-8").replace("+", "%20");
             Downloader downloader = new Downloader(getActivity(), MembersWaitingFragment.this);
             switch (action) {
@@ -136,11 +139,15 @@ public class MembersWaitingFragment extends Fragment implements AsyncResponse {
 
     @Override
     public void executeAfterDownload(String output) {
+
         Log.v("hatem", output);
         if (isNumeric(output.charAt(0))) {
             Toast.makeText(getActivity(), MessageUser.get(output), Toast.LENGTH_SHORT).show();
         } else {
+            listItem = new ArrayList<>();
             LinkedList<User> membersWaiting = GroupManager.parsePendingDemands(output);
+            listItem = new ArrayList<>();
+
             for (int i = 0; i < membersWaiting.size(); i++) {
                 HashMap map = new HashMap<String, String>();
                 // map.put("img", String.valueOf(R.drawable.user));//Ici l icone qui va s'afficher
@@ -150,9 +157,11 @@ public class MembersWaitingFragment extends Fragment implements AsyncResponse {
                 map.put("flname", membersWaiting.get(i).getLastname() + " " + membersWaiting.get(i).getFirstname());//Ici l icone qui va s'afficher
                 listItem.add(map);
             }
-            SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+            mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
                     new String[]{"img", "username", "telephone", "flname"}, new int[]{R.id.img, R.id.titre, R.id.description, R.id.superviseur});
             membersWaitingView.setAdapter(mSchedule);
+            mSchedule.notifyDataSetChanged();
+
             if (action.equals("acceptMember")) {
                 HashMap map2 = new HashMap<String, String>();
                 map2.put("username", actualMap.get("username"));

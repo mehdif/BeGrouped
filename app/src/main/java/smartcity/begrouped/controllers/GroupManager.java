@@ -1,39 +1,20 @@
 package smartcity.begrouped.controllers;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
-import smartcity.begrouped.activity.AuthentificationActivity;
 import smartcity.begrouped.activity.CreateGroupFragment;
 import smartcity.begrouped.activity.HomeFragment;
-import smartcity.begrouped.activity.JoinGroupFragment;
-import smartcity.begrouped.activity.ManageGroupFragment;
 import smartcity.begrouped.activity.MapsActivity;
 import smartcity.begrouped.activity.MembersOnGroupFragment;
 import smartcity.begrouped.model.Group;
@@ -51,7 +32,7 @@ import static smartcity.begrouped.utils.GlobalMethodes.getFromUrl;
 public class GroupManager {
 
 
-    public static Group parseGroup(JSONObject jsonGroup) {
+    private static Group parseGroup(JSONObject jsonGroup) {
         Group group = null;
         try {
             String groupName = (String) jsonGroup.get(Constants.GROUP_NAME);
@@ -66,7 +47,7 @@ public class GroupManager {
         return group;
     }
 
-    public static LinkedList<User> parseGroupMembers(JSONArray jsonArrayMembers) {
+    private static LinkedList<User> parseGroupMembers(JSONArray jsonArrayMembers) {
 
         LinkedList<User> membersList = new LinkedList<>();
 
@@ -126,6 +107,29 @@ public class GroupManager {
             e.printStackTrace();
         }
         return waitingMembers;
+    }
+
+    public static LinkedList<User> parseGroupMembers(String json) {
+        LinkedList<User> membersList = new LinkedList<>();
+        JSONArray members;
+        try {
+            JSONObject jsonObj = new JSONObject(json);
+            // Getting JSON Array node
+            members = jsonObj.getJSONArray(Constants.MEMBERS);
+            // looping through All members
+            for (int i = 0; i < members.length(); i++) {
+                JSONObject jsonObject = members.getJSONObject(i);
+                String firstname = (String) jsonObject.get(Constants.FIRST_NAME);
+                String lastname = (String) jsonObject.get(Constants.LAST_NAME);
+                String username = (String) jsonObject.get(Constants.USERNAME);
+                String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
+
+                membersList.add(new User(firstname, lastname, username, null, phoneNumber));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return membersList;
     }
 
     /**
