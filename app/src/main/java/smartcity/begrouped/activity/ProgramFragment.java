@@ -107,7 +107,7 @@ public class ProgramFragment extends Fragment {
             map = new HashMap<String, String>();
             // recuperer les données du superviseur
             map.put(TAG_NAME,poi.getName());
-            map.put(TAG_TYPE,poi.getType());
+            map.put(TAG_TYPE,poi.getType().replace("_"," "));
             map.put(TAG_TEMPS,poi.getTempsOfVisite().afficher());
             //map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
             map.put("img", String.valueOf(R.drawable.monument_black));
@@ -184,7 +184,7 @@ public class ProgramFragment extends Fragment {
         TextView phone = (TextView)alertDialogView.findViewById(R.id.phone);
         TextView temps = (TextView)alertDialogView.findViewById(R.id.timeVisit);
         name.setText(MyApplication.listOfCurrentPOIS.get(position).getName());
-        type .setText(MyApplication.listOfCurrentPOIS.get(position).getType().replace("_", " "));
+        type .setText(MyApplication.listOfCurrentPOIS.get(position).getType().replace("_"," "));
         detailType .setText(MyApplication.listOfCurrentPOIS.get(position).getTypeDetail());
         address .setText(MyApplication.listOfCurrentPOIS.get(position).getAddres());
         phone .setText(MyApplication.listOfCurrentPOIS.get(position).getPhone());
