@@ -43,6 +43,10 @@ public class GroupHomeFragment extends ActionBarActivity implements FragmentDraw
     private ProgressDialog progressDialog;
     private Toolbar mToolbar;
     private FragmentDrawerGroup drawerFragment;
+    private TextView textViewMembers;
+    private TextView textViewChat;
+    private TextView textViewSchedule;
+    private TextView textViewMap;
 
     public GroupHomeFragment() {
 
@@ -68,75 +72,141 @@ public class GroupHomeFragment extends ActionBarActivity implements FragmentDraw
         members = (ImageButton) findViewById(R.id.imageButtonMembers);
         chat = (ImageButton) findViewById(R.id.imageButtonChat);
         schedule = (ImageButton) findViewById(R.id.imageButtonSched);
+        textViewChat = (TextView) findViewById(R.id.textViewChat);
+        textViewMap = (TextView) findViewById(R.id.textViewMap);
+        textViewMembers = (TextView) findViewById(R.id.textViewMembers);
+        textViewSchedule = (TextView) findViewById(R.id.textViewSchedule);
 
-        map.setOnClickListener(new View.OnClickListener() {
 
+        map.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                startActivity(intent);
-                getSupportActionBar().setTitle("Map");
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        textViewMap.setTextColor(getResources().getColor(R.color.colorPrimary));
+                        // PRESSED
+                        return true; // if you want to handle the touch event
+                    case MotionEvent.ACTION_UP:
+
+                        textViewMap.setTextColor(getResources().getColor(R.color.black));
+
+                        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                        startActivity(intent);
+                        getSupportActionBar().setTitle("Map");
+                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        return true; // if you want to handle the touch event
+                }
+
+                return false;
             }
         });
 
-        members.setOnClickListener(new View.OnClickListener() {
 
+        members.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                Log.v("supervisor:",MyApplication.currentGroup.getName());
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        textViewMembers.setTextColor(getResources().getColor(R.color.colorPrimary));
 
 
-                if ( MyApplication.currentGroup.getSupervisor().getUsername().equals(MyApplication.myIdentity.getUsername()))
-                {
-                    Intent i = new Intent(getApplicationContext(), MembersFragmentActivity.class);
-                    startActivity(i);
-                    getSupportActionBar().setTitle("Members");
+                        return true; // if you want to handle the touch event
+                    case MotionEvent.ACTION_UP:
 
+                        textViewMembers.setTextColor(getResources().getColor(R.color.black));
+
+                        Log.v("supervisor:",MyApplication.currentGroup.getName());
+
+
+                        if ( MyApplication.currentGroup.getSupervisor().getUsername().equals(MyApplication.myIdentity.getUsername()))
+                        {
+                            Intent i = new Intent(getApplicationContext(), MembersFragmentActivity.class);
+                            startActivity(i);
+                            getSupportActionBar().setTitle("Members");
+
+                        }
+                        else
+                        {
+                            Log.v("TAG","I'm not the supervisor of current group");
+                            Intent i = new Intent(getApplicationContext(), MmeberOnlyActivity.class);
+                            startActivity(i);
+                            getSupportActionBar().setTitle("Members");
+                        }
+
+                        return true; // if you want to handle the touch event
                 }
-                else
-                {
-                    Log.v("TAG","I'm not the supervisor of current group");
-                    Intent i = new Intent(getApplicationContext(), MmeberOnlyActivity.class);
-                    startActivity(i);
-                    getSupportActionBar().setTitle("Members");
-                }
 
+                return false;
             }
         });
 
-        chat.setOnClickListener(new View.OnClickListener() {
 
+        chat.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),ChatActivity.class);
-                startActivity(intent);
-                getSupportActionBar().setTitle("Chat");
+            public boolean onTouch(View v, MotionEvent event) {
 
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        textViewChat.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+                        // PRESSED
+                        return true; // if you want to handle the touch event
+                    case MotionEvent.ACTION_UP:
+
+                        textViewChat.setTextColor(getResources().getColor(R.color.black));
+
+                        Intent intent=new Intent(getApplicationContext(),ChatActivity.class);
+                        startActivity(intent);
+                        getSupportActionBar().setTitle("Chat");
+                        return true; // if you want to handle the touch event
+                }
+
+                return false;
             }
         });
-        schedule.setOnClickListener(new View.OnClickListener() {
 
+
+        schedule.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                if (MyApplication.myIdentity.getUsername().equals(MyApplication.currentGroup.getSupervisor().getUsername())) {
-                    showDatePicker();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        textViewSchedule.setTextColor(getResources().getColor(R.color.colorPrimary));
+                        // PRESSED
+                        return true; // if you want to handle the touch event
+                    case MotionEvent.ACTION_UP:
+
+                        textViewSchedule.setTextColor(getResources().getColor(R.color.black));
+                        // RELEASED
+                        if (MyApplication.myIdentity.getUsername().equals(MyApplication.currentGroup.getSupervisor().getUsername())) {
+                            showDatePicker();
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "You're not the supervisor of this group",Toast.LENGTH_LONG).show();
+                        }
+
+                        return true; // if you want to handle the touch event
                 }
-                else {
-                    Toast.makeText(getApplicationContext(), "You're not the supervisor of this group",Toast.LENGTH_LONG).show();
-                }
+
+                return false;
             }
         });
 
     }
 
 
+
     public void showDatePicker() {
         // Initializiation
-        LayoutInflater inflater = this.getLayoutInflater();
-        final AlertDialog.Builder dialogBuilder =new AlertDialog.Builder(this);
+        LayoutInflater inflater = (LayoutInflater) this.getLayoutInflater();
+        final AlertDialog.Builder dialogBuilder =
+                new AlertDialog.Builder(this);
         View customView = inflater.inflate(R.layout.date_picker, null);
         dialogBuilder.setView(customView);
         final Calendar now = Calendar.getInstance();
@@ -145,9 +215,9 @@ public class GroupHomeFragment extends ActionBarActivity implements FragmentDraw
         final TextView dateTextView =
                 (TextView) customView.findViewById(R.id.dialog_dateview);
         final SimpleDateFormat dateViewFormatter =
-                new SimpleDateFormat("EEEE, dd.MM.yyyy", Locale.ENGLISH);
+                new SimpleDateFormat("EEEE, dd.MM.yyyy", Locale.FRANCE);
         final SimpleDateFormat formatter =
-                new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH);
+                new SimpleDateFormat("dd.MM.yyyy", Locale.FRANCE);
         // Minimum date
         Calendar minDate = Calendar.getInstance();
         try {
@@ -163,7 +233,7 @@ public class GroupHomeFragment extends ActionBarActivity implements FragmentDraw
         int month = choosenDate.get(Calendar.MONTH);
         int day = choosenDate.get(Calendar.DAY_OF_MONTH);
         try {
-           // Date choosenDateFromUI = formatter.parse(datePickerShowDialogButton.getText().toString());
+            // Date choosenDateFromUI = formatter.parse(datePickerShowDialogButton.getText().toString());
 
             //choosenDate.setTime(choosenDateFromUI);
             year = choosenDate.get(Calendar.YEAR);
@@ -199,7 +269,7 @@ public class GroupHomeFragment extends ActionBarActivity implements FragmentDraw
                                 datePicker.getDayOfMonth()
                         );
 
-                        Toast.makeText(getApplicationContext(), dateViewFormatter.format(choosen.getTime()),Toast.LENGTH_LONG).show();
+
                         MyApplication.dateOfCurrentProgram=new smartcity.begrouped.model.Date(choosen.get(Calendar.DAY_OF_MONTH),choosen.get(Calendar.MONTH)+1,choosen.get(Calendar.YEAR));
                         dialog.dismiss();
                         Intent i = new Intent(getApplicationContext(), ScheduleFragmentActivity.class);
@@ -221,16 +291,16 @@ public class GroupHomeFragment extends ActionBarActivity implements FragmentDraw
                         Calendar choosenDate = Calendar.getInstance();
                         choosenDate.set(year, monthOfYear, dayOfMonth);
                         dateTextView.setText( dateViewFormatter.format(choosenDate.getTime()));
-                            dateTextView.setTextColor(Color.parseColor("#ff0000"));
-                            ((Button) dialog.getButton(AlertDialog.BUTTON_POSITIVE)).setEnabled(true);
+                        dateTextView.setTextColor(Color.parseColor("#ff0000"));
+                        ((Button) dialog.getButton(AlertDialog.BUTTON_POSITIVE)).setEnabled(true);
                     }
                 }
         );
         // Finish
-        if(dialog==null)
-            Log.i("Hakkan","error !!");
-        else dialog.show();
+        dialog.show();
     }
+
+
 
     @Override
     public void onDrawerItemSelected(View view, int position) {
