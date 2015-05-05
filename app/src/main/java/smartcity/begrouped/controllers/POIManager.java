@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 
@@ -35,7 +36,8 @@ public class POIManager {
     private static LinkedList<POI> searchPOIByName(String searchName){
         JSONArray poiList;
         LinkedList<POI> listOfPOI=new LinkedList<POI>();
-        String jsonFileUrl = GlobalMethodes.getFromUrl(AllUrls.SEARCH_POI_BY_NAME+searchName+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
+        String chaine=searchName.replace(" ","%20");
+        String jsonFileUrl = GlobalMethodes.getFromUrl(AllUrls.SEARCH_POI_BY_NAME+chaine+"/" + MyApplication.myIdentity.getUsername()+"/"+MyApplication.myIdentity.getPassword());
         Log.v("Jsonfile : ", " " +jsonFileUrl);
 
         //Json file parser
