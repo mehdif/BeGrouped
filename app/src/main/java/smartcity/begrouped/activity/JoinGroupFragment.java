@@ -104,6 +104,7 @@ public class JoinGroupFragment extends Fragment implements AsyncResponse {
         Toast.makeText(getActivity(), MessageUser.get(output),Toast.LENGTH_LONG).show();
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
         action="";
     }
 }

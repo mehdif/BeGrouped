@@ -242,6 +242,17 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
         MyApplication.requestingMemberPositions=false;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        pi = PendingIntent.getBroadcast(this, 0, new Intent(
+                "com.authorwjf.MajPositions"), 0);
+        am = (AlarmManager) (this.getSystemService(Context.ALARM_SERVICE));
+        am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + TWO_SECONDS, pi);
+        MyApplication.requestingMemberPositions=true;
+    }
+
     public void handleGetDirectionsResult(ArrayList directionPoints)
     {
         Polyline newPolyline;
@@ -500,6 +511,11 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                     Toast.makeText(getApplicationContext(), "There is no shown program",Toast.LENGTH_LONG).show();
                 }
                 break;
+            case 6:
+                Intent ii = new Intent(getApplicationContext(), GroupHomeFragment.class);
+                startActivity(ii);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                break;
             default:
                 break;
         }
@@ -522,9 +538,9 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
         final TextView dateTextView =
                 (TextView) customView.findViewById(R.id.dialog_dateview);
         final SimpleDateFormat dateViewFormatter =
-                new SimpleDateFormat("EEEE, dd.MM.yyyy", Locale.FRANCE);
+                new SimpleDateFormat("EEEE, dd.MM.yyyy", Locale.ENGLISH);
         final SimpleDateFormat formatter =
-                new SimpleDateFormat("dd.MM.yyyy", Locale.FRANCE);
+                new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH);
         // Minimum date
         Calendar minDate = Calendar.getInstance();
         try {
