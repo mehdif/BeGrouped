@@ -112,6 +112,7 @@ public class GroupHomeFragment extends ActionBarActivity implements FragmentDraw
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(),ChatActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 getSupportActionBar().setTitle("Chat");
 
             }
