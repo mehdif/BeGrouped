@@ -150,15 +150,15 @@ public class AddDestinationFragment extends Fragment {
 
 
 
-        adb.setNegativeButton("Add", new DialogInterface.OnClickListener() {
+        adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                showTimePicker();
+
 
             }
         });
-        adb.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+        adb.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-
+                showTimePicker();
             }
         });
         adb.show();
