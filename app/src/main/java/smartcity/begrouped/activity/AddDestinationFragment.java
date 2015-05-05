@@ -205,9 +205,14 @@ public class AddDestinationFragment extends Fragment {
                         Temps temps=new Temps(choosen.get(Calendar.HOUR_OF_DAY),choosen.get(Calendar.MINUTE));
                         //dialog.dismiss();
                         POI poi=listPOI.get(positionClicked);
-                        poi.setTempsOfVisite(temps);
-                        POIManager.addPoiToSortedList(MyApplication.listOfCurrentPOIS,poi);
-                        updateListViewOfDay();
+                        if (!isPoiInListAtTime(poi,MyApplication.listOfCurrentPOIS,temps)) {
+                            poi.setTempsOfVisite(temps);
+                            POIManager.addPoiToSortedList(MyApplication.listOfCurrentPOIS, poi);
+                            updateListViewOfDay();
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "This POI exists in the same time",Toast.LENGTH_LONG).show();
+                        }
 
                     }
                 }
@@ -237,6 +242,18 @@ public class AddDestinationFragment extends Fragment {
             listItem.add(map);
         }
         mSchedule.notifyDataSetChanged();
+    }
+
+    private boolean isPoiInListAtTime(POI poi, LinkedList<POI> liste, Temps temps){
+        if (liste==null) return true;
+        if (poi==null) return false;
+
+        int i=0;
+        while (i<liste.size()){
+            if ((poi.getPoiId()==liste.get(i).getPoiId()) &&(temps.equals(poi.getTempsOfVisite()))) return true;
+            i++;
+        }
+        return false;
     }
 
 }
