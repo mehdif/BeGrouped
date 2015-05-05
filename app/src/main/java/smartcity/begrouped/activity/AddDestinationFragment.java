@@ -142,7 +142,7 @@ public class AddDestinationFragment extends Fragment {
         TextView phone = (TextView)alertDialogView.findViewById(R.id.phone);
 
         name.setText(listPOI.get(position).getName());
-        type .setText(listPOI.get(position).getType());
+        type .setText(listPOI.get(position).getType().replace("_"," "));
         detailType .setText(listPOI.get(position).getTypeDetail());
         address .setText(listPOI.get(position).getAddres());
         phone .setText(listPOI.get(position).getPhone());
