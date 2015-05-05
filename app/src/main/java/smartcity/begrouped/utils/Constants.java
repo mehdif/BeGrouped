@@ -24,6 +24,11 @@ public class Constants {
     public final static String EXPIRATION_DATE = "expirationdate";
     public final static String DATE = "date";
 
+    public final static String GROUP_ALL_INFO="groupAllInfo";
+    public final static String GROUP_INFO="group";
+    public final static String SUPERVISER_INFO="supervisor";
+    public final static String MEMBERS_INFO="members";
+
     public final static String PENDING_DEMANDS = "DemandesEnAttentes";
 
 
