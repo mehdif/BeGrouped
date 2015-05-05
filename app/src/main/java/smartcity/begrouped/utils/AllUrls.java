@@ -26,6 +26,8 @@ public final class AllUrls {
     public static final String EXPULSER_GROUP_SUPERVISOR = base + "group_controller/sortirGroupFromSupervisor/"; //parametres : groupname, username (fait par le superviseur)
     public static final String CREATE_GROUP = base + "group_controller/createGroup/"; //parametres : groupname, regionname,[expirationDate(YYYY-MM-JJ)]
     public static final String DELETE_GROUP = base + "group_controller/deleteGroup/"; //parametres : groupname (fait par le superviseur)
+    public static final String GET_GROUP_ALL_INFORMATIONS = base + "group_controller/getGroupAllInfo/"; //parametres : groupname
+
     //------------------------------------------------------------------------------------------------
 
     //---- Gestion des positions ---------------------------------------------------------------------
