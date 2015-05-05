@@ -98,6 +98,7 @@ public class CreateGroupFragment extends Fragment {
         hideProgress();
         Intent intent = new Intent(getActivity(), MainActivity.class);//HAVE TO REDIRECT TO ManageGroupFragment
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 
     public void showProgress(){

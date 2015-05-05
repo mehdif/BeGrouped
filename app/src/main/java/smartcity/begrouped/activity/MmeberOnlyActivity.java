@@ -71,7 +71,6 @@ public class MmeberOnlyActivity extends ActionBarActivity implements FragmentDra
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container_body, fragment);
-            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
             getSupportActionBar().setTitle("Members");
