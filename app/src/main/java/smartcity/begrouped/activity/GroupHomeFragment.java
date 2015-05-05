@@ -145,9 +145,9 @@ public class GroupHomeFragment extends ActionBarActivity implements FragmentDraw
         final TextView dateTextView =
                 (TextView) customView.findViewById(R.id.dialog_dateview);
         final SimpleDateFormat dateViewFormatter =
-                new SimpleDateFormat("EEEE, dd.MM.yyyy", Locale.FRANCE);
+                new SimpleDateFormat("EEEE, dd.MM.yyyy", Locale.ENGLISH);
         final SimpleDateFormat formatter =
-                new SimpleDateFormat("dd.MM.yyyy", Locale.FRANCE);
+                new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH);
         // Minimum date
         Calendar minDate = Calendar.getInstance();
         try {
