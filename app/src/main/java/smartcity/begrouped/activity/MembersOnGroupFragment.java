@@ -67,7 +67,8 @@ public class MembersOnGroupFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final HashMap<String, String> map = (HashMap<String, String>) membersView.getItemAtPosition(position);
+                final HashMap<String, String> map =
+                        (HashMap<String, String>) membersView.getItemAtPosition(position);
 
                 if (MyApplication.myIdentity.getUsername().equals(MyApplication.currentGroup.getSupervisor().getUsername())) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -119,12 +120,13 @@ public class MembersOnGroupFragment extends Fragment {
 
     public   void reload()
     {
-        listItem = new ArrayList<HashMap<String, String>>();
+        //listItem = new ArrayList<HashMap<String, String>>();
 
-        showProgress();
-        String groupname=MyApplication.currentGroup.getName();
-        GroupManager.getGroupMembersFromName(groupname, this, Constants.MEMBERS_ON_GROUP_RELOAD);
-
+       // showProgress();
+        //String groupname=MyApplication.currentGroup.getName();
+       // GroupManager.getGroupMembersFromName(groupname, this, Constants.MEMBERS_ON_GROUP_RELOAD);
+        //hideProgress();
+        getGroupMembersOnCreate(MyApplication.currentGroup);
 
     }
 

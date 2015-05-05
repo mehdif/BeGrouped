@@ -366,7 +366,7 @@ public class ChatActivity extends ActionBarActivity implements FragmentDrawerGro
             try {
                 obj = new JSONObject();
                 obj.put("alert", message.getTextBody());
-                obj.put("title","Message from begrouped");
+                obj.put("title","Message from "+ MyApplication.currentGroup.getName());
 
                 //ParseQuery userquery= ParseUser.getQuery();
                // userquery.whereEqualTo("objectId",writableMessage.getRecipientIds());

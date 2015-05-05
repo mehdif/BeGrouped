@@ -4,12 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
@@ -33,6 +35,7 @@ public class JoinGroupFragment extends Fragment implements AsyncResponse {
     private String groupname;
 
     private String action="";
+    private TextView textViewJoinGroup;
 
 
     public JoinGroupFragment() {
@@ -50,9 +53,14 @@ public class JoinGroupFragment extends Fragment implements AsyncResponse {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_join_group, container, false);
 
+
+
         join = (Button) rootView.findViewById(R.id.buttonJoin);
         cancel = (Button) rootView.findViewById(R.id.buttonCancel);
         groupNameEditText = (EditText) rootView.findViewById(R.id.editTextGroupName);
+
+        textViewJoinGroup = (TextView) rootView.findViewById(R.id.textViewJoinGroup);
+        textViewJoinGroup.setText(Html.fromHtml("<font color=#c62828>Join</font> <font color=#000000>Group</font>"));
 
         join.setOnClickListener(new View.OnClickListener() {
 
@@ -96,6 +104,7 @@ public class JoinGroupFragment extends Fragment implements AsyncResponse {
         Toast.makeText(getActivity(), MessageUser.get(output),Toast.LENGTH_LONG).show();
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
         action="";
     }
 }
