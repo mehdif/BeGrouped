@@ -412,7 +412,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                         new AlertDialog.Builder(this)
                                 .setTitle("Delete Appointment")
                                 .setMessage("Are you sure you want to delete the appointment?")
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         // continue with delete
                                         aptMarker.remove();
@@ -426,7 +426,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
 
                                     }
                                 })
-                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         // do nothing
                                         aptEnCreation = false;

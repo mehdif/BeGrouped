@@ -28,9 +28,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Locale;
 
 import smartcity.begrouped.R;
+import smartcity.begrouped.controllers.POIManager;
+import smartcity.begrouped.model.POI;
 import smartcity.begrouped.utils.MyApplication;
 
 
@@ -272,10 +275,9 @@ public class GroupHomeFragment extends ActionBarActivity implements FragmentDraw
 
                         MyApplication.dateOfCurrentProgram=new smartcity.begrouped.model.Date(choosen.get(Calendar.DAY_OF_MONTH),choosen.get(Calendar.MONTH)+1,choosen.get(Calendar.YEAR));
                         dialog.dismiss();
-                        Intent i = new Intent(getApplicationContext(), ScheduleFragmentActivity.class);
-                        startActivity(i);
-                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        getSupportActionBar().setTitle("Schedule");
+
+                        POIManager.getDayProgramOfGroupByTask(MyApplication.dateOfCurrentProgram, MyApplication.currentGroup.getName(), GroupHomeFragment.this);
+
                     }
                 }
         );
@@ -300,7 +302,13 @@ public class GroupHomeFragment extends ActionBarActivity implements FragmentDraw
         dialog.show();
     }
 
-
+    public void loadSchedule(LinkedList<POI> listPOI) {
+        MyApplication.listOfCurrentPOIS=POIManager.sortPOIByTime(listPOI);
+        Intent i = new Intent(getApplicationContext(), ScheduleFragmentActivity.class);
+        startActivity(i);
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        getSupportActionBar().setTitle("Schedule");
+    }
 
     @Override
     public void onDrawerItemSelected(View view, int position) {

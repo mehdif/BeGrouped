@@ -86,25 +86,10 @@ public class AddDestinationFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
-                    Toast.makeText(getActivity(), "Looking for : "+search_query.getText(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity(), "Looking for : "+search_query.getText(), Toast.LENGTH_LONG).show();
 
                     // Anes : Call your search function here : performSearch();
-                    listPOI= POIManager.searchPOIByNameByTask(search_query.getText().toString());
-                    listItem.clear();
-                    if (listPOI==null) listPOI=new LinkedList<POI>();
-                    for(int i=0;i<listPOI.size();i++) {
-                        POI poi= listPOI.get(i);
-                        Log.v("group", poi.toString());
-                        map = new HashMap<String, String>();
-                        // recuperer les données du superviseur
-                        map.put(TAG_NAME,poi.getName());
-                        map.put(TAG_TYPE,poi.getType().replace("_"," "));
-                        map.put(TAG_TEMPS,"");
-                        //map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
-                        map.put("img", String.valueOf(R.drawable.monument_black));
-                        listItem.add(map);
-                    }
-                    mSchedule.notifyDataSetChanged();
+                    POIManager.searchPOIByNameByTask(search_query.getText().toString(),AddDestinationFragment.this);
                     return true;
                 }
                 return false;
@@ -220,9 +205,14 @@ public class AddDestinationFragment extends Fragment {
                         Temps temps=new Temps(choosen.get(Calendar.HOUR_OF_DAY),choosen.get(Calendar.MINUTE));
                         //dialog.dismiss();
                         POI poi=listPOI.get(positionClicked);
-                        poi.setTempsOfVisite(temps);
-                        POIManager.addPoiToSortedList(MyApplication.listOfCurrentPOIS,poi);
-                        updateListViewOfDay();
+                        if (!isPoiInListAtTime(poi,MyApplication.listOfCurrentPOIS,temps)) {
+                            poi.setTempsOfVisite(temps);
+                            POIManager.addPoiToSortedList(MyApplication.listOfCurrentPOIS, poi);
+                            updateListViewOfDay();
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "This POI exists in the same time",Toast.LENGTH_LONG).show();
+                        }
 
                     }
                 }
@@ -234,6 +224,36 @@ public class AddDestinationFragment extends Fragment {
         dialog.show();
 
 
+    }
+    public void afficherResultat(LinkedList<POI> searchPOI){
+        listPOI=searchPOI;
+        listItem.clear();
+        if (listPOI==null) listPOI=new LinkedList<POI>();
+        for(int i=0;i<listPOI.size();i++) {
+            POI poi= listPOI.get(i);
+            Log.v("group", poi.toString());
+            map = new HashMap<String, String>();
+            // recuperer les données du superviseur
+            map.put(TAG_NAME,poi.getName());
+            map.put(TAG_TYPE,poi.getType().replace("_"," "));
+            map.put(TAG_TEMPS,"");
+            //map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+            map.put("img", String.valueOf(R.drawable.monument_black));
+            listItem.add(map);
+        }
+        mSchedule.notifyDataSetChanged();
+    }
+
+    private boolean isPoiInListAtTime(POI poi, LinkedList<POI> liste, Temps temps){
+        if (liste==null) return true;
+        if (poi==null) return false;
+
+        int i=0;
+        while (i<liste.size()){
+            if ((poi.getPoiId()==liste.get(i).getPoiId()) &&(temps.equals(poi.getTempsOfVisite()))) return true;
+            i++;
+        }
+        return false;
     }
 
 }

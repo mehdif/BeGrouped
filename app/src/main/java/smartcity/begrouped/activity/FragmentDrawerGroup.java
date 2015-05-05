@@ -73,7 +73,7 @@ public class FragmentDrawerGroup extends Fragment {
         // Inflating view layout
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
-        userName = (TextView)layout.findViewById(R.id.user_name_label);
+        userName = (TextView) layout.findViewById(R.id.user_name_label);
         userName.setText(MyApplication.myIdentity.getUsername());
 
         adapter = new NavigationDrawerAdapter(getActivity(), getData());

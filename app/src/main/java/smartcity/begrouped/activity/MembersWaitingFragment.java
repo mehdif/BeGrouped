@@ -17,7 +17,9 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Member;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -27,12 +29,23 @@ import smartcity.begrouped.controllers.GroupManager;
 import smartcity.begrouped.controllers.UserManager;
 import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.User;
+import smartcity.begrouped.utils.AllUrls;
+import smartcity.begrouped.utils.AsyncResponse;
+import smartcity.begrouped.utils.Downloader;
+import smartcity.begrouped.utils.MessageUser;
 import smartcity.begrouped.utils.MyApplication;
 
+import static smartcity.begrouped.utils.GlobalMethodes.isNumeric;
 
-public class MembersWaitingFragment extends Fragment {
+
+public class MembersWaitingFragment extends Fragment implements AsyncResponse {
     ListView membersWaitingView;
     ArrayList<HashMap<String, String>> listItem;//array of items
+
+    String username = "";
+    String action = "waitingList";
+    HashMap<String, String> actualMap;
+
 
     public MembersWaitingFragment() {
         // Required empty public constructor
@@ -49,85 +62,41 @@ public class MembersWaitingFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_members_waiting, container, false);
         membersWaitingView = (ListView) rootView.findViewById(R.id.listView1);
-        listItem = new ArrayList<HashMap<String, String>>();
-        LinkedList<User> membersWaiting= GroupManager.callTaskGetPendingDemands(MyApplication.currentGroup.getName());
-
-        for(int i=0; i<membersWaiting.size();i++)
-        {
-            HashMap map=new HashMap<String,String>();
-            map.put("username",membersWaiting.get(i).getUsername());
-            map.put("telephone",membersWaiting.get(i).getPhoneNumber());
-            map.put("img", String.valueOf(R.drawable.user));//Ici l icone qui va s'afficher
-            map.put("flname",membersWaiting.get(i).getLastname()+" "+ membersWaiting.get(i).getFirstname() );//Ici l icone qui va s'afficher
-            listItem.add(map);
-        }
-
+        action = "members";
+        launch();
         membersWaitingView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
 
-                final HashMap<String, String> map = (HashMap<String, String>) membersWaitingView.getItemAtPosition(position);
+                actualMap = (HashMap<String, String>) membersWaitingView.getItemAtPosition(position);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Are you sure you want to accept " + map.get("username") + " ?")
+                builder.setMessage("Are you sure you want to accept " + actualMap.get("username") + " ?")
                         .setCancelable(false)
                         .setNegativeButton("Accept", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-
-                                boolean result = GroupManager.callTaskAcceptMember(MyApplication.currentGroup.getName(),map.get("username"));
-                                if (result) {
-                                    Toast.makeText(getActivity(), "Member added with success", Toast.LENGTH_LONG).show();
-                                    reload();
-                                    SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
-                                            new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
-                                    membersWaitingView.setAdapter(mSchedule);
-
-
-                                    // add to convirmed listView
-                                    HashMap map2=new HashMap<String,String>();
-                                    map2.put("username",map.get("username"));
-                                    map2.put("telephone",map.get("username"));
-                                    map2.put("img", String.valueOf(R.drawable.user));//Ici l icone qui va s'afficher
-                                    map2.put("flname",map.get("flname"));//Ici l icone qui va s'afficher
-                                    MembersOnGroupFragment.listItem.add(map2);
-                                    MembersOnGroupFragment.mSchedule.notifyDataSetChanged();
-                                } else
-                                    Toast.makeText(getActivity(), "There is a problem with adding this member", Toast.LENGTH_LONG).show();
-
+                                action = "acceptMember";
+                                username = actualMap.get("username");
+                                launch();
                             }
                         })
-                        .setNeutralButton("Reject",new DialogInterface.OnClickListener() {
+                        .setNeutralButton("Reject", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        boolean result = GroupManager.callTaskDeleteMember(MyApplication.currentGroup.getName(), map.get("username"));
-                                        if (result) {
-                                            Toast.makeText(getActivity(), "Request rejected", Toast.LENGTH_LONG).show();
-                                            reload();
-                                            SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
-                                                    new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
-                                            membersWaitingView.setAdapter(mSchedule);
-
-
-                                        } else
-                                            Toast.makeText(getActivity(), "There is a problem with deleting this member", Toast.LENGTH_LONG).show();
+                                        action = "deleteMember";
+                                        username = actualMap.get("username");
+                                        launch();
                                     }
                                 }
-
-                                )
+                        )
                         .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
-
                             }
                         });
                 AlertDialog alert = builder.create();
                 alert.show();
-
             }
         });
-
-        SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
-                new String[] {"img", "username","telephone","flname"}, new int[] {R.id.img, R.id.titre, R.id.description,R.id.superviseur});
-        membersWaitingView.setAdapter(mSchedule);
         return rootView;
     }
 
@@ -140,22 +109,60 @@ public class MembersWaitingFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
-    public void reload()
-    {
 
-        listItem = new ArrayList<HashMap<String, String>>();
-        LinkedList<User> membersWaiting= GroupManager.callTaskGetPendingDemands(MyApplication.currentGroup.getName());
+    public void launch() {
+        try {
+            listItem = new ArrayList<>();
+            String encodedName = URLEncoder.encode(MyApplication.currentGroup.getName(), "utf-8").replace("+", "%20");
+            Downloader downloader = new Downloader(getActivity(), MembersWaitingFragment.this);
+            switch (action) {
+                case "members":
+                    downloader.execute(AllUrls.GET_PENDING_DEMANDS + encodedName + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
+                    break;
+                case "acceptMember":
+                    downloader.execute(AllUrls.ACCEPT_MEMBER_TO_GROUP + encodedName + "/" + username + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
+                    break;
+                case "deleteMember":
+                    downloader.execute(AllUrls.EXPULSER_GROUP_SUPERVISOR + encodedName + "/" + username + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
+                    break;
+                default:
+                    break;
+            }
 
-        for(int i=0; i<membersWaiting.size();i++)
-        {
-            HashMap map=new HashMap<String,String>();
-            map.put("username",membersWaiting.get(i).getUsername());
-            map.put("telephone",membersWaiting.get(i).getPhoneNumber());
-           // map.put("img", String.valueOf(R.drawable.user));//Ici l icone qui va s'afficher
-            map.put("img", String.valueOf(R.drawable.user));
-            map.put("flname",membersWaiting.get(i).getLastname()+" "+ membersWaiting.get(i).getFirstname() );//Ici l icone qui va s'afficher
-            listItem.add(map);
+        } catch (UnsupportedEncodingException e) {
+            Toast.makeText(getActivity(), MessageUser.get("0000"), Toast.LENGTH_SHORT).show();
         }
+    }
 
+    @Override
+    public void executeAfterDownload(String output) {
+        Log.v("hatem", output);
+        if (isNumeric(output.charAt(0))) {
+            Toast.makeText(getActivity(), MessageUser.get(output), Toast.LENGTH_SHORT).show();
+        } else {
+            LinkedList<User> membersWaiting = GroupManager.parsePendingDemands(output);
+            for (int i = 0; i < membersWaiting.size(); i++) {
+                HashMap map = new HashMap<String, String>();
+                // map.put("img", String.valueOf(R.drawable.user));//Ici l icone qui va s'afficher
+                map.put("username", membersWaiting.get(i).getUsername());
+                map.put("telephone", membersWaiting.get(i).getPhoneNumber());
+                map.put("img", String.valueOf(R.drawable.user));
+                map.put("flname", membersWaiting.get(i).getLastname() + " " + membersWaiting.get(i).getFirstname());//Ici l icone qui va s'afficher
+                listItem.add(map);
+            }
+            SimpleAdapter mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
+                    new String[]{"img", "username", "telephone", "flname"}, new int[]{R.id.img, R.id.titre, R.id.description, R.id.superviseur});
+            membersWaitingView.setAdapter(mSchedule);
+            if (action.equals("acceptMember")) {
+                HashMap map2 = new HashMap<String, String>();
+                map2.put("username", actualMap.get("username"));
+                map2.put("telephone", actualMap.get("username"));
+                map2.put("img", String.valueOf(R.drawable.user));//Ici l icone qui va s'afficher
+                map2.put("flname", actualMap.get("flname"));//Ici l icone qui va s'afficher
+                MembersOnGroupFragment.listItem.add(map2);
+                MembersOnGroupFragment.mSchedule.notifyDataSetChanged();
+            }
+        }
+        action = "";
     }
 }
