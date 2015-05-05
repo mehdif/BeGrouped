@@ -3,7 +3,8 @@
     android:layout_height="fill_parent" android:orientation="vertical"
     android:weightSum="100"
     tools:context=".RegisterActivity"
-    android:background="@drawable/onlyon_blured">
+    android:background="@drawable/onlyon_blured"
+    android:gravity="center">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,186 +30,163 @@
 
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:id="@+id/scrollView"
-        android:layout_weight="75">
+        android:layout_weight="75"
+        android:padding="20dp">
 
-        <LinearLayout
-            android:orientation="vertical"
+
+        <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="80"
-            android:padding="20dp"
-            android:weightSum="100">
+            android:layout_height="0dp"
+            android:id="@+id/scrollView"
+            android:layout_weight="85">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="10">
-
-                <EditText
-                    android:id="@+id/prenom"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/background_holo_light"
-                    android:ems="10"
-                    android:singleLine="true"
-                    android:hint="First Name"
-                    android:inputType="textPersonName"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="10">
-
-                <EditText
-                    android:id="@+id/nom"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp"
-                    android:textColorHint="@color/background_holo_light"
-                    android:ems="10"
-                    android:singleLine="true"
-                    android:hint="Last Name "
-                    android:inputType="textPersonName"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
-                    />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <EditText
-                    android:id="@+id/username"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:textColorHint="@color/background_holo_light"
-                    android:ems="10"
-                    android:singleLine="true"
-                    android:hint="User Name"
-                    android:inputType="textPersonName"
-                    android:digits="_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"/>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="10">
-
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:ems="10"
-                    android:singleLine="true"
-                    android:textColorHint="@color/background_holo_light"
-                    android:hint="Password"
-                    android:inputType="textPassword" >
-
-                </EditText>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="10">
-
-                <EditText
-                    android:id="@+id/confirmpassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/background_holo_light"
-                    android:ems="10"
-                    android:singleLine="true"
-                    android:hint="ConfirmPassword"
-                    android:inputType="textPassword" />
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="10">
-
-                <EditText
-                    android:id="@+id/phonenumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:ems="10"
-                    android:singleLine="true"
-                    android:textColorHint="@color/background_holo_light"
-                    android:hint="Phone number"
-                    android:inputType="number"
-                    android:digits="1234567890"/>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="10">
-
-                <CheckBox
-                    android:id="@+id/terms"
-                    android:textColor="@color/background_holo_light"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="J&apos;ai lu et j&apos;accèpte les Termes et Conditions d&apos;utilisation"
-                    android:checked="true" />
-            </FrameLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="30"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:weightSum="100">
 
-                <Button
-                    android:id="@+id/button_validate"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="4dp"
-                    style="@style/Button"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="3dp"
-                    android:text="Sing Up"
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="75">
+
+                    <EditText
+                        android:id="@+id/prenom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/background_holo_light"
+                        android:ems="10"
+                        android:singleLine="true"
+                        android:hint="First Name"
+                        android:inputType="textPersonName"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
+
+                    <EditText
+                        android:id="@+id/nom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColorHint="@color/background_holo_light"
+                        android:ems="10"
+                        android:singleLine="true"
+                        android:hint="Last Name "
+                        android:inputType="textPersonName"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
+                        />
+
+                    <EditText
+                        android:id="@+id/username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:textColorHint="@color/background_holo_light"
+                        android:ems="10"
+                        android:singleLine="true"
+                        android:hint="User Name"
+                        android:inputType="textPersonName"
+                        android:digits="_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"/>
+
+                    <EditText
+                        android:id="@+id/password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:ems="10"
+                        android:singleLine="true"
+                        android:textColorHint="@color/background_holo_light"
+                        android:hint="Password"
+                        android:inputType="textPassword" >
+
+                    </EditText>
+
+                    <EditText
+                        android:id="@+id/confirmpassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/background_holo_light"
+                        android:ems="10"
+                        android:singleLine="true"
+                        android:hint="ConfirmPassword"
+                        android:inputType="textPassword" />
+
+                    <EditText
+                        android:id="@+id/phonenumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:ems="10"
+                        android:singleLine="true"
+                        android:textColorHint="@color/background_holo_light"
+                        android:hint="Phone number"
+                        android:inputType="number"
+                        android:digits="1234567890"/>
+
+                    <CheckBox
+                        android:id="@+id/terms"
+                        android:textColor="@color/background_holo_light"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="J&apos;ai lu et j&apos;accèpte les Termes et Conditions d&apos;utilisation"
+                        android:checked="true" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
                     android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceLargeInverse"
-                    android:layout_gravity="center"
-                    android:layout_weight="50" />
+                    android:layout_margin="5dp"
+                    android:layout_weight="25"
+                    android:weightSum="100">
+
+                    <Button
+                        android:id="@+id/button_validate"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="4dp"
+                        style="@style/Button"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="3dp"
+                        android:text="Sing Up"
+                        android:textAppearance="?android:attr/textAppearanceLargeInverse"
+                        android:layout_gravity="center"
+                        android:layout_weight="50"
+                        android:gravity="center" />
 
 
-                <Button
-                    android:id="@+id/button_cancel"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="4dp"
-                    android:background="@drawable/layers_gplus_button_bg"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="3dp"
-                    android:text="Cancel"
-                    android:textAppearance="?android:attr/textAppearanceLargeInverse"
-                    android:layout_gravity="center"
-                    android:layout_weight="50" />
+                    <Button
+                        android:id="@+id/button_cancel"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="4dp"
+                        style="@style/Button"
+                        android:background="@drawable/layers_gplus_button_bg"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="3dp"
+                        android:textAppearance="?android:attr/textAppearanceLargeInverse"
+                        android:layout_gravity="center"
+                        android:layout_weight="50"
+                        android:gravity="center"
+                        android:text="Cancel" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
+
+    </LinearLayout>
 
 
 </LinearLayout>
