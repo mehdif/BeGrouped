@@ -128,7 +128,7 @@ public class ProgramFragment extends Fragment {
                 new AlertDialog.Builder(getActivity())
                         .setTitle("Delete Destination")
                         .setMessage("Are you sure you want to delete this destination?")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // continue with delete
                                 MyApplication.listOfCurrentPOIS.remove(positionRMV);
@@ -136,7 +136,7 @@ public class ProgramFragment extends Fragment {
                                 mSchedule1.notifyDataSetChanged();
                             }
                         })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // do nothing
                             }

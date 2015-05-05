@@ -28,6 +28,13 @@ public class Group {
         this.name = name;
     }
 
+    public Group(User supervisor,String name ,String locationName,String expirationDate) {
+        this.supervisor = supervisor;
+        this.locationName = locationName;
+        this.name = name;
+        this.expirationDate=expirationDate;
+    }
+
     public User getSupervisor() {
         return supervisor;
     }
