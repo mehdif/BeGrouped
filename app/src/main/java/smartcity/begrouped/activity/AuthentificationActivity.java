@@ -5,8 +5,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -61,18 +63,40 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
 
             textViewBeGrouped.setText(Html.fromHtml("<font color=#c62828>Be</font><font color=#ffffff>Grouped</font>"));
 
+            password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                        if (MyApplication.locationManager != null)
+                            MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
+                        String login = username.getText().toString();
+                        String pass = password.getText().toString();
+                        if (login.isEmpty() || pass.isEmpty())
+                            Toast.makeText(AuthentificationActivity.this, MessageUser.get("1105"), Toast.LENGTH_SHORT).show();
+                        else {
+                            action = "login";
+                            String hashedPass = GlobalMethodes.md5(pass);
+                            Downloader downloader = new Downloader(AuthentificationActivity.this, AuthentificationActivity.this);
+                            downloader.execute(AllUrls.authenticate_user_url + login + "/" + hashedPass);
+                        }
+                    }
+                    return false;
+                }
+            });
+
             login.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (MyApplication.locationManager != null) MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
+                    if (MyApplication.locationManager != null)
+                        MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
                     String login = username.getText().toString();
                     String pass = password.getText().toString();
-                    if (login.isEmpty() || pass.isEmpty()) Toast.makeText(AuthentificationActivity.this, MessageUser.get("1105"),Toast.LENGTH_SHORT).show();
+                    if (login.isEmpty() || pass.isEmpty())
+                        Toast.makeText(AuthentificationActivity.this, MessageUser.get("1105"), Toast.LENGTH_SHORT).show();
                     else {
-                        action="login";
-                        String hashedPass= GlobalMethodes.md5(pass);
-                        Downloader downloader = new Downloader(AuthentificationActivity.this,AuthentificationActivity.this);
-                        downloader.execute(AllUrls.authenticate_user_url+login+"/"+hashedPass);
+                        action = "login";
+                        String hashedPass = GlobalMethodes.md5(pass);
+                        Downloader downloader = new Downloader(AuthentificationActivity.this, AuthentificationActivity.this);
+                        downloader.execute(AllUrls.authenticate_user_url + login + "/" + hashedPass);
                     }
                 }
             });
