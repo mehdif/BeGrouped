@@ -86,25 +86,10 @@ public class AddDestinationFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
-                    Toast.makeText(getActivity(), "Looking for : "+search_query.getText(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity(), "Looking for : "+search_query.getText(), Toast.LENGTH_LONG).show();
 
                     // Anes : Call your search function here : performSearch();
-                    listPOI= POIManager.searchPOIByNameByTask(search_query.getText().toString());
-                    listItem.clear();
-                    if (listPOI==null) listPOI=new LinkedList<POI>();
-                    for(int i=0;i<listPOI.size();i++) {
-                        POI poi= listPOI.get(i);
-                        Log.v("group", poi.toString());
-                        map = new HashMap<String, String>();
-                        // recuperer les données du superviseur
-                        map.put(TAG_NAME,poi.getName());
-                        map.put(TAG_TYPE,poi.getType().replace("_"," "));
-                        map.put(TAG_TEMPS,"");
-                        //map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
-                        map.put("img", String.valueOf(R.drawable.monument_black));
-                        listItem.add(map);
-                    }
-                    mSchedule.notifyDataSetChanged();
+                    POIManager.searchPOIByNameByTask(search_query.getText().toString(),AddDestinationFragment.this);
                     return true;
                 }
                 return false;
@@ -234,6 +219,24 @@ public class AddDestinationFragment extends Fragment {
         dialog.show();
 
 
+    }
+    public void afficherResultat(LinkedList<POI> searchPOI){
+        listPOI=searchPOI;
+        listItem.clear();
+        if (listPOI==null) listPOI=new LinkedList<POI>();
+        for(int i=0;i<listPOI.size();i++) {
+            POI poi= listPOI.get(i);
+            Log.v("group", poi.toString());
+            map = new HashMap<String, String>();
+            // recuperer les données du superviseur
+            map.put(TAG_NAME,poi.getName());
+            map.put(TAG_TYPE,poi.getType().replace("_"," "));
+            map.put(TAG_TEMPS,"");
+            //map.put("img", String.valueOf(R.drawable.ic_action_view_as_grid));//Ici l icone qui va s'afficher
+            map.put("img", String.valueOf(R.drawable.monument_black));
+            listItem.add(map);
+        }
+        mSchedule.notifyDataSetChanged();
     }
 
 }
