@@ -165,6 +165,7 @@ public class RegisterActivity extends ActionBarActivity implements AsyncResponse
             }
             Intent i = new Intent(getApplicationContext(), AuthentificationActivity.class);
             startActivity(i);
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }
         action="";
     }
