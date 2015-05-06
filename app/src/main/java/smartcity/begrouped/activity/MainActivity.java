@@ -225,7 +225,12 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
         super.onResume();
         if ( MyApplication.locationManager != null) {
             if ( MyApplication.locationListener != null) {
-                MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
+                try {
+                    MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
+                }
+                catch (Exception e){
+                    Log.e("exception","exception au niveau de location manager (remove update) "+e.getMessage());
+                }
             }
             MyApplication.locationManager.requestLocationUpdates(provider, 20000, 1, this);
             MyApplication.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 20000, 0,
