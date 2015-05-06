@@ -44,6 +44,7 @@
     <string name="nav_item_show_program">Show Progam</string>
     <string name="nav_item_hide_program">Hide Progam</string>
     <string name="nav_item_current_group">Current Group</string>
+    <string name="nav_item_log_out">Log Out</string>
 
     <string-array name="nav_drawer_labels_map">
         <item>@string/nav_item_home_map</item>
@@ -53,6 +54,7 @@
         <item>@string/nav_item_show_program</item>
         <item>@string/nav_item_hide_program</item>
         <item>@string/nav_item_current_group</item>
+        <item>@string/nav_item_log_out</item>
     </string-array>
 
     <string name="title_home_map">Map</string>
@@ -62,6 +64,7 @@
     <string name="title_show_program">Show Program</string>
     <string name="title_hide_program">Hide Program</string>
     <string name="title_current_group">Current Group</string>
+    <string name="title_current_log_out">Log Out</string>
 
 
 <!-- Menu Group Home-->
@@ -79,6 +82,7 @@
         <item>@string/nav_item_members</item>
         <item>@string/nav_item_chat</item>
         <item>@string/nav_item_schedule</item>
+        <item>@string/nav_item_log_out</item>
     </string-array>
 
 

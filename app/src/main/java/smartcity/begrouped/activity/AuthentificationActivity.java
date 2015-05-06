@@ -45,9 +45,13 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         MessageUser.init();
         try {
             super.onCreate(savedInstanceState);
+            //MyApplication.myIdentity=null;
+            //MyApplication.currentGroup=null;
+
             setContentView(R.layout.activity_authentification);
             Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
             ParseUser currentUser = ParseUser.getCurrentUser();

@@ -357,6 +357,11 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent i = new Intent(getApplicationContext(), AuthentificationActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
+            startActivity(i);
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            finish();
             return true;
         }
 
@@ -515,6 +520,13 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                 Intent ii = new Intent(getApplicationContext(), GroupHomeFragment.class);
                 startActivity(ii);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                break;
+            case 7:
+                Intent in = new Intent(getApplicationContext(), AuthentificationActivity.class);
+                in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
+                startActivity(in);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
                 break;
             default:
                 break;

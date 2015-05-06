@@ -95,6 +95,11 @@ public class MmeberOnlyActivity extends ActionBarActivity implements FragmentDra
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent i = new Intent(getApplicationContext(), AuthentificationActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
+            startActivity(i);
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            finish();
             return true;
         }
 
@@ -158,6 +163,13 @@ public class MmeberOnlyActivity extends ActionBarActivity implements FragmentDra
                 startActivity(i);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 getSupportActionBar().setTitle(title);
+                break;
+            case 6:
+                Intent in = new Intent(getApplicationContext(), AuthentificationActivity.class);
+                in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
+                startActivity(in);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
                 break;
             default:
                 break;

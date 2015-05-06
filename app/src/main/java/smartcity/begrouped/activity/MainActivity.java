@@ -128,6 +128,11 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent i = new Intent(getApplicationContext(), AuthentificationActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
+            startActivity(i);
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            finish();
             return true;
         }
 
