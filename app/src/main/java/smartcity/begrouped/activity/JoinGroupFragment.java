@@ -22,6 +22,7 @@ import smartcity.begrouped.controllers.GroupManager;
 import smartcity.begrouped.utils.AllUrls;
 import smartcity.begrouped.utils.AsyncResponse;
 import smartcity.begrouped.utils.Downloader;
+import smartcity.begrouped.utils.GlobalMethodes;
 import smartcity.begrouped.utils.MessageUser;
 import smartcity.begrouped.utils.MyApplication;
 

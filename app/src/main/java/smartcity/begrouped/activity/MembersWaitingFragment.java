@@ -32,6 +32,7 @@ import smartcity.begrouped.model.User;
 import smartcity.begrouped.utils.AllUrls;
 import smartcity.begrouped.utils.AsyncResponse;
 import smartcity.begrouped.utils.Downloader;
+import smartcity.begrouped.utils.GlobalMethodes;
 import smartcity.begrouped.utils.MessageUser;
 import smartcity.begrouped.utils.MyApplication;
 
@@ -125,6 +126,8 @@ public class MembersWaitingFragment extends Fragment implements AsyncResponse {
                     break;
                 case "acceptMember":
                     downloader.execute(AllUrls.ACCEPT_MEMBER_TO_GROUP + encodedName + "/" + username + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
+                    Log.v("TAG",username);
+                    GlobalMethodes.sendNotification("Invitation Accepted",MyApplication.myIdentity.getUsername()+" has accepted your invitation",username);
                     break;
                 case "deleteMember":
                     downloader.execute(AllUrls.EXPULSER_GROUP_SUPERVISOR + encodedName + "/" + username + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());

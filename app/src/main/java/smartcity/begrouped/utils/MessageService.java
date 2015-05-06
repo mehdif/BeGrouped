@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 
@@ -29,9 +30,13 @@ public class MessageService extends Service implements SinchClientListener {
     private SinchClient sinchClient = null;
     private MessageClient messageClient = null;
     private String currentUserId;
+    private boolean res=false;
+    private LocalBroadcastManager broadcaster;
+    private Intent broadcastIntent = new Intent("smartcity.begrouped.activity.ChatActivity");
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         Log.v("service","on start command");
         currentUserId = ParseUser.getCurrentUser().getObjectId();
         if (currentUserId != null && !isSinchClientStarted()) {
@@ -42,10 +47,14 @@ public class MessageService extends Service implements SinchClientListener {
             parseInstallation.saveInBackground();
             startSinchClient(currentUserId);
         }
+        broadcaster = LocalBroadcastManager.getInstance(this);
         return super.onStartCommand(intent, flags, startId);
     }
 
     public void startSinchClient(String username) {
+        ParseInstallation parseInstallation =ParseInstallation.getCurrentInstallation();
+        parseInstallation.put("userName",currentUserId);
+        parseInstallation.saveInBackground();
         sinchClient = Sinch.getSinchClientBuilder().context(this).userId(username).applicationKey(APP_KEY)
                 .applicationSecret(APP_SECRET).environmentHost(ENVIRONMENT).build();
 
@@ -58,8 +67,9 @@ public class MessageService extends Service implements SinchClientListener {
 
         String project_id="426691860129";
         sinchClient.checkManifest();
-        sinchClient.registerPushNotificationData(project_id.getBytes());
         sinchClient.start();
+        sinchClient.registerPushNotificationData(project_id.getBytes());
+        res=true;
         Log.v("service","Sinchclient has started");
     }
 
@@ -69,16 +79,23 @@ public class MessageService extends Service implements SinchClientListener {
 
     @Override
     public void onClientFailed(SinchClient client, SinchError error) {
-        sinchClient = null;
-        Log.v("service","sinch client failed");
 
+        broadcastIntent.putExtra("success", false);
+        broadcaster.sendBroadcast(broadcastIntent);
+
+        sinchClient = null;
+        Log.v("service","sinch client failed"+error.getMessage());
     }
 
     @Override
     public void onClientStarted(SinchClient client) {
 
+        broadcastIntent.putExtra("success", true);
+        broadcaster.sendBroadcast(broadcastIntent);
+
         client.startListeningOnActiveConnection();
         messageClient = client.getMessageClient();
+
         Log.v("service","sinch client started");
     }
 
@@ -132,8 +149,8 @@ public class MessageService extends Service implements SinchClientListener {
 
     @Override
     public void onDestroy() {
-//        sinchClient.stopListeningOnActiveConnection();
-//       sinchClient.terminate();
+     sinchClient.stopListeningOnActiveConnection();
+     sinchClient.terminate();
     }
 
     public class MessageServiceInterface extends Binder {

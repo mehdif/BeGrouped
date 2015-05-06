@@ -5,11 +5,19 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.parse.FindCallback;
+import com.parse.ParseInstallation;
+import com.parse.ParsePush;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,11 +26,14 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 /**
  * Created by Anes on 01/05/2015.
  */
 public class GlobalMethodes {
+     static String objectId=null;
+
 
     public static boolean isNumeric(char n) {
         return (n=='0' || n=='1'|| n=='2'|| n=='3'|| n=='4'|| n=='5'|| n=='6'|| n=='7'|| n=='8'|| n=='9');
@@ -93,5 +104,35 @@ public class GlobalMethodes {
             e.printStackTrace();
         }
         return "";
+    }
+    public static void sendNotification(String title,String content,String username)
+    {
+        JSONObject obj;
+
+        try {
+            obj = new JSONObject();
+            obj.put("alert",content);
+            obj.put("title",title);
+
+            ParseQuery<ParseUser> userquery = ParseUser.getQuery();
+            userquery.whereEqualTo("username", username);
+            userquery.findInBackground(new FindCallback<ParseUser>() {
+                public void done(List<ParseUser> userList, com.parse.ParseException e) {
+                   objectId= userList.get(0).getObjectId();
+
+                }
+            });
+
+            ParsePush push = new ParsePush();
+            ParseQuery query = ParseInstallation.getQuery();
+            query.whereEqualTo("deviceType", "android");
+            query.whereEqualTo("userName",objectId );
+            push.setQuery(query);
+            push.setData(obj);
+            push.sendInBackground();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 }

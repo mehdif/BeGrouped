@@ -36,8 +36,8 @@ public class MarkerManager {
         this.mMap = mMap;
         this.group = group;
     }
-    public void updateLocations(){
-        GroupManager.callTaskUpdateGroupMemberLocations(group);
+    public void updateLocations(ReceiverUpdatePositions rec){
+        GroupManager.callTaskUpdateGroupMemberLocations(group,rec);
         if (!MapsActivity.aptEnCreation) requestForApt();
     }
 
@@ -60,9 +60,10 @@ public class MarkerManager {
                         user.getMarker().setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                         MyApplication.myIdentity.setLocalisation(new Location(user.getMarker().getPosition().latitude, user.getMarker().getPosition().longitude));
                         MyApplication.myIdentity.setMarker(user.getMarker());
-                        if (firstTime)
+                        if (firstTime) {
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user.getMarker().getPosition(), 8));
                             mMap.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
+                        }
                         firstTime = false;
                     }
             /*

@@ -29,6 +29,7 @@ import com.parse.ParseUser;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.UserManager;
+import smartcity.begrouped.utils.MessageService;
 import smartcity.begrouped.utils.MyApplication;
 
 
@@ -61,6 +62,8 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+            Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
+            startService(serviceIntent);
 
             mToolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(mToolbar);
@@ -253,5 +256,12 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
     public void onProviderDisabled(String provider) {
         //Toast.makeText(this, "Disabled provider " + provider,
         //        Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        stopService(new Intent(this, MessageService.class));
+        super.onDestroy();
     }
 }

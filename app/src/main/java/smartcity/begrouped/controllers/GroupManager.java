@@ -343,8 +343,8 @@ public class GroupManager {
 
 
 
-    public static void callTaskUpdateGroupMemberLocations(Group group) {
-        TaskGetMemberPositions task = new TaskGetMemberPositions(group);
+    public static void callTaskUpdateGroupMemberLocations(Group group,ReceiverUpdatePositions rec) {
+        TaskGetMemberPositions task = new TaskGetMemberPositions(group,rec);
 
         task.execute();
 
@@ -381,8 +381,10 @@ public class GroupManager {
     public static class TaskGetMemberPositions extends AsyncTask {
 
         Group group;
+        ReceiverUpdatePositions rec;
 
-        public TaskGetMemberPositions(Group group) {
+        public TaskGetMemberPositions(Group group,ReceiverUpdatePositions rec) {
+            this.rec=rec;
             this.group = group;
         }
 
@@ -394,6 +396,7 @@ public class GroupManager {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
+            rec.rappelerBroadCast();
             if (MapsActivity.markerManager != null) {
                 MapsActivity.markerManager.updateMarkerPositions();
             }
