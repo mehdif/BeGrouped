@@ -32,17 +32,20 @@ public class ReceiverUpdatePositions extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context=context;
-        if (MapsActivity.markerManager!=null){
-            if (MyApplication.requestingMemberPositions) {
-                if (MyApplication.currentGroup!=null) MapsActivity.markerManager.updateLocations(this);
-                else {
-                    pi = PendingIntent.getBroadcast(context, 0, new Intent(
-                            "com.authorwjf.MajPositions"), 0);
-                    am = (AlarmManager) (context.getSystemService(Context.ALARM_SERVICE));
-                    am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                            SystemClock.elapsedRealtime() + TWENTY_SECONDS, pi);
-                }
+        if (MyApplication.myIdentity!=null) {
+            if (MapsActivity.markerManager != null) {
+                if (MyApplication.requestingMemberPositions) {
+                    if (MyApplication.currentGroup != null)
+                        MapsActivity.markerManager.updateLocations(this);
+                    else {
+                        pi = PendingIntent.getBroadcast(context, 0, new Intent(
+                                "com.authorwjf.MajPositions"), 0);
+                        am = (AlarmManager) (context.getSystemService(Context.ALARM_SERVICE));
+                        am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                                SystemClock.elapsedRealtime() + TWENTY_SECONDS, pi);
+                    }
 
+                }
             }
         }
     }
