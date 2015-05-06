@@ -96,7 +96,7 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
                         String hashedPass = GlobalMethodes.md5(pass);
                         Downloader downloader = new Downloader(AuthentificationActivity.this, AuthentificationActivity.this);
                         downloader.execute(AllUrls.authenticate_user_url + login + "/" + hashedPass);
-                    }
+                      }
                 }
             });
 
@@ -140,7 +140,6 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
             }
             else {
                 UserManager.authenticateUser(output);
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
                 ParseUser.logInInBackground(username.getText().toString(), password.getText().toString(), new LogInCallback() {
                     public void done(ParseUser user, com.parse.ParseException e) {
@@ -152,23 +151,31 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
                             ParseInstallation parseInstallation =ParseInstallation.getCurrentInstallation();
                             parseInstallation.put("userName",MyApplication.currentUserId);
                             parseInstallation.saveInBackground();
-                                Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
-                                startService(serviceIntent);
+                            Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
+                            startService(serviceIntent);
+                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(i);
+                            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+
+                        }
+                        else
+                        {
+                            Toast.makeText(AuthentificationActivity.this, MessageUser.get("1103"),Toast.LENGTH_SHORT).show();
+                            return;
 
                         }
                     }
                 });
 
-                startActivity(i);
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         }
         action="";
     }
-
     @Override
-    protected void onDestroy() {
-        //stopService(new Intent(this, MessageService.class));
+    public void onDestroy() {
+        stopService(new Intent(this, MessageService.class));
         super.onDestroy();
     }
+
+
 }

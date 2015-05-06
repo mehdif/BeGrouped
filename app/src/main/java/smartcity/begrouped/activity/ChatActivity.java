@@ -224,6 +224,11 @@ public class ChatActivity extends ActionBarActivity implements FragmentDrawerGro
 
     private void sendMessage() {
         messageBody = messageBodyField.getText().toString();
+        if ( recipientsIds.size() <=0)
+        {
+            Toast.makeText(this, "This group is still empty", Toast.LENGTH_LONG).show();
+            return;
+        }
         if (messageBody.isEmpty()) {
             Toast.makeText(this, "Please enter a message", Toast.LENGTH_LONG).show();
             return;
