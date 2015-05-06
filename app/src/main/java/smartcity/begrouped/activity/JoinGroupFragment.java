@@ -118,6 +118,7 @@ public class JoinGroupFragment extends Fragment implements AsyncResponse {
             Log.v("aimen",supervisorname);
 
             GlobalMethodes.sendNotification("New Invitation",MyApplication.myIdentity.getUsername() +" want to join "+group.getName(),supervisorname);
+            Toast.makeText(getActivity(), MessageUser.get("2201"),Toast.LENGTH_SHORT).show();
 
 
         }
