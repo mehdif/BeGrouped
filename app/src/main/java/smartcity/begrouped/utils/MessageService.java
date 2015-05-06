@@ -39,6 +39,7 @@ public class MessageService extends Service implements SinchClientListener {
 
            Log.v("service","on start command");
            currentUserId = ParseUser.getCurrentUser().getObjectId();
+           Log.v("currentuserid",currentUserId);
         if (currentUserId != null && !isSinchClientStarted()) {
             Log.v("service","currentuserid is not null and client is not started");
             Log.v("service",currentUserId);

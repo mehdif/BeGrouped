@@ -63,7 +63,7 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             ParseUser user  = ParseUser.getCurrentUser();
-
+            Log.v("theuser",user.getCurrentUser().getObjectId());
 
             if ( user != null) {
                 Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
@@ -100,7 +100,7 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
                 System.out.println("Provider " + provider + " has been selected.");
                 onLocationChanged(location);
             } else {
-                Toast.makeText(this, "no location possible ",
+                Toast.makeText(this, "Please activate your GPS and restart the app ",
                         Toast.LENGTH_SHORT).show();
             }
         }
@@ -220,10 +220,14 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
     @Override
     protected void onResume() {
         super.onResume();
-        MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
-        MyApplication.locationManager.requestLocationUpdates(provider, 20000, 1, this);
-        MyApplication.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 20000, 0,
-                this);
+        if ( MyApplication.locationManager != null) {
+            if ( MyApplication.locationListener != null) {
+                MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
+            }
+            MyApplication.locationManager.requestLocationUpdates(provider, 20000, 1, this);
+            MyApplication.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 20000, 0,
+                    this);
+        }
 
 
     }

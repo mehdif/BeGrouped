@@ -159,7 +159,6 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
     @Override
     protected void onDestroy() {
         //stopService(new Intent(this, MessageService.class));
-        ParseUser.logOut();
         super.onDestroy();
     }
 }
