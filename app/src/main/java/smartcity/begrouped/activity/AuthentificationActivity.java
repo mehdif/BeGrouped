@@ -49,12 +49,6 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_authentification);
-            Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
-            ParseUser currentUser = ParseUser.getCurrentUser();
-            if (currentUser != null) {
-               Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
-               startService(serviceIntent);
-            }
             login = (Button) findViewById(R.id.buttonLogin);
             register = (Button) findViewById(R.id.buttonRegister);
             username = (EditText) findViewById(R.id.editTextId);
@@ -145,8 +139,8 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
                 ParseUser.logInInBackground(username.getText().toString(), password.getText().toString(), new LogInCallback() {
                     public void done(ParseUser user, com.parse.ParseException e) {
                         if (user != null) {
-                            Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
-                            startService(serviceIntent);
+                            //Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
+                            //startService(serviceIntent);
                             Log.v("service", "start service");
                         }
                     }
@@ -157,5 +151,11 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
             }
         }
         action="";
+    }
+
+    @Override
+    protected void onDestroy() {
+        //stopService(new Intent(this, MessageService.class));
+        super.onDestroy();
     }
 }
