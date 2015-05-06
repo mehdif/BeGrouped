@@ -62,8 +62,13 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
-            Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
-            startService(serviceIntent);
+            ParseUser user  = ParseUser.getCurrentUser();
+
+            if ( user != null) {
+                Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
+                startService(serviceIntent);
+            }
+
 
             mToolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(mToolbar);
@@ -185,6 +190,8 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
             case 6:
                 Intent i = new Intent(getApplicationContext(), AuthentificationActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
+                stopService(new Intent(getApplicationContext(), MessageService.class));
+                ParseUser.logOut();
                 startActivity(i);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
