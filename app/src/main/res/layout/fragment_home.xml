@@ -72,7 +72,7 @@
             android:paddingLeft="30dp"
             android:paddingRight="10dp"
             android:paddingTop="3dp"
-            android:text="Manage Group"
+            android:text="Manage Groups"
             android:textAppearance="?android:attr/textAppearanceLargeInverse" />
     </LinearLayout>
 
