@@ -680,7 +680,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
                         MapsActivity.aptEnCreation=true;
                         if (aptMarker!=null) aptMarker.remove();
                         aptMarker = mMap.addMarker(new MarkerOptions().position(latLngForApt)
-                                .title("Appointment").snippet(date.afficher()+" at "+temps.afficher()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                                .title("Appointment").snippet(date.afficher()+" at "+temps.afficher()).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_rdv)));
                         Appointment appoint=new Appointment(aptMarker,temps.getHh(),temps.getMm(),date.getJj(),date.getMm(),date.getYy());
                         MyApplication.currentGroup.setAppointment(appoint);
                         UserManager.sendAptToServer(appoint,MapsActivity.this);
@@ -709,7 +709,7 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
             programShown = true;
             for (int i = 0; i < MyApplication.listOfCurrentPOIS.size(); i++) {
                 Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(MyApplication.listOfCurrentPOIS.get(i).getLocation().getLatitude(), MyApplication.listOfCurrentPOIS.get(i).getLocation().getLongitude()))
-                        .title(MyApplication.listOfCurrentPOIS.get(i).getName()).snippet(MyApplication.listOfCurrentPOIS.get(i).getTempsOfVisite().afficher()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                        .title(MyApplication.listOfCurrentPOIS.get(i).getName()).snippet(MyApplication.listOfCurrentPOIS.get(i).getTempsOfVisite().afficher()).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_monument)));
                 MyApplication.listOfCurrentPOIS.get(i).setMarker(marker);
             }
         }
