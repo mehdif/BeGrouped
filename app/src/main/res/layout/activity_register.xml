@@ -117,7 +117,8 @@
                         android:ems="10"
                         android:singleLine="true"
                         android:hint="ConfirmPassword"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        android:layout_margin="5dp" />
 
                     <EditText
                         android:id="@+id/phonenumber"
@@ -158,7 +159,7 @@
                         style="@style/Button"
                         android:paddingBottom="10dp"
                         android:paddingTop="3dp"
-                        android:text="Sing Up"
+                        android:text="Sign Up"
                         android:textAppearance="?android:attr/textAppearanceLargeInverse"
                         android:layout_gravity="center"
                         android:layout_weight="50"

@@ -74,7 +74,7 @@ public class RegisterActivity extends ActionBarActivity implements AsyncResponse
         phonenumberField = (EditText) findViewById(R.id.phonenumber);
         termAcceptation = (CheckBox) findViewById(R.id.terms);
 
-        textView.setText(Html.fromHtml("<font color=#ffffff>Sign</font> <font color=#c62828>In</font>"));
+        textView.setText(Html.fromHtml("<font color=#ffffff>Sign</font> <font color=#c62828>Up</font>"));
 
         accept.setOnClickListener(new View.OnClickListener() {
 
