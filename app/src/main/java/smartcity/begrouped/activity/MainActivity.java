@@ -63,7 +63,10 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             ParseUser user  = ParseUser.getCurrentUser();
-            Log.v("theuser",user.getCurrentUser().getObjectId());
+           try{ Log.v("theuser",user.getCurrentUser().getObjectId());}
+           catch (Exception e){
+               Log.e("parse user","user non connecté en parse");
+           }
 
             if ( user != null) {
                 Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
