@@ -117,7 +117,8 @@
                         android:ems="10"
                         android:singleLine="true"
                         android:hint="ConfirmPassword"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        android:layout_margin="5dp" />
 
                     <EditText
                         android:id="@+id/phonenumber"
