@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
 
+import smartcity.begrouped.R;
 import smartcity.begrouped.activity.MapsActivity;
 import smartcity.begrouped.model.Appointment;
 import smartcity.begrouped.model.Date;
@@ -40,8 +41,8 @@ public class MarkerManager {
         try {
             GroupManager.callTaskUpdateGroupMemberLocations(group, rec);
             if (!MapsActivity.aptEnCreation) requestForApt();
-        } catch (NullPointerException e){
-            Log.e("exception dans updateLocations","null pointer");
+        } catch (Exception e){
+            Log.e("erreur","erreur");
         }
     }
 
@@ -59,9 +60,11 @@ public class MarkerManager {
                         user.setMarker(mMap.addMarker(new MarkerOptions().position(new LatLng(user.getLocalisation().getLatitude(), user.getLocalisation().getLongitude()))
                                 .title(user.getFirstname() + " " + user.getLastname()).snippet("member")));
 
+                    user.getMarker().setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_me));
                     if (user.getUsername().equals(MyApplication.myIdentity.getUsername())) {
                         user.getMarker().setSnippet("Me");
-                        user.getMarker().setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+                        user.getMarker().setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_simple_member));
                         MyApplication.myIdentity.setLocalisation(new Location(user.getMarker().getPosition().latitude, user.getMarker().getPosition().longitude));
                         MyApplication.myIdentity.setMarker(user.getMarker());
                         if (firstTime) {
@@ -70,11 +73,12 @@ public class MarkerManager {
                         }
                         firstTime = false;
                     }
-            /*
-            if (user.getUsername().equals(group.getSupervisor().getUsername())){
-                user.getMarker().setSnippet("Supervisor");
-                user.getMarker().setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-            }*/
+            if (group.getSupervisor()!=null) {
+                if (user.getUsername().equals(group.getSupervisor().getUsername())) {
+                    user.getMarker().setSnippet("Supervisor");
+                    user.getMarker().setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_supervisor));
+                }
+            }
                 }
             }
         } catch(Exception e){
@@ -153,7 +157,7 @@ public class MarkerManager {
                 // afficher le RDV sur la map
                 if (MapsActivity.aptMarker!=null) MapsActivity.aptMarker.remove();
                 MapsActivity.aptMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(appoint.getLocation().getLatitude(),appoint.getLocation().getLongitude()))
-                        .title("Appointment").snippet(appoint.getDate().afficher()+" at "+appoint.getTemps().afficher()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                        .title("Appointment").snippet(appoint.getDate().afficher()+" at "+appoint.getTemps().afficher()).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_rdv)));
                 appoint.setAptMarker(MapsActivity.aptMarker);
             }
         }
