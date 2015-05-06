@@ -2,6 +2,7 @@ package smartcity.begrouped.controllers;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -155,26 +156,22 @@ public class POIManager {
         return null;
     }
 
-    public static LinkedList<POI> getNearestPoiByTask(double latitude,double longitude){
-        TaskGetNearestPoi task=new TaskGetNearestPoi(latitude,longitude);
-        try {
-            return (LinkedList<POI>) task.execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public static void getNearestPoiByTask(double latitude,double longitude,ReceiverNearestPoint receiver){
+        TaskGetNearestPoi task=new TaskGetNearestPoi(latitude,longitude,receiver);
+        task.execute();
+
     }
     private static class TaskGetNearestPoi extends AsyncTask {
 
         double latitude;
         double longitude;
+        ReceiverNearestPoint receiver;
 
-        public TaskGetNearestPoi(double latitude,double longitude)
+        public TaskGetNearestPoi(double latitude,double longitude,ReceiverNearestPoint receiver)
         {
             this.latitude= latitude;
             this.longitude= longitude;
+            this.receiver=receiver;
         }
 
 
@@ -184,6 +181,10 @@ public class POIManager {
             return getNearestPoint(latitude,longitude);
         }
 
+        @Override
+        protected void onPostExecute(Object o) {
+            receiver.continuerTraitement((LinkedList<POI>) o);
+        }
     }
 
 

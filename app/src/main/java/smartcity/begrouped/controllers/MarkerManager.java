@@ -36,8 +36,8 @@ public class MarkerManager {
         this.mMap = mMap;
         this.group = group;
     }
-    public void updateLocations(){
-        GroupManager.callTaskUpdateGroupMemberLocations(group);
+    public void updateLocations(ReceiverUpdatePositions rec){
+        GroupManager.callTaskUpdateGroupMemberLocations(group,rec);
         if (!MapsActivity.aptEnCreation) requestForApt();
     }
 
