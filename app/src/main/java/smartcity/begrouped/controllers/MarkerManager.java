@@ -37,8 +37,12 @@ public class MarkerManager {
         this.group = group;
     }
     public void updateLocations(ReceiverUpdatePositions rec){
-        GroupManager.callTaskUpdateGroupMemberLocations(group,rec);
-        if (!MapsActivity.aptEnCreation) requestForApt();
+        try {
+            GroupManager.callTaskUpdateGroupMemberLocations(group, rec);
+            if (!MapsActivity.aptEnCreation) requestForApt();
+        } catch (NullPointerException e){
+            Log.e("exception dans updateLocations","null pointer");
+        }
     }
 
 
