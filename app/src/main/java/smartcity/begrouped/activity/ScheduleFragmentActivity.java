@@ -15,12 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.parse.ParseUser;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.adapter.MembersAdapter;
 import smartcity.begrouped.adapter.ScheduleAdapter;
+import smartcity.begrouped.utils.MessageService;
 
 public class ScheduleFragmentActivity extends ActionBarActivity implements FragmentDrawerGroup.FragmentDrawerListener {
     ScheduleAdapter mAdapter;
@@ -146,6 +148,8 @@ public class ScheduleFragmentActivity extends ActionBarActivity implements Fragm
             case 6:
                 Intent in = new Intent(getApplicationContext(), AuthentificationActivity.class);
                 in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
+                stopService(new Intent(getApplicationContext(), MessageService.class));
+                ParseUser.logOut();
                 startActivity(in);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();

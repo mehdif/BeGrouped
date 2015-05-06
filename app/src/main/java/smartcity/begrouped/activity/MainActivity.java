@@ -64,6 +64,7 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
             setContentView(R.layout.activity_main);
             ParseUser user  = ParseUser.getCurrentUser();
 
+
             if ( user != null) {
                 Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
                 startService(serviceIntent);

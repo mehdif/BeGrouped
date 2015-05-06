@@ -143,8 +143,7 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
                 ParseUser.logInInBackground(username.getText().toString(), password.getText().toString(), new LogInCallback() {
                     public void done(ParseUser user, com.parse.ParseException e) {
                         if (user != null) {
-                            //Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
-                            //startService(serviceIntent);
+
                             Log.v("service", "start service");
                         }
                     }
@@ -160,6 +159,7 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
     @Override
     protected void onDestroy() {
         //stopService(new Intent(this, MessageService.class));
+        ParseUser.logOut();
         super.onDestroy();
     }
 }
