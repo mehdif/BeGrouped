@@ -38,14 +38,11 @@ public class MessageService extends Service implements SinchClientListener {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
            Log.v("service","on start command");
-           currentUserId = ParseUser.getCurrentUser().getObjectId();
-           Log.v("currentuserid",currentUserId);
+           currentUserId = MyApplication.currentUserId;
+           Log.v("currentuseridddd",currentUserId);
         if (currentUserId != null && !isSinchClientStarted()) {
             Log.v("service","currentuserid is not null and client is not started");
             Log.v("service",currentUserId);
-            ParseInstallation parseInstallation =ParseInstallation.getCurrentInstallation();
-            parseInstallation.put("userName",currentUserId);
-            parseInstallation.saveInBackground();
             startSinchClient(currentUserId);
         }
         broadcaster = LocalBroadcastManager.getInstance(this);
@@ -53,9 +50,7 @@ public class MessageService extends Service implements SinchClientListener {
     }
 
     public void startSinchClient(String username) {
-        ParseInstallation parseInstallation =ParseInstallation.getCurrentInstallation();
-        parseInstallation.put("userName",currentUserId);
-        parseInstallation.saveInBackground();
+
         sinchClient = Sinch.getSinchClientBuilder().context(this).userId(username).applicationKey(APP_KEY)
                 .applicationSecret(APP_SECRET).environmentHost(ENVIRONMENT).build();
 

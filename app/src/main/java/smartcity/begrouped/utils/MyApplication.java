@@ -30,6 +30,7 @@ public final class MyApplication extends Application {
     public static LinkedList<POI> listOfCurrentPOIS;
     public static Date dateOfCurrentProgram;
     public static Location myPosition=null;
+    public static String currentUserId;
 
     public static ArrayList<HashMap<String, String>> listItem;
 

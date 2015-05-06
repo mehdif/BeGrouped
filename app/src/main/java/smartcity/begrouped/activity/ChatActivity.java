@@ -93,7 +93,7 @@ public class ChatActivity extends ActionBarActivity implements FragmentDrawerGro
 
             bindService(new Intent(this, MessageService.class), serviceConnection, BIND_AUTO_CREATE);
 
-            currentUserId = ParseUser.getCurrentUser().getObjectId();
+            currentUserId = MyApplication.currentUserId;
             Log.v("currentuserid", currentUserId);
 
             messagesList = (ListView) findViewById(R.id.listMessages);
@@ -485,8 +485,6 @@ public class ChatActivity extends ActionBarActivity implements FragmentDrawerGro
             case 6:
                 Intent in = new Intent(getApplicationContext(), AuthentificationActivity.class);
                 in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
-                stopService(new Intent(getApplicationContext(), MessageService.class));
-                ParseUser.logOut();
                 startActivity(in);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();

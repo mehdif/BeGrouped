@@ -62,18 +62,6 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
-            ParseUser user  = ParseUser.getCurrentUser();
-           try{ Log.v("theuser",user.getCurrentUser().getObjectId());}
-           catch (Exception e){
-               Log.e("parse user","user non connecté en parse");
-           }
-
-            if ( user != null) {
-                Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
-                startService(serviceIntent);
-            }
-
-
             mToolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -196,6 +184,7 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
                 stopService(new Intent(getApplicationContext(), MessageService.class));
                 ParseUser.logOut();
+                Log.v("logout","logout");
                 startActivity(i);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
@@ -225,7 +214,12 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
         super.onResume();
         if ( MyApplication.locationManager != null) {
             if ( MyApplication.locationListener != null) {
-                MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
+                try {
+                    MyApplication.locationManager.removeUpdates(MyApplication.locationListener);
+                }
+                catch (Exception e){
+                    Log.e("exception","exception au niveau de location manager (remove update) "+e.getMessage());
+                }
             }
             MyApplication.locationManager.requestLocationUpdates(provider, 20000, 1, this);
             MyApplication.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 20000, 0,
@@ -274,9 +268,9 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
     }
 
 
-    @Override
-    public void onDestroy() {
-        stopService(new Intent(this, MessageService.class));
-        super.onDestroy();
-    }
+   // @Override
+   // public void onDestroy() {
+       // stopService(new Intent(this, MessageService.class));
+      //  super.onDestroy();
+    //}
 }

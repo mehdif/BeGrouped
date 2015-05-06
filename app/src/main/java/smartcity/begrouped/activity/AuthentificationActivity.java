@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.Parse;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 import smartcity.begrouped.R;
@@ -140,11 +141,20 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
             else {
                 UserManager.authenticateUser(output);
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
                 ParseUser.logInInBackground(username.getText().toString(), password.getText().toString(), new LogInCallback() {
                     public void done(ParseUser user, com.parse.ParseException e) {
                         if (user != null) {
 
                             Log.v("service", "start service");
+                            MyApplication.currentUserId=user.getObjectId();
+                            Log.v("myuser",MyApplication.currentUserId);
+                            ParseInstallation parseInstallation =ParseInstallation.getCurrentInstallation();
+                            parseInstallation.put("userName",MyApplication.currentUserId);
+                            parseInstallation.saveInBackground();
+                                Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
+                                startService(serviceIntent);
+
                         }
                     }
                 });
