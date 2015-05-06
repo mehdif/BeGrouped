@@ -392,6 +392,7 @@ public class ChatActivity extends ActionBarActivity implements FragmentDrawerGro
     public void onDestroy() {
         messageService.removeMessageClientListener(messageClientListener);
         unbindService(serviceConnection);
+
         super.onDestroy();
     }
     @Override
@@ -484,9 +485,12 @@ public class ChatActivity extends ActionBarActivity implements FragmentDrawerGro
             case 6:
                 Intent in = new Intent(getApplicationContext(), AuthentificationActivity.class);
                 in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
+                stopService(new Intent(getApplicationContext(), MessageService.class));
+                ParseUser.logOut();
                 startActivity(in);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
+
                 break;
             default:
                 break;

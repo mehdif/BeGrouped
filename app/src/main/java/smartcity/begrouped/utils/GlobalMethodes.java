@@ -6,6 +6,8 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
@@ -116,12 +118,19 @@ public class GlobalMethodes {
 
             ParseQuery<ParseUser> userquery = ParseUser.getQuery();
             userquery.whereEqualTo("username", username);
-            userquery.findInBackground(new FindCallback<ParseUser>() {
-                public void done(List<ParseUser> userList, com.parse.ParseException e) {
-                   objectId= userList.get(0).getObjectId();
 
+            List<ParseUser> users=userquery.find();
+            for(int i=0;i<users.size();i++)
+            {
+                if(users.get(i).getUsername().equals(username))
+                {
+                    objectId=users.get(i).getObjectId();
+                    Log.v("aimene",objectId);
                 }
-            });
+            }
+
+
+
 
             ParsePush push = new ParsePush();
             ParseQuery query = ParseInstallation.getQuery();
@@ -131,6 +140,8 @@ public class GlobalMethodes {
             push.setData(obj);
             push.sendInBackground();
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 

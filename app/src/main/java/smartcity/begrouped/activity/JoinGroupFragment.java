@@ -14,17 +14,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.LogInCallback;
+import com.parse.ParseUser;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.GroupManager;
+import smartcity.begrouped.controllers.UserManager;
+import smartcity.begrouped.model.Group;
 import smartcity.begrouped.utils.AllUrls;
 import smartcity.begrouped.utils.AsyncResponse;
 import smartcity.begrouped.utils.Downloader;
 import smartcity.begrouped.utils.GlobalMethodes;
 import smartcity.begrouped.utils.MessageUser;
 import smartcity.begrouped.utils.MyApplication;
+
+import static smartcity.begrouped.utils.GlobalMethodes.isNumeric;
 
 
 public class JoinGroupFragment extends Fragment implements AsyncResponse {
@@ -102,7 +109,18 @@ public class JoinGroupFragment extends Fragment implements AsyncResponse {
 
     @Override
     public void executeAfterDownload(String output) {
-        Toast.makeText(getActivity(), MessageUser.get(output),Toast.LENGTH_LONG).show();
+        if (isNumeric(output.charAt(0))) {
+            Toast.makeText(getActivity(), MessageUser.get(output),Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Group group=GroupManager.parseGroup(output);
+            String supervisorname=group.getSupervisor().getUsername();
+            Log.v("aimen",supervisorname);
+
+            GlobalMethodes.sendNotification("New Invitation",MyApplication.myIdentity.getUsername() +" want to join "+group.getName(),supervisorname);
+
+
+        }
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
