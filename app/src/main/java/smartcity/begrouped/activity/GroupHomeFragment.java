@@ -26,6 +26,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseUser;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,6 +38,7 @@ import java.util.Locale;
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.POIManager;
 import smartcity.begrouped.model.POI;
+import smartcity.begrouped.utils.MessageService;
 import smartcity.begrouped.utils.MyApplication;
 
 
@@ -400,6 +403,8 @@ public class GroupHomeFragment extends ActionBarActivity implements FragmentDraw
             case 6:
                 Intent in = new Intent(getApplicationContext(), AuthentificationActivity.class);
                 in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
+                stopService(new Intent(getApplicationContext(), MessageService.class));
+                ParseUser.logOut();
                 startActivity(in);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();

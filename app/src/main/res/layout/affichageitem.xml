@@ -38,15 +38,17 @@
     <!-- Title Of Song-->
     <TextView
         android:id="@+id/titre"
-        android:layout_width="wrap_content"
-        android:text="Titre"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:text="Titre"
         android:layout_alignTop="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
         android:textColor="#424242"
         android:typeface="sans"
         android:textSize="17dip"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_toLeftOf="@+id/superviseur"
+        android:layout_toStartOf="@+id/superviseur" />
  
     <!-- Artist Name -->
     <TextView
@@ -60,7 +62,8 @@
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/thumbnail"
         android:textStyle="bold"
-      />
+        android:layout_toLeftOf="@+id/imageView2"
+        android:layout_toStartOf="@+id/imageView2" />
 
     <TextView
         android:id="@+id/superviseur"
@@ -81,7 +84,8 @@
         android:src="@drawable/arrow"
          android:layout_alignTop="@+id/description"
          android:layout_alignParentRight="true"
-         android:layout_alignParentEnd="true" />
+         android:layout_alignParentEnd="true"
+         android:id="@+id/imageView2" />
  
 </RelativeLayout>
     </LinearLayout>

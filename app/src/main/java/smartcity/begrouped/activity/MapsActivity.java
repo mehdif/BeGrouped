@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.parse.ParseUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -59,6 +60,7 @@ import smartcity.begrouped.model.Appointment;
 import smartcity.begrouped.model.Date;
 import smartcity.begrouped.model.POI;
 import smartcity.begrouped.model.Temps;
+import smartcity.begrouped.utils.MessageService;
 import smartcity.begrouped.utils.MyApplication;
 
 public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap.FragmentDrawerListener,GoogleMap.OnMarkerClickListener {
@@ -524,6 +526,8 @@ public class MapsActivity extends ActionBarActivity implements FragmentDrawerMap
             case 7:
                 Intent in = new Intent(getApplicationContext(), AuthentificationActivity.class);
                 in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
+                stopService(new Intent(getApplicationContext(), MessageService.class));
+                ParseUser.logOut();
                 startActivity(in);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
