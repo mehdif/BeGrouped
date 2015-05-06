@@ -47,6 +47,23 @@ public class GroupManager {
         return group;
     }
 
+    public static Group parseGroup(String jsonFile) {
+
+        Group group = null;
+        try {
+            JSONObject jsonGroup = new JSONObject(jsonFile);
+            String groupName = (String) jsonGroup.get(Constants.GROUP_NAME);
+            String regionName = (String) jsonGroup.get(Constants.REGION_NAME);
+            String expirationDate = (String) jsonGroup.get(Constants.EXPIRATION_DATE);
+            String supervisorName = (String) jsonGroup.get(Constants.SUPERVISOR_NAME);
+            User supervisor = new User("", "", supervisorName, "", "");
+            group = new Group(supervisor, groupName, regionName, expirationDate);
+        } catch (Exception e) {
+            Log.e("Error : ", e.getMessage());
+        }
+        return group;
+    }
+
     private static LinkedList<User> parseGroupMembers(JSONArray jsonArrayMembers) {
 
         LinkedList<User> membersList = new LinkedList<>();
@@ -205,83 +222,6 @@ public class GroupManager {
     }
 
 
-    public static Group getGroupInformation(Group group) {
-
-        String jsonFileUrl = getFromUrl(AllUrls.GET_GROUP_INFORMATIONS + group.getName() + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
-
-        Log.v("Json group info : ", " " + jsonFileUrl);
-
-        //Json file parser
-        try {
-
-            JSONObject jsonObject = new JSONObject(jsonFileUrl);
-
-            String groupName = (String) jsonObject.get(Constants.GROUP_NAME);
-            String supervisorName = (String) jsonObject.get(Constants.SUPERVISOR_NAME);
-            String regionName = (String) jsonObject.get(Constants.REGION_NAME);
-            String expirationDate = (String) jsonObject.get(Constants.EXPIRATION_DATE);
-
-
-            group.setSupervisor(new User("", "", supervisorName, "", ""));
-            group.setLocationName(regionName);
-            group.setExpirationDate(expirationDate);
-            //addSupervisorGroup(group,supervisorName);
-
-            return group;
-
-        } catch (Exception e) {
-            Log.e("Error : ", e.getMessage());
-            return null;
-        }
-    }
-
-    /**
-     * Method that get all members of a group
-     *
-     * @return Members list
-     */
-    public static Group createMembersFromJson(String groupName) {
-
-        LinkedList<User> membersList = new LinkedList<>();
-
-        JSONArray members;
-
-        String jsonFileUrl = getFromUrl(AllUrls.GET_GROUP_MEMBERS + groupName + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
-
-        Log.v("Json members group: ", " " + jsonFileUrl);
-
-        //Json file parser
-        if (jsonFileUrl != null) {
-            try {
-                JSONObject jsonObj = new JSONObject(jsonFileUrl);
-
-                // Getting JSON Array node
-                members = jsonObj.getJSONArray(Constants.MEMBERS);
-
-                // looping through All members
-                for (int i = 0; i < members.length(); i++) {
-                    JSONObject jsonObject = members.getJSONObject(i);
-
-                    String firstname = (String) jsonObject.get(Constants.FIRST_NAME);
-                    String lastname = (String) jsonObject.get(Constants.LAST_NAME);
-                    String username = (String) jsonObject.get(Constants.USERNAME);
-                    String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
-
-                    membersList.add(new User(firstname, lastname, username, null, phoneNumber));
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Log.e("ServiceHandler", "Couldn't get any data from the url");
-        }
-
-        Group group = new Group(null, membersList, null, null, null);
-
-        return group;
-        // return //getGroupInformation(group);
-    }
 
     public static LinkedList<Group> getMyGroups() {
 
@@ -326,99 +266,12 @@ public class GroupManager {
     }
 
 
-    public static Group createNewGroup(String name, String locationName) {
-        try {
-            String encodedName = URLEncoder.encode(name, "utf-8").replace("+", "%20");
-            String encodedRegion = URLEncoder.encode(locationName, "utf-8").replace("+", "%20");
-
-            String jsonFileUrl = getFromUrl(AllUrls.CREATE_GROUP + encodedName + "/" + encodedRegion + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
-
-            Log.v("Json create group : ", " " + jsonFileUrl);
-
-            if (jsonFileUrl != null && jsonFileUrl.equals("1208")) {
-                return null;
-            } else {
-
-                //Json file parser
-                try {
-
-                    JSONObject jsonObject = new JSONObject(jsonFileUrl);
-
-                    String groupName = (String) jsonObject.get(Constants.GROUP_NAME);
-                    String supervisorName = (String) jsonObject.get(Constants.SUPERVISOR_NAME);
-                    String regionName = (String) jsonObject.get(Constants.REGION_NAME);
-                    String expirationDate = (String) jsonObject.get(Constants.EXPIRATION_DATE);
-
-                    return new Group(MyApplication.myIdentity, groupName, regionName);
-                } catch (Exception e) {
-                    Log.e("Error : ", e.getMessage());
-                    return null;
-                }
-            }
-        } catch (Exception e) {
-            return null;
-        }
-    }
 
     public static boolean deleteGroup(String groupName) {
         Log.v("TAG", groupName);
         String jsonFileUrl = getFromUrl(AllUrls.DELETE_GROUP + groupName + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
 
         Log.v("Json delete group : ", " " + jsonFileUrl);
-
-        if (jsonFileUrl != null && jsonFileUrl.equals("FAILED")) {
-            return false;
-        } else if (jsonFileUrl != null && jsonFileUrl.equals("SUCCEED")) {
-            return true;
-        }
-        return false;
-    }
-
-    public static LinkedList<User> getPendingDemands(String groupName) {
-
-
-        LinkedList<User> waitingMembers = new LinkedList<>();
-
-        JSONArray members;
-
-        String jsonFileUrl = getFromUrl(AllUrls.GET_PENDING_DEMANDS + groupName + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
-
-        Log.v("Json pending demands: ", " " + jsonFileUrl);
-
-        //Json file parser
-        if (jsonFileUrl != null) {
-            try {
-                JSONObject jsonObj = new JSONObject(jsonFileUrl);
-
-                // Getting JSON Array node
-                members = jsonObj.getJSONArray(Constants.PENDING_DEMANDS);
-
-                // looping through All members
-                for (int i = 0; i < members.length(); i++) {
-                    JSONObject jsonObject = members.getJSONObject(i);
-
-                    String firstname = (String) jsonObject.get(Constants.FIRST_NAME);
-                    String lastname = (String) jsonObject.get(Constants.LAST_NAME);
-                    String username = (String) jsonObject.get(Constants.USERNAME);
-                    String phoneNumber = (String) jsonObject.get(Constants.PHONE_NUMBER);
-
-                    waitingMembers.add(new User(firstname, lastname, username, null, phoneNumber));
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Log.e("ServiceHandler", "Couldn't get any data from the url");
-        }
-        return waitingMembers;
-
-    }
-
-    public static boolean expulseMember(String groupName, String userName) {
-        String jsonFileUrl = getFromUrl(AllUrls.EXPULSER_GROUP_SUPERVISOR + groupName + "/" + userName + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
-
-        Log.v("Json delete member : ", " " + jsonFileUrl);
 
         if (jsonFileUrl != null && jsonFileUrl.equals("FAILED")) {
             return false;
@@ -446,10 +299,6 @@ public class GroupManager {
         return false;
     }
 
-    public static void getGroupMembersFromName(String groupName, Fragment fragment, int type) {
-        new TaskGetJsonMembers(groupName, fragment, type).execute();
-
-    }
 
     public static void getGroups(HomeFragment fragment) {
         new TaskGetMyGroups(fragment).execute();
@@ -492,97 +341,21 @@ public class GroupManager {
 
     }
 
-    public static class TaskGetJsonMembers extends AsyncTask {
-
-        int type;
-        String groupName;
-        Fragment fragment;
-
-        public TaskGetJsonMembers(String groupName) {
-            this.fragment = null;
-            this.groupName = groupName;
-        }
-
-        public TaskGetJsonMembers(String groupName, Fragment fragment, int type) {
-            this.type = type;
-            this.groupName = groupName;
-            this.fragment = fragment;
-        }
-
-        @Override
-        protected Group doInBackground(Object[] params) {
-            return createMembersFromJson(groupName);
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
-
-            if (fragment != null) {
-                if (type == Constants.MANAGE_GROUP_ONCREATE) {
-                    ((MembersOnGroupFragment) fragment).getGroupMembersOnCreate((Group) o);
-                } else if (type == Constants.MEMBERS_ON_GROUP_ONCREATE) {
-                    ((MembersOnGroupFragment) fragment).getGroupMembersReload((Group) o);
-                }
-            }
-
-        }
-    }
-
-    public static class TaskGetPendingDemands extends AsyncTask {
-
-        String groupName;
-
-        public TaskGetPendingDemands(String groupName) {
-            this.groupName = groupName;
-        }
-
-        @Override
-        protected LinkedList<User> doInBackground(Object[] params) {
-
-            return getPendingDemands(groupName);
-
-        }
-    }
 
 
-    public static void callTaskUpdateGroupMemberLocations(Group group) {
-        TaskGetMemberPositions task = new TaskGetMemberPositions(group);
+    public static void callTaskUpdateGroupMemberLocations(Group group,ReceiverUpdatePositions rec) {
+        TaskGetMemberPositions task = new TaskGetMemberPositions(group,rec);
 
         task.execute();
 
     }
 
 
-    public static Boolean callTaskAcceptMember(String groupName, String memberUsername) {
-
-        try {
-            return (Boolean) new TaskAcceptMember(groupName, memberUsername).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return false;
-
-    }
 
     public static boolean callTaskDeleteGroup(String groupName) {
 
         try {
             return (Boolean) new TaskDeleteGroup(groupName).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public static boolean callTaskDeleteMember(String groupName, String userName) {
-
-        try {
-            return (Boolean) new TaskDeleteMember().execute(groupName, userName).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -603,31 +376,15 @@ public class GroupManager {
         return false;
     }
 
-    public static void callTaskCreateNewGroup(String name, String locationName, CreateGroupFragment fragment) {
-
-
-        new TaskCreateNewGroup(name, locationName, fragment).execute();
-
-    }
-
-    public static LinkedList<User> callTaskGetPendingDemands(String groupName) {
-
-        try {
-            return (LinkedList<User>) new TaskGetPendingDemands(groupName).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 
     public static class TaskGetMemberPositions extends AsyncTask {
 
         Group group;
+        ReceiverUpdatePositions rec;
 
-        public TaskGetMemberPositions(Group group) {
+        public TaskGetMemberPositions(Group group,ReceiverUpdatePositions rec) {
+            this.rec=rec;
             this.group = group;
         }
 
@@ -639,6 +396,7 @@ public class GroupManager {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
+            rec.rappelerBroadCast();
             if (MapsActivity.markerManager != null) {
                 MapsActivity.markerManager.updateMarkerPositions();
             }
@@ -668,29 +426,6 @@ public class GroupManager {
     }
 
 
-    public static class TaskCreateNewGroup extends AsyncTask {
-
-        private String name;
-        private String locationName;
-        private CreateGroupFragment fragment;
-
-        public TaskCreateNewGroup(String name, String locationName, CreateGroupFragment fragment) {
-            this.name = name;
-            this.locationName = locationName;
-            this.fragment = fragment;
-        }
-
-        @Override
-        protected Group doInBackground(Object[] params) {
-            return createNewGroup(name, locationName);
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
-            fragment.createGroup((Group) o);
-        }
-    }
 
     public static class TaskDeleteGroup extends AsyncTask {
 
@@ -709,14 +444,6 @@ public class GroupManager {
         }
     }
 
-    public static class TaskDeleteMember extends AsyncTask {
-        @Override
-        protected Boolean doInBackground(Object[] params) {
-
-            return expulseMember(params[0].toString(), params[1].toString());
-
-        }
-    }
 
     public static class TaskLeaveGroup extends AsyncTask {
         @Override
@@ -725,6 +452,22 @@ public class GroupManager {
             return leaveGroup(params[0].toString());
 
         }
+    }
+
+    public static User getUserByUsernameFromListAndRemove(String username, LinkedList<User> listUser){
+        if (username==null) return null;
+        if (listUser==null) return null;
+        User usr;
+        int i=0;
+        while (i<listUser.size()){
+            if (listUser.get(i).getUsername().equals(username)){
+                usr=listUser.get(i);
+                listUser.remove(i);
+                return usr;
+            }
+            i++;
+        }
+        return null;
     }
 
 

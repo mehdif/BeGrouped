@@ -47,6 +47,7 @@ public class MembersWaitingFragment extends Fragment implements AsyncResponse {
     String username = "";
     String action = "";
     HashMap<String, String> actualMap;
+    LinkedList<User> membersWaiting = new LinkedList<>();
 
 
     public MembersWaitingFragment() {
@@ -148,7 +149,8 @@ public class MembersWaitingFragment extends Fragment implements AsyncResponse {
             Toast.makeText(getActivity(), MessageUser.get(output), Toast.LENGTH_SHORT).show();
         } else {
             listItem = new ArrayList<>();
-            LinkedList<User> membersWaiting = GroupManager.parsePendingDemands(output);
+            LinkedList<User> ancientMembersWaiting = membersWaiting;
+            membersWaiting = GroupManager.parsePendingDemands(output);
             listItem = new ArrayList<>();
 
             for (int i = 0; i < membersWaiting.size(); i++) {
@@ -162,13 +164,18 @@ public class MembersWaitingFragment extends Fragment implements AsyncResponse {
             }
             mSchedule = new SimpleAdapter(getActivity(), listItem, R.layout.affichageitem,
                     new String[]{"img", "username", "telephone", "flname"}, new int[]{R.id.img, R.id.titre, R.id.description, R.id.superviseur});
+
+
             membersWaitingView.setAdapter(mSchedule);
             mSchedule.notifyDataSetChanged();
 
+
             if (action.equals("acceptMember")) {
+                User user = GroupManager.getUserByUsernameFromListAndRemove(actualMap.get("username"),ancientMembersWaiting);
+                MyApplication.currentGroup.getMembers().add(user);
                 HashMap map2 = new HashMap<String, String>();
                 map2.put("username", actualMap.get("username"));
-                map2.put("telephone", actualMap.get("username"));
+                map2.put("telephone", actualMap.get("telephone"));
                 map2.put("img", String.valueOf(R.drawable.user));//Ici l icone qui va s'afficher
                 map2.put("flname", actualMap.get("flname"));//Ici l icone qui va s'afficher
                 MembersOnGroupFragment.listItem.add(map2);
