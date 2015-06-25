@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +19,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.parse.ParseUser;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -30,6 +33,7 @@ import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.User;
 import smartcity.begrouped.utils.AllUrls;
 import smartcity.begrouped.utils.AsyncResponse;
+import smartcity.begrouped.utils.CallService;
 import smartcity.begrouped.utils.Constants;
 import smartcity.begrouped.utils.Downloader;
 import smartcity.begrouped.utils.MessageUser;
@@ -99,6 +103,23 @@ public class MembersOnGroupFragment extends Fragment implements AsyncResponse {
                 }
                 return false;
             }
+        });
+
+        membersView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final HashMap<String, String> map =
+                        (HashMap<String, String>) membersView.getItemAtPosition(position);
+                if (!ParseUser.getCurrentUser().getUsername().equals(map.get("username"))) {
+                                    Intent intent = new Intent(getActivity(), CallActivity.class);
+                                    intent.putExtra("callerId", MyApplication.currentUserId);
+                                    intent.putExtra("recipientName", map.get("username"));
+                                    startActivity(intent);
+                                }
+
+
+            }
+
         });
         // Inflate the layout for this fragment
         return rootView;

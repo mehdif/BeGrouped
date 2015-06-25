@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
@@ -95,9 +96,7 @@ public class MainActivity extends ActionBarActivity implements FragmentDrawer.Fr
                         Toast.LENGTH_SHORT).show();
             }
         }
-        catch(Exception e)
-        {
-
+        catch(Exception e){
         }
 
         setUpRequestNearestPoint();

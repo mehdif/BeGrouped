@@ -1,6 +1,6 @@
 package smartcity.begrouped.activity;
 
-import android.app.ProgressDialog;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,22 +14,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.LogInCallback;
-import com.parse.ParseUser;
+
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.GroupManager;
-import smartcity.begrouped.controllers.UserManager;
 import smartcity.begrouped.model.Group;
 import smartcity.begrouped.utils.AllUrls;
 import smartcity.begrouped.utils.AsyncResponse;
 import smartcity.begrouped.utils.Downloader;
-import smartcity.begrouped.utils.GlobalMethodes;
 import smartcity.begrouped.utils.MessageUser;
 import smartcity.begrouped.utils.MyApplication;
+import smartcity.begrouped.utils.PushNotificationService;
 
 import static smartcity.begrouped.utils.GlobalMethodes.isNumeric;
 
@@ -113,14 +111,11 @@ public class JoinGroupFragment extends Fragment implements AsyncResponse {
             Toast.makeText(getActivity(), MessageUser.get(output),Toast.LENGTH_SHORT).show();
         }
         else {
+            Log.v("Parse",output);
             Group group=GroupManager.parseGroup(output);
-            String supervisorname=group.getSupervisor().getUsername();
-            Log.v("aimen",supervisorname);
-
-            GlobalMethodes.sendNotification("New Invitation",MyApplication.myIdentity.getUsername() +" want to join "+group.getName(),supervisorname);
+            String supervisorName=group.getSupervisor().getUsername();
+            PushNotificationService.sendNotification("New Invitation", MyApplication.myIdentity.getUsername() + " want to join " + group.getName(), supervisorName,group.getName());
             Toast.makeText(getActivity(), MessageUser.get("2201"),Toast.LENGTH_SHORT).show();
-
-
         }
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);

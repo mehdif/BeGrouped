@@ -93,5 +93,8 @@
 
     <string name="message_elipses">Message...</string>
 
+    <!-- apps secrets -->
+    <string name="sinch_app_key">8a414cde-baa7-4e85-bde0-96a94e9a45f6</string>
+    <string name="sinch_app_secret">yzMKSX/rR0KEHyQYg/zLng==</string>
 
 </resources>

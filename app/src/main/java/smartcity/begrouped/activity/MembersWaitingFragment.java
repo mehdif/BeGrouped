@@ -6,8 +6,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +16,6 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Member;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,15 +23,13 @@ import java.util.LinkedList;
 
 import smartcity.begrouped.R;
 import smartcity.begrouped.controllers.GroupManager;
-import smartcity.begrouped.controllers.UserManager;
-import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.User;
 import smartcity.begrouped.utils.AllUrls;
 import smartcity.begrouped.utils.AsyncResponse;
 import smartcity.begrouped.utils.Downloader;
-import smartcity.begrouped.utils.GlobalMethodes;
 import smartcity.begrouped.utils.MessageUser;
 import smartcity.begrouped.utils.MyApplication;
+import smartcity.begrouped.utils.PushNotificationService;
 
 import static smartcity.begrouped.utils.GlobalMethodes.isNumeric;
 
@@ -127,7 +122,7 @@ public class MembersWaitingFragment extends Fragment implements AsyncResponse {
                 case "acceptMember":
                     downloader.execute(AllUrls.ACCEPT_MEMBER_TO_GROUP + encodedName + "/" + username + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());
                     Log.v("TAG",username);
-                    GlobalMethodes.sendNotification("Invitation Accepted",MyApplication.myIdentity.getUsername()+" has accepted your invitation",username);
+                    PushNotificationService.sendNotification("Invitation Accepted", MyApplication.myIdentity.getUsername() + " has accepted your invitation", username, null);
                     break;
                 case "deleteMember":
                     downloader.execute(AllUrls.EXPULSER_GROUP_SUPERVISOR + encodedName + "/" + username + "/" + MyApplication.myIdentity.getUsername() + "/" + MyApplication.myIdentity.getPassword());

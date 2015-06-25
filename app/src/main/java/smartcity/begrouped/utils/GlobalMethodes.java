@@ -12,6 +12,7 @@ import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.PushService;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -30,12 +31,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import smartcity.begrouped.activity.MainActivity;
+
 /**
  * Created by Anes on 01/05/2015.
  */
 public class GlobalMethodes {
-     static String objectId=null;
-
 
     public static boolean isNumeric(char n) {
         return (n=='0' || n=='1'|| n=='2'|| n=='3'|| n=='4'|| n=='5'|| n=='6'|| n=='7'|| n=='8'|| n=='9');
@@ -107,43 +108,23 @@ public class GlobalMethodes {
         }
         return "";
     }
-    public static void sendNotification(String title,String content,String username)
-    {
-        JSONObject obj;
 
+    public static String getRecipientId(String recipientName){
+        ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
+        userQuery.whereEqualTo("username", recipientName);
+        List<ParseUser> users= null;
+        String recipientId="";
         try {
-            obj = new JSONObject();
-            obj.put("alert",content);
-            obj.put("title",title);
-
-            ParseQuery<ParseUser> userquery = ParseUser.getQuery();
-            userquery.whereEqualTo("username", username);
-
-            List<ParseUser> users=userquery.find();
-            for(int i=0;i<users.size();i++)
-            {
-                if(users.get(i).getUsername().equals(username))
-                {
-                    objectId=users.get(i).getObjectId();
-                    Log.v("aimene",objectId);
+            users = userQuery.find();
+            for(int i=0;i<users.size();i++){
+                if(users.get(i).getUsername().equals(recipientName)){
+                    recipientId = users.get(i).getObjectId();
+                    break;
                 }
             }
-
-
-
-
-            ParsePush push = new ParsePush();
-            ParseQuery query = ParseInstallation.getQuery();
-            query.whereEqualTo("deviceType", "android");
-            query.whereEqualTo("userName",objectId );
-            push.setQuery(query);
-            push.setData(obj);
-            push.sendInBackground();
-        } catch (JSONException e) {
-            e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
+        return recipientId;
     }
 }

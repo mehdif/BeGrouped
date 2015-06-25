@@ -8,11 +8,13 @@ import android.util.Log;
 import com.parse.Parse;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.parse.PushService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import smartcity.begrouped.activity.MainActivity;
 import smartcity.begrouped.model.Date;
 import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.Location;
@@ -39,9 +41,5 @@ public final class MyApplication extends Application {
         super.onCreate();
         Parse.initialize(this, "o0vvZbqThRgTotm9VKxeSfl7yaDebOfOa51sLXNc", "PMz0wBtgfmQVSJtINeBP85L1GwwbooeEMGu4tkMc");
         ParseInstallation.getCurrentInstallation().saveInBackground();
-
-
-
     }
-
 }

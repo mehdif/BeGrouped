@@ -21,10 +21,12 @@ import com.sinch.android.rtc.messaging.WritableMessage;
 
 import java.util.List;
 
+import smartcity.begrouped.R;
+
 public class MessageService extends Service implements SinchClientListener {
 
-    private static final String APP_KEY = "8a414cde-baa7-4e85-bde0-96a94e9a45f6";
-    private static final String APP_SECRET = "yzMKSX/rR0KEHyQYg/zLng==";
+    private static final int APP_KEY = R.string.sinch_app_key;
+    private static final int APP_SECRET = R.string.sinch_app_secret;
     private static final String ENVIRONMENT = "sandbox.sinch.com";
     public final MessageServiceInterface serviceInterface = new MessageServiceInterface();
     private SinchClient sinchClient = null;
@@ -36,13 +38,8 @@ public class MessageService extends Service implements SinchClientListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-           Log.v("service","on start command");
            currentUserId = MyApplication.currentUserId;
-           Log.v("currentuseridddd",currentUserId);
         if (currentUserId != null && !isSinchClientStarted()) {
-            Log.v("service","currentuserid is not null and client is not started");
-            Log.v("service",currentUserId);
             startSinchClient(currentUserId);
         }
         broadcaster = LocalBroadcastManager.getInstance(this);
@@ -51,8 +48,8 @@ public class MessageService extends Service implements SinchClientListener {
 
     public void startSinchClient(String username) {
 
-        sinchClient = Sinch.getSinchClientBuilder().context(this).userId(username).applicationKey(APP_KEY)
-                .applicationSecret(APP_SECRET).environmentHost(ENVIRONMENT).build();
+        sinchClient = Sinch.getSinchClientBuilder().context(this).userId(username).applicationKey(String.valueOf(APP_KEY))
+                .applicationSecret(String.valueOf(APP_SECRET)).environmentHost(ENVIRONMENT).build();
 
         sinchClient.addSinchClientListener(this);
 
