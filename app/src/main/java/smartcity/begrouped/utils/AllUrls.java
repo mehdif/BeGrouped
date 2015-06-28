@@ -6,7 +6,7 @@ package smartcity.begrouped.utils;
 public final class AllUrls {
 
 
-    public static final String base="http://smartpld-001-site1.smarterasp.net/index.php/";
+    public static final String base="http://begrouped.mahdi-dif.com/index.php/";
 
     //---- Gestion des Authentification --------------------------------------------------------------
     public static final String authenticate_user_url=base+"login/";
