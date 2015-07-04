@@ -8,7 +8,7 @@ public final class AllUrls {
 
     public static final String base="http://begrouped.mahdi-dif.com/index.php/";
 
-    //---- Gestion des Authentification --------------------------------------------------------------
+    //---- Gestion des Authentication --------------------------------------------------------------
     public static final String authenticate_user_url=base+"login/";
     public static final String register_user_url =base+"register/";
     public static final String authenticate_me =base+"me";

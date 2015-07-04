@@ -75,8 +75,8 @@ public class AuthentificationActivity extends ActionBarActivity implements Async
                             else {
                                 action = "login";
                                 String hashedPass = GlobalMethodes.md5(pass);
-                                Downloader downloader = new Downloader(AuthentificationActivity.this, AuthentificationActivity.this);
-                                downloader.execute(AllUrls.authenticate_user_url + login + "/" + hashedPass);
+
+                                Downloader downloader = new Downloader(AuthentificationActivity.this, AuthentificationActivity.this);                                downloader.execute(AllUrls.authenticate_user_url + login + "/" + hashedPass);
                             }
                         }
                         return false;

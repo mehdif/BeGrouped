@@ -33,8 +33,6 @@ import smartcity.begrouped.model.Group;
 import smartcity.begrouped.model.User;
 import smartcity.begrouped.utils.AllUrls;
 import smartcity.begrouped.utils.AsyncResponse;
-import smartcity.begrouped.utils.CallService;
-import smartcity.begrouped.utils.Constants;
 import smartcity.begrouped.utils.Downloader;
 import smartcity.begrouped.utils.MessageUser;
 import smartcity.begrouped.utils.MyApplication;
